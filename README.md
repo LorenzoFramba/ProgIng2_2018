@@ -3,6 +3,6 @@
 Membri del gruppo:
     - Davide Bulbarelli
     - Davide Piva
-    -
+    - Marco Luzzara
     -
     -
