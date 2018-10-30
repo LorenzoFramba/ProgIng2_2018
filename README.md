@@ -1,3 +1,8 @@
 # ProgIng2
 
-Ciao a tutti, sono il Bulba
+Membri del gruppo:
+    - Davide Bulbarelli
+    - Davide Piva
+    -
+    -
+    -
