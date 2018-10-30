@@ -4,7 +4,6 @@ Membri del gruppo:
     - Davide Bulbarelli
     - Davide Piva
     - Marco Luzzara
-<<<<<<< HEAD
     - Lorenzo Framba
 =======
     - Morgan Malavasi
