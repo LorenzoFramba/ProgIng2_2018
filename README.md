@@ -4,5 +4,5 @@ Membri del gruppo:
     - Davide Bulbarelli
     - Davide Piva
     - Marco Luzzara
-    -
+    - Morgan Malavasi
     -
