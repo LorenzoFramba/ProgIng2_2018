@@ -4,7 +4,8 @@
   "description": "Ciao a tutti, sono il Bulba",
   "main": "api.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node api.js"
   },
   "repository": {
     "type": "git",
