@@ -4,8 +4,12 @@
   "description": "Ciao a tutti, sono il Bulba",
   "main": "api.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node api.js"
+  },
+  "jest":{
+    "verbose":true,
+    "collectCoverage":true
   },
   "repository": {
     "type": "git",
