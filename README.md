@@ -5,4 +5,4 @@ Membri del gruppo:
     - Davide Piva
     - Marco Luzzara
     - Lorenzo Framba
-    -
+    - Morgan Malavasi
