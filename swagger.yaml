@@ -21,9 +21,57 @@ tags:
   description: Login into the application
 - name: logout
   description: Logout from the application
+- name: Exams
+  description: Exams management
 
 
 paths:
+  /exams/{examID}:
+      post:
+        tags:
+        - "Exams"
+        summary: "Modify an existing exam"
+        description: "Modify the specified exam"
+        operationId: "modifyExam"
+        produces: 
+        - none
+        parameters:
+        - name: "examID"
+          in: "path"
+          description: "ID of the exam"
+          required: true
+          type: "integer"
+          format: "int64"
+        responses:
+          '200':
+            description: Exam created
+          '400':
+            description: bad input parameter
+          '401':
+            description: not authorized
+          
+      delete:
+        tags:
+        - "Exams"
+        summary: "Delete an existing exam"
+        description: "Delete the specified exam"
+        operationId: "deleteExam"
+        produces: 
+        - none
+        parameters:
+        - name: "examID"
+          in: "path"
+          description: "ID of the exam"
+          required: true
+          type: "integer"
+          format: "int64"
+        responses:
+          '200':
+            description: Exam deleted
+          '400':
+            description: bad input parameter
+          '401':
+            description: not authorized
   /Users:
     get:
       tags:
@@ -186,4 +234,4 @@ definitions:
 host: virtserver.swaggerhub.com
 basePath: /LorenzoFramba/Users/1.0.0
 schemes:
- - https
+ - http
