@@ -1,120 +1,189 @@
 swagger: '2.0'
 info:
-  version: '1.0'
-  title: "ProgIng2"
-  description: Polls is a simple API allowing consumers to view polls and vote in them.
+  description: This is a simple API
+  version: 1.0.0
+  title: Interaction with Users
+  # put the contact info for your development or API team
+  contact:
+    email: you@your-company.com
+
   license:
-    name: MIT
-    url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
-host: polls.apiblueprint.org
-basePath: /
-schemes:
-- http
-consumes:
-- application/json
-produces:
-- application/json
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: create
+  description: Create a new User
+- name: delete
+  description: Delete an User with its ID
+- name: login
+  description: Login into the application
+- name: logout
+  description: Logout from the application
+
+
 paths:
-  /questions:
-    x-summary: Questions Collection
+  /Users:
     get:
-      summary: List All Questions
+      tags:
+      - delete
+      summary: searches inventory
+      operationId: searchInventory
+      description: |
+        By passing in the appropriate options, you can search for
+        available inventory in the system
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: searchString
+        description: pass an optional search string for looking up inventory
+        required: false
+        type: string
+      - in: query
+        name: skip
+        description: number of records to skip for pagination
+        type: integer
+        format: int32
+        minimum: 0
+      - in: query
+        name: limit
+        description: maximum number of records to return
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 50
       responses:
         200:
-          description: Successful Response
+          description: search results matching criteria
           schema:
             type: array
             items:
-              $ref: '#/definitions/Question'
-          examples:
-            application/json:
-              - question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 2048
-                  - choice: Python
-                    votes: 1024
-                  - choice: Objective-C
-                    votes: 512
-                  - choice: Ruby
-                    votes: 256
+              $ref: '#/definitions/CreateUser'
+        400:
+          description: bad input parameter
+          
+          
+          
     post:
-      description: >-
-        You may create your own question using this action. It takes a JSON
-        object containing a question and a collection of answers in the
-        form of choices.
-      summary: Create a New Question
+      tags:
+      - create
+      summary: Create a new User
+      operationId: addInventory
+      description: This feature helps to create a new user
+      consumes:
+      - application/json
+      produces:
+      - application/json
       parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/QuestionRequest'
+      - in: body
+        name: CreateUser
+        description: Create a new User
+        schema:
+          $ref: '#/definitions/CreateUser'
       responses:
         201:
-          description: ''
-          schema:
-            $ref: '#/definitions/Question'
-          examples:
-            application/json:
-                question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 0
-                  - choice: Python
-                    votes: 0
-                  - choice: Objective-C
-                    votes: 0
-                  - choice: Ruby
-                    votes: 0
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+          
+          
+          
+  /Token:
+    delete:
+      tags:
+      - logout
+      summary: logs out from the website
+      operationId: DeletebyToken
+      description: |
+        by pressing the right button, the system will log out from the current account and you will have the choice to log in 
+      produces:
+      - application/json
+      responses:
+        200:
+          description: the user logged out correctly 
+          
+        400:
+          description: the system couldn't logged out correctly  
+          
+          
+
+ 
+    post:
+      tags:
+      - login
+      summary: Logs in into the account by giving the right credentials
+      operationId: addPost
+      description: This feature gives you the opportunity to log in into your own account
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Login 
+        description: Login into your account
+        schema:
+          $ref: '#/definitions/Login'
+      responses:
+        201:
+          description: Logged in successfully 
+        400:
+          description: invalid input, object invalid
+        409:
+          description: Could not Logging in successfully
+          
+          
+          
 definitions:
-  Question:
-    title: Question
+  CreateUser:
     type: object
-    properties:
-      question:
-        type: string
-      published_at:
-        type: string
-      choices:
-        type: array
-        items:
-          $ref: '#/definitions/Choice'
     required:
-      - question
-      - published_at
-      - choices
-  Choice:
-    title: Choice
-    type: object
+    - id
+    - name
+    - lastname
+    - username
+    - email
+    - password
     properties:
-      votes:
+      id:
         type: integer
-        format: int32
-      choice:
+        #format: uuid
+        example: 62663
+      name:
         type: string
-    required:
-      - votes
-      - choice
-  QuestionRequest:
-    title: Question Request
+        example: Lorenzo 
+      lastname:
+        type: string
+        example: Framba
+      username:
+        type: string
+        example: montresoruccio
+      email:
+        type: string
+        example: lorenzoframba@gmail.com
+      password:
+        type: string
+        example: oMammaMiaoMammaMia
+  Login:
     type: object
-    properties:
-      question:
-        type: string
-      choices:
-        type: array
-        items:
-          type: string
     required:
-      - question
-      - choices
-    example:
-      question: Favourite programming language?
-      choices:
-        - Swift
-        - Python
-        - Objective-C
-        - Ruby
+    - username
+    - password
+    properties:
+      username:
+        type: string
+        example: montresoruccio
+      password:
+        type: string
+        example: oMammaMiaoMammaMia   
+
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /LorenzoFramba/Users/1.0.0
+schemes:
+ - https
