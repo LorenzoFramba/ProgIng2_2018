@@ -1,16 +1,20 @@
 swagger: '2.0'
 info:
-  description: This is a simple API
-  version: 1.0.0
-  title: Interaction with Users
-  # put the contact info for your development or API team
-  contact:
-    email: you@your-company.com
-
+  version: '1.0'
+  title: "ProgIng2"
+  description: API docs of Software Engineering project by Davide Bulbarelli, Davide Piva, Lorenzo Framba, Marco Luzzara, Morgan Malavasi
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-
+    name: MIT
+    url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
+    
+host: proging2.herokuapp.com
+basePath: /
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
 # tags are used for organizing operations
 tags:
 - name: create
@@ -22,60 +26,15 @@ tags:
 - name: logout
   description: Logout from the application
 - name: Exams
-  description: Exams management
-
-
+  description: Everything about exam
+  
+securityDefinitions:
+   ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: X-API-Key
+    
 paths:
-  /exams/{examID}:
-      post:
-        security:
-          - ApiKeyAuth: []
-        tags:
-        - "Exams"
-        summary: "Modify an existing exam"
-        description: "Modify the specified exam"
-        operationId: "modifyExam"
-        produces: 
-        - none
-        parameters:
-        - name: "examID"
-          in: "path"
-          description: "ID of the exam"
-          required: true
-          type: "integer"
-          format: "int64"
-        responses:
-          '200':
-            description: Exam created
-          '400':
-            description: bad input parameter
-          '401':
-            description: not authorized
-          
-      delete:
-        security:
-          - ApiKeyAuth: []
-        tags:
-        - "Exams"
-        summary: "Delete an existing exam"
-        description: "Delete the specified exam"
-        operationId: "deleteExam"
-        produces: 
-        - none
-        parameters:
-        - name: "examID"
-          in: "path"
-          description: "ID of the exam"
-          required: true
-          type: "integer"
-          format: "int64"
-        responses:
-          '200':
-            description: Exam deleted
-          '400':
-            description: bad input parameter
-          '401':
-            description: not authorized
   /Users:
     get:
       tags:
@@ -141,9 +100,7 @@ paths:
           description: invalid input, object invalid
         409:
           description: an existing item already exists
-          
-          
-          
+        
   /Token:
     delete:
       tags:
@@ -187,9 +144,85 @@ paths:
           description: invalid input, object invalid
         409:
           description: Could not Logging in successfully
-          
-          
-          
+
+  /exams:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Exams
+      summary: List All Exams
+      responses:
+        200:
+          description: Return list of exams
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Exam'
+          examples:
+            application/json:
+                exams:
+                  - id : 1
+                    name : Fisica
+                    duration : 30m
+                    deadline : 1541688393563
+                    dateSubmission : 1541688789590
+                    start : null
+                  - id : 2
+                    name : Algoritmi
+                    duration : 1h
+                    deadline : 1541688393563
+                    dateSubmission : 1541688789590
+                    start : 1541688789590
+                  - id : 3
+                    name : Analisi
+                    duration : 45m
+                    deadline : 1541688393563
+                    dateSubmission : 1541688789590
+                    start : 1541688789056
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Exams
+      summary: Push an exam
+      parameters:
+        - in: body
+          name : examName
+          description: The user to create.
+          schema:
+            $ref: "#/definitions/Exam"
+      responses:
+        200:
+          description: OK
+                    
+  /exams/{examId}:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Exams
+      summary: Returns an exam by ID.
+      parameters:
+        - in: path
+          name: examId
+          required: true
+          type: integer
+          description: Id of the exam to retrieve
+      responses:
+        200:
+          description: Return the exam with specified ID
+          schema:
+            $ref: '#/definitions/Exam'
+          examples:
+            application/json:
+                id : 3
+                name : Analisi
+                duration : 45m
+                deadline : 1541688393563
+                dateSubmission : 1541688789590
+                start : 1541688789056
+         
 definitions:
   CreateUser:
     type: object
@@ -232,10 +265,26 @@ definitions:
       password:
         type: string
         example: oMammaMiaoMammaMia   
-
-
-# Added by API Auto Mocking Plugin
-host: virtserver.swaggerhub.com
-basePath: /LorenzoFramba/Users/1.0.0
-schemes:
- - http
+  Exam:
+    title: Exam
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      duration:
+        type: string
+      deadline:
+        type: string
+      dateSubmission:
+        type: string
+      start:
+        type: string
+    required:  
+      - id
+      - name
+      - duration
+      - deadline
+      - dateSubmission
+      - start
