@@ -35,56 +35,7 @@ securityDefinitions:
     name: X-API-Key
     
 paths:
-  /exams/{examID}:
-    post:
-      security:
-        - ApiKeyAuth: []
-      tags:
-      - "Exams"
-      summary: "Modify an existing exam"
-      description: "Modify the specified exam"
-      operationId: "modifyExam"
-      produces: 
-      - none
-      parameters:
-      - name: "examID"
-        in: "path"
-        description: "ID of the exam"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        '200':
-          description: Exam created
-        '400':
-          description: bad input parameter
-        '401':
-          description: not authorized
-        
-    delete:
-      security:
-        - ApiKeyAuth: []
-      tags:
-      - "Exams"
-      summary: "Delete an existing exam"
-      description: "Delete the specified exam"
-      operationId: "deleteExam"
-      produces: 
-      - none
-      parameters:
-      - name: "examID"
-        in: "path"
-        description: "ID of the exam"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        '200':
-          description: Exam deleted
-        '400':
-          description: bad input parameter
-        '401':
-          description: not authorized
+  
   /Users:
     get:
       tags:
@@ -230,6 +181,10 @@ paths:
                     deadline : 1541688393563
                     dateSubmission : 1541688789590
                     start : 1541688789056
+        400:
+          description: bad input parameter
+        401:
+          description: not authorizexe
     post:
       security:
         - ApiKeyAuth: []
@@ -245,6 +200,10 @@ paths:
       responses:
         200:
           description: OK
+        400:
+          description: bad input parameter
+        401:
+          description: not authorized
                     
   /exams/{examId}:
     get:
@@ -272,7 +231,59 @@ paths:
                 deadline : 1541688393563
                 dateSubmission : 1541688789590
                 start : 1541688789056
-         
+        400:
+          description: bad input parameter
+        401:
+          description: not authorized
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - "Exams"
+      summary: "Modify an existing exam"
+      description: "Modify the specified exam"
+      operationId: "modifyExam"
+      produces: 
+      - application/json
+      parameters:
+      - name: "examId"
+        in: "path"
+        description: "ID of the exam"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        '200':
+          description: Exam created
+        '400':
+          description: bad input parameter
+        '401':
+          description: not authorized
+        
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - "Exams"
+      summary: "Delete an existing exam"
+      description: "Delete the specified exam"
+      operationId: "deleteExam"
+      produces: 
+      - application/json
+      parameters:
+      - name: "examId"
+        in: "path"
+        description: "ID of the exam"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        '200':
+          description: Exam deleted
+        '400':
+          description: bad input parameter
+        '401':
+          description: not authorized
 definitions:
   CreateUser:
     type: object
