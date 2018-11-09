@@ -17,14 +17,8 @@ produces:
 - application/json
 # tags are used for organizing operations
 tags:
-- name: create
-  description: Create a new User
-- name: delete
-  description: Delete an User with its ID
-- name: login
-  description: Login into the application
-- name: logout
-  description: Logout from the application
+- name: Users
+  description: Everything about user
 - name: Exams
   description: Everything about exam
   
@@ -35,37 +29,46 @@ securityDefinitions:
     name: X-API-Key
     
 paths:
-  
   /Users:
-    get:
+    post:
       tags:
-      - delete
+      - Users
+      summary: Create a new User
+      description: This feature helps to create a new user
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        201:
+          description: item created
+          schema:
+            $ref: '#/definitions/CreateUser'
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+
+
+  /Users/{userId}:     
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Users
       summary: searches inventory
       operationId: searchInventory
       description: |
-        By passing in the appropriate options, you can search for
-        available inventory in the system
+        By passing the appropriate ID, the system returns the right user and all its informations.
       produces:
       - application/json
       parameters:
-      - in: query
-        name: searchString
-        description: pass an optional search string for looking up inventory
-        required: false
-        type: string
-      - in: query
-        name: skip
-        description: number of records to skip for pagination
-        type: integer
-        format: int32
-        minimum: 0
-      - in: query
-        name: limit
-        description: maximum number of records to return
-        type: integer
-        format: int32
-        minimum: 0
-        maximum: 50
+      - name: "userId"
+        in: "path"
+        description: "ID of the user"
+        required: true
+        type: "integer"
+        format: "int64"
       responses:
         200:
           description: search results matching criteria
@@ -75,56 +78,18 @@ paths:
               $ref: '#/definitions/CreateUser'
         400:
           description: bad input parameter
-          
-          
-          
-    post:
-      tags:
-      - create
-      summary: Create a new User
-      operationId: addInventory
-      description: This feature helps to create a new user
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: CreateUser
-        description: Create a new User
-        schema:
-          $ref: '#/definitions/CreateUser'
-      responses:
-        201:
-          description: item created
-        400:
-          description: invalid input, object invalid
-        409:
-          description: an existing item already exists
-        
-  /Token:
-    delete:
-      tags:
-      - logout
-      summary: logs out from the website
-      operationId: DeletebyToken
-      description: |
-        by pressing the right button, the system will log out from the current account and you will have the choice to log in 
-      produces:
-      - application/json
-      responses:
-        200:
-          description: the user logged out correctly 
-          
-        400:
-          description: the system couldn't logged out correctly  
-          
-          
+        401:
+          description: not authorized 
 
- 
+          
+          
+      
+
+  /Token:
+  
     post:
       tags:
-      - login
+      - Users
       summary: Logs in into the account by giving the right credentials
       operationId: addPost
       description: This feature gives you the opportunity to log in into your own account
@@ -133,18 +98,62 @@ paths:
       produces:
       - application/json
       parameters:
+       
       - in: body
         name: Login 
         description: Login into your account
         schema:
           $ref: '#/definitions/Login'
       responses:
-        201:
+        200:
           description: Logged in successfully 
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Token'
+          examples:
+              application/json:
+                token:
+                  - id : 923850 
+                    token: 4567
+          
         400:
           description: invalid input, object invalid
         409:
-          description: Could not Logging in successfully
+          description: Could not Logging in successfully   
+
+          
+  /Token/{tokenId}:     
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Users
+      summary: logs out from the website
+      operationId: DeletebyToken
+      description: |
+        by pressing the right button, the system will log out from the current account and you will have the choice to log in 
+      produces:
+      - application/json
+      parameters:
+      - name: "tokenId"
+        in: "path"
+        description: "ID of the token"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: the user logged out correctly 
+          
+        400:
+          description: the system couldn't logged out correctly  
+        401:
+          description: not authorized
+          
+          
+
+
 
   /exams:
     get:
@@ -288,17 +297,12 @@ definitions:
   CreateUser:
     type: object
     required:
-    - id
     - name
     - lastname
     - username
     - email
     - password
     properties:
-      id:
-        type: integer
-        #format: uuid
-        example: 62663
       name:
         type: string
         example: Lorenzo 
@@ -320,12 +324,25 @@ definitions:
     - username
     - password
     properties:
-      username:
+      email:
         type: string
-        example: montresoruccio
+        example: montresoruccio@studenti.unitn.it
       password:
         type: string
         example: oMammaMiaoMammaMia   
+  Token:
+    title: Token
+    type: object
+    properties:
+      id:
+        type: string
+      token:
+        type: string
+        
+    required:   
+      - id
+      
+      - token
   Exam:
     title: Exam
     type: object
