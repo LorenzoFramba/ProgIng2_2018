@@ -292,6 +292,93 @@ paths:
           description: bad input parameter
         '401':
           description: not authorized
+
+/tasks:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Tasks
+        - Exams
+        - Users
+      summary: return a list of tasks
+      description: given an examId and/or a userId return a list of tasks associated 
+      parameters: 
+        - in: query
+          name: exam
+          type: integer
+          description: The ID of the Exam
+        - in: query
+          name: user
+          type: integer
+          description: The Id of the User
+      responses:
+        '200':
+          description: Return list of Tasks
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Task'
+        '400':
+          description: bad input parameter
+        '401':
+          description: not authorizexe
+          
+      
+'/tasks/{taskId}':
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Tasks
+      summary: Change the body of an existing task from ID
+      description: Modify the specified task
+      operationId: modifyTask
+      produces:
+        - application/json
+      parameters:
+        - name: taskId
+          in: path
+          description: ID of the Task
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Task modified
+        '400':
+          description: bad input parameter
+        '401':
+          description: not authorized
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Tasks
+      summary: Delete an existing task
+      description: Delete the specified task
+      operationId: deleteTask
+      produces:
+        - application/json
+      parameters:
+        - name: taskId
+          in: path
+          description: ID of the task
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: task deleted
+        '400':
+          description: Impossible delete the existing task
+        '401':
+          description: not authorized
+    
+
+
+
+
 definitions:
   CreateUser:
     type: object
@@ -340,7 +427,6 @@ definitions:
         
     required:   
       - id
-      
       - token
   Exam:
     title: Exam
@@ -365,3 +451,18 @@ definitions:
       - deadline
       - dateSubmission
       - start
+
+  Task:
+    title: Task
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      body:
+        type: string
+    required:  
+      - id
+      - name
+      - body
