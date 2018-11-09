@@ -8,7 +8,7 @@ info:
     url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
     
 host: proging2.herokuapp.com
-basePath: /
+basePath: /v1/
 schemes:
 - https
 consumes:
@@ -56,8 +56,7 @@ paths:
         - ApiKeyAuth: []
       tags:
       - Users
-      summary: searches inventory
-      operationId: searchInventory
+      summary: Search user by ID
       description: |
         By passing the appropriate ID, the system returns the right user and all its informations.
       produces:
