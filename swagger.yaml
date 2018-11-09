@@ -292,8 +292,8 @@ paths:
           description: bad input parameter
         '401':
           description: not authorized
-
-/tasks:
+          
+  /tasks:
     get:
       security:
         - ApiKeyAuth: []
@@ -325,7 +325,7 @@ paths:
           description: not authorizexe
           
       
-'/tasks/{taskId}':
+  /tasks/{taskId}:
     post:
       security:
         - ApiKeyAuth: []
@@ -375,10 +375,8 @@ paths:
         '401':
           description: not authorized
     
-
-
-
-
+          
+          
 definitions:
   CreateUser:
     type: object
@@ -427,6 +425,7 @@ definitions:
         
     required:   
       - id
+      
       - token
   Exam:
     title: Exam
@@ -451,7 +450,7 @@ definitions:
       - deadline
       - dateSubmission
       - start
-
+      
   Task:
     title: Task
     type: object
