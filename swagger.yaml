@@ -293,6 +293,7 @@ paths:
           description: bad input parameter
         '401':
           description: not authorized
+
 definitions:
   CreateUser:
     type: object
@@ -357,6 +358,12 @@ definitions:
         type: string
       dateSubmission:
         type: string
+      start_compiling_exam :
+        type: string
+      tasks :
+        type: integer
+        items:
+          type: string
       start:
         type: string
     required:  
@@ -365,4 +372,33 @@ definitions:
       - duration
       - deadline
       - dateSubmission
+      - start_compiling_exam
+      - tasks[]
       - start
+      
+  Task:
+    title: Task
+    type: object
+    properties:
+      id:
+        type: integer
+      body:
+        type: string
+      opzioni_multiselezione: 
+        type: integer
+        items:
+          type: string
+      punteggio:
+        type: integer
+      isPeerPreview:
+        type: boolean
+      categoria:
+        type: string
+    
+    required:  
+      - id
+      - body
+      - opzioni_multiselezione[]
+      - punteggio 
+      - isPeerReview
+      - categoria
