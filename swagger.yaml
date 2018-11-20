@@ -35,13 +35,41 @@ securityDefinitions:
     name: X-API-Key
     
 paths:
-
   /Groups:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Groups
+      summary: List all groups that belongs to the user calling the api
+      description: |
+        List all groups for which the user is the owner
+      produces:
+      - application/json
+      responses:
+        200:
+          description: matching groupId
+          schema:
+            type: array
+            items:
+              type: integer
+        401:
+          description: ApiKey not valid 
+        default:
+          description: Bad Request
     post:
+      security:
+        - ApiKeyAuth: []
       tags:
       - Groups
       summary: Create a new group
       description: This feature helps to create a new group
+      parameters:
+      - in: body
+        name: group
+        description: the group to create
+        schema: 
+          $ref: "#/definitions/Group"
       consumes:
       - application/json
       produces:
@@ -50,126 +78,87 @@ paths:
         201:
           description: group created
           schema:
-            $ref: '#/definitions/CreateUser'
-        400:
-          description: invalid input, object invalid
+            $ref: '#/definitions/User'
+        401:
+          description: ApiKey not valid 
         409:
           description: an existing item already exists
+        default:
+          description: Bad Request
           
-    get:
-      security:
-        - ApiKeyAuth: []
-      tags:
-      - Groups
-      summary: List all the users info by groupID
-      description: |
-        By passing the appropriate ID, the system returns the right group and all its informations of the owner
-      produces:
-      - application/json
-      responses:
-        200:
-          description: search results matching criteria
-          schema:
-            type: array
-            items:
-              type: integer
-        400:
-          description: bad input parameter
-        401:
-          description: not authorized 
           
-  /Groups/{groupId}:           
-    put:
-      security:
-        - ApiKeyAuth: []
-      tags:
-      - Groups
-      summary: Edit an existing group
-      description: This feature helps to edit an existing group
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - in: "path"
-        name: "groupId"
-        description: "ID of the user"
-        required: true
-        type: "integer"
-        format: "int64"
-      - in: body
-        name: user
-        required: true
-        schema:
-           $ref: '#/definitions/CreateUser'
-      responses:
-        200:
-          description: item modified 
-        400:
-          description: invalid input, object invalid
-        409:
-          description: an existing item already exists
-        401:
-          description: not authorized   
+  /Groups/{groupId}:  
     get:
       security:
         - ApiKeyAuth: []
       tags:
       - Groups
       summary: Get an existing group info
-      description: This feature helps to get an existing group info
+      description: get an existing group info
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: item modified 
+        401:
+          description: ApiKey not valid  
+        409:
+          description: an existing item already exists
+        default:
+          description: Bad Request
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Groups
+      summary: Modify an existing group
+      description: Modify an existing group
       consumes:
       - application/json
       produces:
       - application/json
       parameters:
-      - in: "path"
-        name: "groupId"
-        description: "ID of the user"
-        required: true
-        type: "integer"
-        format: "int64"
       - in: body
-        name: user
+        name: group
         required: true
         schema:
-           $ref: '#/definitions/Groups'
+           $ref: '#/definitions/Group'
       responses:
         200:
           description: item modified 
-        400:
-          description: invalid input, object invalid
+        401:
+          description: ApiKey not valid   
         409:
           description: an existing item already exists
-        401:
-          description: not authorized  
+        default:
+          description: Bad Request
           
     delete:
       security:
         - ApiKeyAuth: []
       tags:
       - Groups
-      summary: delete a group by id
+      summary: delete a group
       operationId: DeletebyToken
-      description: |
-        by pressing the right button, the system will log out from the current account and you will have the choice to log in 
+      description: 
+        delete a group
       produces:
       - application/json
-      parameters:
-      - name: "groupId"
-        in: "path"
-        description: "ID of the token"
-        required: true
-        type: "integer"
-        format: "int64"
       responses:
         200:
-          description: the user logged out correctly 
-          
-        400:
-          description: the system couldn't logged out correctly  
+          description: group deleted 
         401:
-          description: not authorized
+          description: ApiKey not valid
+        default:
+          description: Bad Request
+    parameters:
+      - in: path
+        name: groupId
+        description: ID of the user
+        required: true
+        type: integer
           
    
   /Users:
@@ -186,12 +175,11 @@ paths:
         201:
           description: item created
           schema:
-            $ref: '#/definitions/CreateUser'
-        400:
-          description: invalid input, object invalid
+            $ref: '#/definitions/User'
         409:
           description: an existing item already exists
- 
+        default:
+          description: Bad Request
 
   
   /Users/{userId}:     
@@ -205,96 +193,82 @@ paths:
         By passing the appropriate ID, the system returns the right user and all its informations.
       produces:
       - application/json
-      parameters:
-      - name: "userId"
-        in: "path"
-        description: "ID of the user"
-        required: true
-        type: "integer"
-        format: "int64"
       responses:
         200:
-          description: search results matching criteria
+          description: user data
           schema:
             type: array
             items:
-              $ref: '#/definitions/CreateUser'
-        400:
-          description: bad input parameter
+              $ref: '#/definitions/User'
         401:
-          description: not authorized 
+          description: ApiKey not valid 
+        default:
+          description: Bad Request
 
-          
     put:
       security:
         - ApiKeyAuth: []
       tags:
       - Users
       summary: Edit an existing User
-      description: This feature helps to edit an existing user
+      description: edit an existing user
       consumes:
       - application/json
       produces:
       - application/json
       parameters:
-      - in: "path"
-        name: "userId"
-        description: "ID of the user"
-        required: true
-        type: "integer"
-        format: "int64"
       - in: body
         name: user
         required: true
         schema:
-           $ref: '#/definitions/CreateUser'
+           $ref: '#/definitions/User'
       responses:
         200:
           description: item modified 
-        400:
-          description: invalid input, object invalid
+        401:
+          description: ApiKey not valid
         409:
           description: an existing item already exists
-        401:
-          description: not authorized          
-      
+        default:
+          description: Bad Request
+    parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        type: integer
 
   /Token:
-  
     post:
       tags:
       - Users
-      summary: Logs in into the account by giving the right credentials
-      operationId: addPost
-      description: This feature gives you the opportunity to log in into your own account
+      summary: Logs in into the account
+      description: log in into your own account
       consumes:
       - application/json
       produces:
       - application/json
       parameters:
-       
       - in: body
         name: Login 
         description: Login into your account
         schema:
-          $ref: '#/definitions/Login'
+          type: object
+          required:
+            - username
+            - password
+          properties:
+            username:
+              type: string
+            password:
+              type: string
       responses:
         200:
           description: Logged in successfully 
           schema:
-            type: object
-            items:
-              $ref: '#/definitions/Token'
-          examples:
-              application/json:
-                token:
-                  - id : 923850 
-                    token: 4567
-          
-        400:
-          description: invalid input, object invalid
-        409:
-          description: Could not Logging in successfully   
+            type: string
+        default:
+          description: Bad Request
 
           
   /Token/{tokenId}:     
@@ -304,92 +278,60 @@ paths:
       tags:
       - Users
       summary: logs out from the website
-      description: |
-        by pressing the right button, the system will log out from the current account and you will have the choice to log in 
+      description: log out from the current account
       produces:
       - application/json
       parameters:
-      - name: "tokenId"
-        in: "path"
-        description: "ID of the token"
+      - name: tokenId
+        in: path
+        description: token
         required: true
-        type: "integer"
-        format: "int64"
+        type: integer
       responses:
         200:
-          description: the user logged out correctly 
-          
-        400:
-          description: the system couldn't logged out correctly  
+          description: logged out correctly 
         401:
-          description: not authorized
-          
-          
+          description: ApiKey not valid
+        default:
+          description: Bad Request
 
-
-
-  /exams:
+  /Exams:
     get:
       security:
         - ApiKeyAuth: []
       tags:
         - Exams
-      summary: List All Exams
+      summary: List all examId
       responses:
         200:
-          description: Return list of exams
+          description: Return list of examId
           schema:
             type: array
             items:
-              $ref: '#/definitions/Exam'
-          examples:
-            application/json:
-                exams:
-                  - id : 1
-                    name : Fisica
-                    duration : 30m
-                    deadline : 1541688393563
-                    dateSubmission : 1541688789590
-                    start : null
-                  - id : 2
-                    name : Algoritmi
-                    duration : 1h
-                    deadline : 1541688393563
-                    dateSubmission : 1541688789590
-                    start : 1541688789590
-                  - id : 3
-                    name : Analisi
-                    duration : 45m
-                    deadline : 1541688393563
-                    dateSubmission : 1541688789590
-                    start : 1541688789056
-        400:
-          description: bad input parameter
+              type: integer
         401:
-          description: not authorized
-          
-          
-
-          
+          description: ApiKey not valid
+        default:
+          description: Bad Request
     post:
       security:
         - ApiKeyAuth: []
       tags:
         - Exams
-      summary: Push an exam
+      summary: create an exam
       parameters:
         - in: body
-          name : examName
-          description: The user to create.
+          name : exam
+          description: the exam to create
           schema:
             $ref: "#/definitions/Exam"
       responses:
         200:
           description: OK
-        400:
-          description: bad input parameter
         401:
-          description: not authorized
+          description: ApiKey not valid
+        default:
+          description: Bad Request
                     
   /exams/{examId}:
     get:
@@ -398,12 +340,6 @@ paths:
       tags:
         - Exams
       summary: Returns an exam by ID.
-      parameters:
-        - in: path
-          name: examId
-          required: true
-          type: integer
-          description: Id of the exam to retrieve
       responses:
         200:
           description: Return the exam with specified ID
@@ -420,7 +356,7 @@ paths:
         400:
           description: bad input parameter
         401:
-          description: not authorized
+          description: ApiKey not valid
           
           
     put:
@@ -434,12 +370,6 @@ paths:
       produces: 
       - application/json
       parameters:
-      - name: "examId"
-        in: "path"
-        description: "ID of the exam"
-        required: true
-        type: "integer"
-        format: "int64"
       - in: body
         name: exam
         required: true
@@ -451,7 +381,7 @@ paths:
         '400':
           description: bad input parameter
         '401':
-          description: not authorized
+          description: ApiKey not valid
         409:
           description: an existing exam already exists
         
@@ -465,20 +395,19 @@ paths:
       operationId: "deleteExam"
       produces: 
       - application/json
-      parameters:
-      - name: "examId"
-        in: "path"
-        description: "ID of the exam"
-        required: true
-        type: "integer"
-        format: "int64"
       responses:
         '200':
           description: Exam deleted
         '400':
           description: bad input parameter
         '401':
-          description: not authorized
+          description: ApiKey not valid
+    parameters:
+      - name: examId
+        in: path
+        description: ID of the exam
+        required: true
+        type: integer
           
   /tasks:
     get:
@@ -556,7 +485,7 @@ paths:
         '400':
           description: bad input parameter
         '401':
-          description: not authorized
+          description: ApiKey not valid
         409:
           description: an existing task already exists
           
@@ -576,7 +505,7 @@ paths:
         '400':
           description: Impossible delete the existing task
         '401':
-          description: not authorized
+          description: ApiKey not valid
     parameters:
     - name: taskId
       in: path
@@ -612,7 +541,7 @@ paths:
         409:
           description: an existing answer already exists
         401:
-          description: not authorized   
+          description: ApiKey not valid   
     post:
       security:
         - ApiKeyAuth: []
@@ -665,7 +594,7 @@ paths:
       required: true   
       
 definitions:
-  CreateUser:
+  User:
     type: object
     required:
     - name
@@ -689,32 +618,8 @@ definitions:
       password:
         type: string
         example: oMammaMiaoMammaMia
-  Login:
-    type: object
-    required:
-    - username
-    - password
-    properties:
-      email:
-        type: string
-        example: montresoruccio@studenti.unitn.it
-      password:
-        type: string
-        example: oMammaMiaoMammaMia   
-  Token:
-    title: Token
-    type: object
-    properties:
-      id:
-        type: string
-      token:
-        type: string
         
-    required:   
-      - id
-      
-      - token
-  Groups:
+  Group:
     title: Group
     type: object
     properties:
@@ -740,28 +645,28 @@ definitions:
       name:
         type: string
       duration:
-        type: string
+        type: integer
       deadline:
         type: string
-      dateSubmission:
-        type: string
-      start_compiling_exam :
+      startDate:
         type: string
       tasks :
-        type: integer
+        type: array
         items:
-          type: string
-      start:
-        type: string
+          type: integer
+      groupId:
+        type: integer
+      countTask:
+        type: integer
     required:  
       - id
       - name
       - duration
       - deadline
-      - dateSubmission
-      - start_compiling_exam
+      - startDate
       - tasks[]
-      - start
+      - groupId
+      - countTask
       
   Task:
     title: Task
