@@ -144,8 +144,6 @@ paths:
       operationId: DeletebyToken
       description: 
         delete a group
-      produces:
-      - application/json
       responses:
         200:
           description: group deleted 
@@ -231,12 +229,77 @@ paths:
           description: an existing item already exists
         default:
           description: Bad Request
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Users
+      summary: delete a user
+      description: 
+        delete a user
+      responses:
+        200:
+          description: user deleted 
+        401:
+          description: ApiKey not valid
+        default:
+          description: Bad Request
     parameters:
-      - name: userId
-        in: path
+      - in: path
+        name: userId
         description: ID of the user
         required: true
         type: integer
+        
+  /Users/Exams: 
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Users
+      summary: return all user's exams
+      description: return all user's exams
+      produces:
+      - application/json
+      responses:
+        200:
+          description: user's exams
+          schema:
+            type: array
+            items: 
+              type: integer
+        401:
+          description: ApiKey not valid
+        default:
+          description: Bad Request
+  
+  /Users/Exams/{examId}/Tasks: 
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Users
+      summary: return all user tasks for the specified exam
+      description: return all user tasks for the specified exam
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: examId
+          description: ID of the exam
+          required: true
+          type: integer
+      responses:
+        200:
+          description: user's tasks
+          schema:
+            type: array
+            items: 
+              type: integer
+        401:
+          description: ApiKey not valid
+        default:
+          description: Bad Request
 
   /Token:
     post:
@@ -279,8 +342,6 @@ paths:
       - Users
       summary: logs out from the website
       description: log out from the current account
-      produces:
-      - application/json
       parameters:
       - name: tokenId
         in: path
@@ -302,6 +363,8 @@ paths:
       tags:
         - Exams
       summary: List all examId
+      produces:
+      - application/json
       responses:
         200:
           description: Return list of examId
@@ -327,48 +390,38 @@ paths:
             $ref: "#/definitions/Exam"
       responses:
         200:
-          description: OK
+          description: exam created
         401:
           description: ApiKey not valid
         default:
           description: Bad Request
                     
-  /exams/{examId}:
+  /Exams/{examId}:
     get:
       security:
         - ApiKeyAuth: []
       tags:
         - Exams
       summary: Returns an exam by ID.
+      produces:
+      - application/json
       responses:
         200:
-          description: Return the exam with specified ID
+          description: Return the exam with the specified ID
           schema:
             $ref: '#/definitions/Exam'
-          examples:
-            application/json:
-                id : 3
-                name : Analisi
-                duration : 45m
-                deadline : 1541688393563
-                dateSubmission : 1541688789590
-                start : 1541688789056
-        400:
-          description: bad input parameter
         401:
           description: ApiKey not valid
-          
+        default:
+          description: Bad Request
           
     put:
       security:
         - ApiKeyAuth: []
       tags:
-      - "Exams"
-      summary: "Modify an existing exam"
-      description: "Modify the specified exam"
-      operationId: "modifyExam"
-      produces: 
-      - application/json
+      - Exams
+      summary: Modify an existing exam
+      description: Modify the specified exam
       parameters:
       - in: body
         name: exam
@@ -376,71 +429,61 @@ paths:
         schema:
             $ref: "#/definitions/Exam"
       responses:
-        '200':
+        200:
           description: Exam modified
-        '400':
-          description: bad input parameter
-        '401':
+        401:
           description: ApiKey not valid
-        409:
-          description: an existing exam already exists
+        default:
+          description: Bad Request
         
     delete:
       security:
         - ApiKeyAuth: []
       tags:
-      - "Exams"
-      summary: "Delete an existing exam"
-      description: "Delete the specified exam"
-      operationId: "deleteExam"
-      produces: 
-      - application/json
+      - Exams
+      summary: Delete an existing exam
+      description: Delete the specified exam
       responses:
-        '200':
+        200:
           description: Exam deleted
-        '400':
-          description: bad input parameter
-        '401':
+        401:
           description: ApiKey not valid
+        default:
+          description: Bad Request
     parameters:
       - name: examId
         in: path
         description: ID of the exam
         required: true
         type: integer
-          
-  /tasks:
+        
+  /Exams/{examId}/Tasks:
     get:
       security:
         - ApiKeyAuth: []
       tags:
-        - Tasks
-      summary: return a list of tasks
-      description: given an examId and/or a userId return a list of tasks associated 
-      parameters: 
-        - in: query
-          name: exam
-          type: integer
-          description: The ID of the Exam
-        - in: query
-          name: user
-          type: integer
-          description: The Id of the User
+        - Exams
+      summary: Returns all the tasks of the specified exam
+      description: Returns all the tasks of the specified exam
+      parameters:
+      - name: examId
+        in: path
+        description: ID of the exam
+        required: true
+        type: integer
+      produces:
+      - application/json
       responses:
-        '200':
-          description: Return list of Tasks
+        200:
+          description: tasks returned
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Task'
-        '400':
-          description: bad input parameter
-        '401':
-          description: not authorizexe
+            $ref: '#/definitions/Exam'
+        401:
+          description: ApiKey not valid
+        default:
+          description: Bad Request
           
-    
-          
-          
+  /Tasks: 
     post:
       security:
         - ApiKeyAuth: []
@@ -455,24 +498,40 @@ paths:
         schema:
           $ref: "#/definitions/Task"
       responses:
-        '200':
+        200:
           description: Task has been correctly created
-        '401':
+        401:
           description: apiKey not valid
-        400:
-          description: Bad request
+        default:
+          description: Bad Request
       
-  /tasks/{taskId}:
+  /Tasks/{taskId}:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Tasks
+      summary: get info from an existing task
+      description: get info from the specified task
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Task
+          schema:
+            $ref: "#/definitions/Task"
+        401:
+          description: ApiKey not valid
+        default:
+          description: Bad Request
+      
     put:
       security:
         - ApiKeyAuth: []
       tags:
         - Tasks
-      summary: Change the body of an existing task from ID
+      summary: Modify an existing task
       description: Modify the specified task
-      operationId: modifyTask
-      produces:
-        - application/json
       parameters:
       - in: body
         name: task
@@ -480,14 +539,12 @@ paths:
         schema:
             $ref: "#/definitions/Task"  
       responses:
-        '200':
+        200:
           description: Task modified
-        '400':
-          description: bad input parameter
-        '401':
+        401:
           description: ApiKey not valid
-        409:
-          description: an existing task already exists
+        default:
+          description: Bad Request
           
     delete:
       security:
@@ -496,59 +553,68 @@ paths:
         - Tasks
       summary: Delete an existing task
       description: Delete the specified task
-      operationId: deleteTask
-      produces:
-        - application/json
       responses:
-        '200':
+        200:
           description: task deleted
-        '400':
-          description: Impossible delete the existing task
-        '401':
+        401:
           description: ApiKey not valid
+        default:
+          description: Bad Request
     parameters:
     - name: taskId
       in: path
       description: ID of the Task
       required: true
       type: integer
-      format: int64
     
-  /answers:
-  
+  /Answers:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Answers
+      summary: get an existing Answer
+      description: get an existing answer
+      produces:
+      - application/json
+      responses:
+        200:
+          description: answer returned
+          schema:
+            $ref: "#/definitions/Answer"
+        401:
+          description: ApiKey not valid
+        default:
+          description: Bad Request
     put:
       security:
         - ApiKeyAuth: []
       tags:
       - Answers
-      summary: Edit an existing Answer
-      description: This feature helps to edit an existing answer
+      summary: modify an existing Answer
+      description: Modify an existing answer
       consumes:
-      - application/json
-      produces:
       - application/json
       parameters:
       - in: body
         name: answer
         required: true
         schema:
-            $ref: "#/definitions/Exam"
+            $ref: "#/definitions/Answer"
       responses:
         200:
           description: answer modified 
-        400:
-          description: invalid input, object invalid
-        409:
-          description: an existing answer already exists
         401:
           description: ApiKey not valid   
+        default:
+          description: Bad Request
     post:
       security:
         - ApiKeyAuth: []
       tags:
         - Answers
-      summary: send answer for a task
-      description: send the answer to the specified task assigned to a user
+      summary: create answer for a task
+      description: create the answer for the specified task 
       parameters:
         - in: body
           name: answer
@@ -556,12 +622,12 @@ paths:
           schema:
             type: string
       responses:
-        '200': 
+        200: 
           description: the answer has been correctly received
-        '401': 
+        401: 
           description: apikey not valid
-        '400':
-          description: Bad request
+        default:
+          description: Bad Request
     delete:
       security:
         - ApiKeyAuth: []
@@ -570,12 +636,12 @@ paths:
       summary: delete an answer
       description: delete the answer of the specified task assigned to a user
       responses:
-        '200': 
+        200: 
           description: the answer has been correctly deleted
-        '401': 
+        401: 
           description: apikey not valid
-        '400':
-          description: Bad request
+        default:
+          description: Bad Request
     parameters:
     - name: exam
       in: query
@@ -596,28 +662,26 @@ paths:
 definitions:
   User:
     type: object
+    properties:
+      name:
+        type: string
+      lastname:
+        type: string
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      exams:
+        type: object
     required:
     - name
     - lastname
     - username
     - email
     - password
-    properties:
-      name:
-        type: string
-        example: Lorenzo 
-      lastname:
-        type: string
-        example: Framba
-      username:
-        type: string
-        example: montresoruccio
-      email:
-        type: string
-        example: lorenzoframba@gmail.com
-      password:
-        type: string
-        example: oMammaMiaoMammaMia
+    - exams
         
   Group:
     title: Group
@@ -628,19 +692,23 @@ definitions:
       owner:
         type: integer
       members:
-        type: integer
+        type: array
+        items:
+          type: integer
       name:
         type: string
     required:   
-      - id
-      - owner
-      - members
-      - name
+    - id
+    - owner
+    - members
+    - name
   Exam:
     title: Exam
     type: object
     properties:
       id:
+        type: integer
+      owner_id:
         type: integer
       name:
         type: string
@@ -660,11 +728,12 @@ definitions:
         type: integer
     required:  
       - id
+      - owner_id
       - name
       - duration
       - deadline
       - startDate
-      - tasks[]
+      - tasks
       - groupId
       - countTask
       
@@ -674,23 +743,37 @@ definitions:
     properties:
       id:
         type: integer
-      body:
+      text:
         type: string
-      opzioni_multiselezione: 
-        type: integer
+      options: 
+        type: array
         items:
           type: string
-      punteggio:
+      score:
         type: integer
-      isPeerPreview:
+      isPeerReview:
         type: boolean
-      categoria:
+      category:
         type: string
-    
+      correctAnswer:
+        type: string
     required:  
       - id
-      - body
-      - opzioni_multiselezione[]
-      - punteggio 
+      - text
+      - options
+      - score 
       - isPeerReview
-      - categoria
+      - category
+      - correctAnswer
+      
+  Answer:
+    title: Answer
+    type: object
+    properties:
+      id: 
+        type: object
+      value:
+        type: string
+    required:
+      - id
+      - value
