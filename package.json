@@ -2,10 +2,10 @@
   "name": "proging2_2018",
   "version": "1.0.0",
   "description": "Ciao a tutti, sono il Bulba",
-  "main": "api.js",
+  "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "node api.js"
+    "start": "node index.js"
   },
   "jest": {
     "verbose": true,
