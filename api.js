@@ -9,6 +9,7 @@ app.get('/', (req, res) => res.send('Hello World!'))
 app.get('/greeting', (req, res) => {
    res.json(greeting)
 })
- 
-app.listen(PORT, () => console.log('ProgIng2 app listening on port'+ PORT))
 
+require('./app/routes')(app, {});
+
+app.listen(PORT, () => console.log('ProgIng2 app listening on port'+ PORT))
