@@ -1,171 +1,312 @@
 swagger: '2.0'
 info:
-  description: This is a simple API
-  version: 1.0.0
-  title: Interaction with Users
-  # put the contact info for your development or API team
-  contact:
-    email: you@your-company.com
-
+  version: '1.0'
+  title: "ProgIng2"
+  description: API docs of Software Engineering project by Davide Bulbarelli, Davide Piva, Lorenzo Framba, Marco Luzzara, Morgan Malavasi
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-
+    name: MIT
+    url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
+    
+host: proging2.herokuapp.com
+basePath: /v1/
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
 # tags are used for organizing operations
 tags:
-- name: create
-  description: Create a new User
-- name: delete
-  description: Delete an User with its ID
-- name: login
-  description: Login into the application
-- name: logout
-  description: Logout from the application
+- name: Users
+  description: Everything about user
 - name: Exams
-  description: Exams management
-
-
+  description: Everything about exam
+- name: Tasks
+  description: Everything about task
+- name: Answers
+  description: Everything about answer
+- name: Groups
+  description: Everything about groups
+  
+securityDefinitions:
+   ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: X-API-Key
+    
 paths:
-  /exams/{examID}:
-      post:
-        tags:
-        - "Exams"
-        summary: "Modify an existing exam"
-        description: "Modify the specified exam"
-        operationId: "modifyExam"
-        produces: 
-        - none
-        parameters:
-        - name: "examID"
-          in: "path"
-          description: "ID of the exam"
-          required: true
-          type: "integer"
-          format: "int64"
-        responses:
-          '200':
-            description: Exam created
-          '400':
-            description: bad input parameter
-          '401':
-            description: not authorized
-          
-      delete:
-        tags:
-        - "Exams"
-        summary: "Delete an existing exam"
-        description: "Delete the specified exam"
-        operationId: "deleteExam"
-        produces: 
-        - none
-        parameters:
-        - name: "examID"
-          in: "path"
-          description: "ID of the exam"
-          required: true
-          type: "integer"
-          format: "int64"
-        responses:
-          '200':
-            description: Exam deleted
-          '400':
-            description: bad input parameter
-          '401':
-            description: not authorized
-  /Users:
+  /Groups:
     get:
+      security:
+        - ApiKeyAuth: []
       tags:
-      - delete
-      summary: searches inventory
-      operationId: searchInventory
+      - Groups
+      summary: List all groups that belongs to the user calling the api
       description: |
-        By passing in the appropriate options, you can search for
-        available inventory in the system
+        List all groups for which the user is the owner
       produces:
       - application/json
-      parameters:
-      - in: query
-        name: searchString
-        description: pass an optional search string for looking up inventory
-        required: false
-        type: string
-      - in: query
-        name: skip
-        description: number of records to skip for pagination
-        type: integer
-        format: int32
-        minimum: 0
-      - in: query
-        name: limit
-        description: maximum number of records to return
-        type: integer
-        format: int32
-        minimum: 0
-        maximum: 50
       responses:
         200:
-          description: search results matching criteria
+          description: matching groupId
           schema:
             type: array
             items:
-              $ref: '#/definitions/CreateUser'
+              type: integer
+        401:
+          description: ApiKey not valid 
         400:
-          description: bad input parameter
-          
-          
-          
+          description: Bad Request
     post:
+      security:
+        - ApiKeyAuth: []
       tags:
-      - create
-      summary: Create a new User
-      operationId: addInventory
-      description: This feature helps to create a new user
+      - Groups
+      summary: Create a new group
+      description: This feature helps to create a new group
+      parameters:
+      - in: body
+        name: group
+        description: the group to create
+        schema: 
+          $ref: "#/definitions/Group"
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        201:
+          description: group created
+          schema:
+            $ref: '#/definitions/User'
+        401:
+          description: ApiKey not valid 
+        409:
+          description: an existing item already exists
+        400:
+          description: Bad Request
+          
+          
+  /Groups/{groupId}:  
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Groups
+      summary: Get an existing group info
+      description: get an existing group info
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: item modified 
+        401:
+          description: ApiKey not valid  
+        409:
+          description: an existing item already exists
+        400:
+          description: Bad Request
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Groups
+      summary: Modify an existing group
+      description: Modify an existing group
       consumes:
       - application/json
       produces:
       - application/json
       parameters:
       - in: body
-        name: CreateUser
-        description: Create a new User
+        name: group
+        required: true
         schema:
-          $ref: '#/definitions/CreateUser'
+           $ref: '#/definitions/Group'
+      responses:
+        200:
+          description: item modified 
+        401:
+          description: ApiKey not valid   
+        409:
+          description: an existing item already exists
+        400:
+          description: Bad Request
+          
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Groups
+      summary: delete a group
+      operationId: DeletebyToken
+      description: 
+        delete a group
+      responses:
+        200:
+          description: group deleted 
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+    parameters:
+      - in: path
+        name: groupId
+        description: ID of the user
+        required: true
+        type: integer
+          
+   
+  /Users:
+    post:
+      tags:
+      - Users
+      summary: Create a new User
+      description: This feature helps to create a new user
+      consumes:
+      - application/json
+      produces:
+      - application/json
       responses:
         201:
           description: item created
-        400:
-          description: invalid input, object invalid
+          schema:
+            $ref: '#/definitions/User'
         409:
           description: an existing item already exists
-          
-          
-          
-  /Token:
-    delete:
+        400:
+          description: Bad Request
+
+  
+  /Users/{userId}:     
+    get:
+      security:
+        - ApiKeyAuth: []
       tags:
-      - logout
-      summary: logs out from the website
-      operationId: DeletebyToken
+      - Users
+      summary: List all the users info by UserID
       description: |
-        by pressing the right button, the system will log out from the current account and you will have the choice to log in 
+        By passing the appropriate ID, the system returns the right user and all its informations.
       produces:
       - application/json
       responses:
         200:
-          description: the user logged out correctly 
-          
+          description: user data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        401:
+          description: ApiKey not valid 
         400:
-          description: the system couldn't logged out correctly  
-          
-          
+          description: Bad Request
 
- 
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Users
+      summary: Edit an existing User
+      description: edit an existing user
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        required: true
+        schema:
+           $ref: '#/definitions/User'
+      responses:
+        200:
+          description: item modified 
+        401:
+          description: ApiKey not valid
+        409:
+          description: an existing item already exists
+        400:
+          description: Bad Request
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Users
+      summary: delete a user
+      description: 
+        delete a user
+      responses:
+        200:
+          description: user deleted 
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+    parameters:
+      - in: path
+        name: userId
+        description: ID of the user
+        required: true
+        type: integer
+        
+  /Users/Exams: 
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Users
+      summary: return all user's exams
+      description: return all user's exams
+      produces:
+      - application/json
+      responses:
+        200:
+          description: user's exams
+          schema:
+            type: array
+            items: 
+              type: integer
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+  
+  /Users/Exams/{examId}/Tasks: 
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Users
+      summary: return all user tasks for the specified exam
+      description: return all user tasks for the specified exam
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: examId
+          description: ID of the exam
+          required: true
+          type: integer
+      responses:
+        200:
+          description: user's tasks
+          schema:
+            type: array
+            items: 
+              type: integer
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+
+  /Token:
     post:
       tags:
-      - login
-      summary: Logs in into the account by giving the right credentials
-      operationId: addPost
-      description: This feature gives you the opportunity to log in into your own account
+      - Users
+      summary: Logs in into the account
+      description: log in into your own account
       consumes:
       - application/json
       produces:
@@ -175,63 +316,464 @@ paths:
         name: Login 
         description: Login into your account
         schema:
-          $ref: '#/definitions/Login'
+          type: object
+          required:
+            - username
+            - password
+          properties:
+            username:
+              type: string
+            password:
+              type: string
       responses:
-        201:
+        200:
           description: Logged in successfully 
+          schema:
+            type: string
         400:
-          description: invalid input, object invalid
-        409:
-          description: Could not Logging in successfully
+          description: Bad Request
+
           
+  /Token/{tokenId}:     
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Users
+      summary: logs out from the website
+      description: log out from the current account
+      parameters:
+      - name: tokenId
+        in: path
+        description: token
+        required: true
+        type: integer
+      responses:
+        200:
+          description: logged out correctly 
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+
+  /Exams:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Exams
+      summary: List all examId
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Return list of examId
+          schema:
+            type: array
+            items:
+              type: integer
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Exams
+      summary: create an exam
+      parameters:
+        - in: body
+          name : exam
+          description: the exam to create
+          schema:
+            $ref: "#/definitions/Exam"
+      responses:
+        200:
+          description: exam created
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+                    
+  /Exams/{examId}:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Exams
+      summary: Returns an exam by ID.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Return the exam with the specified ID
+          schema:
+            $ref: '#/definitions/Exam'
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
           
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Exams
+      summary: Modify an existing exam
+      description: Modify the specified exam
+      parameters:
+      - in: body
+        name: exam
+        required: true
+        schema:
+            $ref: "#/definitions/Exam"
+      responses:
+        200:
+          description: Exam modified
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+        
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Exams
+      summary: Delete an existing exam
+      description: Delete the specified exam
+      responses:
+        200:
+          description: Exam deleted
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+    parameters:
+      - name: examId
+        in: path
+        description: ID of the exam
+        required: true
+        type: integer
+        
+  /Exams/{examId}/Tasks:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Exams
+      summary: Returns all the tasks of the specified exam
+      description: Returns all the tasks of the specified exam
+      parameters:
+      - name: examId
+        in: path
+        description: ID of the exam
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        200:
+          description: tasks returned
+          schema:
+            $ref: '#/definitions/Exam'
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
           
+  /Tasks: 
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags: 
+        - Tasks
+      summary: create a new Task
+      description: create a new Task
+      parameters:
+      - in: body
+        name: task
+        required: true
+        schema:
+          $ref: "#/definitions/Task"
+      responses:
+        200:
+          description: Task has been correctly created
+        401:
+          description: apiKey not valid
+        400:
+          description: Bad Request
+      
+  /Tasks/{taskId}:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Tasks
+      summary: get info from an existing task
+      description: get info from the specified task
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Task
+          schema:
+            $ref: "#/definitions/Task"
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+      
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Tasks
+      summary: Modify an existing task
+      description: Modify the specified task
+      parameters:
+      - in: body
+        name: task
+        required: true
+        schema:
+            $ref: "#/definitions/Task"  
+      responses:
+        200:
+          description: Task modified
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+          
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Tasks
+      summary: Delete an existing task
+      description: Delete the specified task
+      responses:
+        200:
+          description: task deleted
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+    parameters:
+    - name: taskId
+      in: path
+      description: ID of the Task
+      required: true
+      type: integer
+    
+  /Answers:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Answers
+      summary: get an existing Answer
+      description: get an existing answer
+      produces:
+      - application/json
+      responses:
+        200:
+          description: answer returned
+          schema:
+            $ref: "#/definitions/Answer"
+        401:
+          description: ApiKey not valid
+        400:
+          description: Bad Request
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - Answers
+      summary: modify an existing Answer
+      description: Modify an existing answer
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: answer
+        required: true
+        schema:
+            $ref: "#/definitions/Answer"
+      responses:
+        200:
+          description: answer modified 
+        401:
+          description: ApiKey not valid   
+        400:
+          description: Bad Request
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Answers
+      summary: create answer for a task
+      description: create the answer for the specified task 
+      parameters:
+        - in: body
+          name: answer
+          required: true
+          schema:
+            type: string
+      responses:
+        200: 
+          description: the answer has been correctly received
+        401: 
+          description: apikey not valid
+        400:
+          description: Bad Request
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Answers
+      summary: delete an answer
+      description: delete the answer of the specified task assigned to a user
+      responses:
+        200: 
+          description: the answer has been correctly deleted
+        401: 
+          description: apikey not valid
+        400:
+          description: Bad Request
+    parameters:
+    - name: exam
+      in: query
+      description: Exam Id
+      type: integer
+      required: true
+    - name: task
+      in: query
+      description: Task Id
+      type: integer
+      required: true
+    - name: user
+      in: query
+      description: User Id
+      type: integer
+      required: true   
+      
 definitions:
-  CreateUser:
+  User:
     type: object
+    properties:
+      name:
+        type: string
+      lastname:
+        type: string
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      exams:
+        type: object
     required:
-    - id
     - name
     - lastname
     - username
     - email
     - password
+    - exams
+        
+  Group:
+    title: Group
+    type: object
     properties:
       id:
         type: integer
-        #format: uuid
-        example: 62663
+      owner:
+        type: integer
+      members:
+        type: array
+        items:
+          type: integer
       name:
         type: string
-        example: Lorenzo 
-      lastname:
-        type: string
-        example: Framba
-      username:
-        type: string
-        example: montresoruccio
-      email:
-        type: string
-        example: lorenzoframba@gmail.com
-      password:
-        type: string
-        example: oMammaMiaoMammaMia
-  Login:
+    required:   
+    - id
+    - owner
+    - members
+    - name
+  Exam:
+    title: Exam
     type: object
-    required:
-    - username
-    - password
     properties:
-      username:
+      id:
+        type: integer
+      owner_id:
+        type: integer
+      name:
         type: string
-        example: montresoruccio
-      password:
+      duration:
+        type: integer
+      deadline:
         type: string
-        example: oMammaMiaoMammaMia   
-
-
-# Added by API Auto Mocking Plugin
-host: virtserver.swaggerhub.com
-basePath: /LorenzoFramba/Users/1.0.0
-schemes:
- - http
+      startDate:
+        type: string
+      tasks :
+        type: array
+        items:
+          type: integer
+      groupId:
+        type: integer
+      countTask:
+        type: integer
+    required:  
+      - id
+      - owner_id
+      - name
+      - duration
+      - deadline
+      - startDate
+      - tasks
+      - groupId
+      - countTask
+      
+  Task:
+    title: Task
+    type: object
+    properties:
+      id:
+        type: integer
+      text:
+        type: string
+      options: 
+        type: array
+        items:
+          type: string
+      score:
+        type: integer
+      isPeerReview:
+        type: boolean
+      category:
+        type: string
+      correctAnswer:
+        type: string
+    required:  
+      - id
+      - text
+      - options
+      - score 
+      - isPeerReview
+      - category
+      - correctAnswer
+      
+  Answer:
+    title: Answer
+    type: object
+    properties:
+      id: 
+        type: object
+      value:
+        type: string
+    required:
+      - id
+      - value
