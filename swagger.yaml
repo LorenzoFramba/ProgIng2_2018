@@ -665,16 +665,22 @@ definitions:
     properties:
       name:
         type: string
+        description: name of the user
       lastname:
         type: string
+        description: surname of the user
       username:
         type: string
+        description: username of the user
       email:
         type: string
+        description: email of the user
       password:
         type: string
+        description: password of the user
       exams:
         type: object
+        description: exams associated to the user
     required:
     - name
     - lastname
@@ -689,53 +695,55 @@ definitions:
     properties:
       id:
         type: integer
+        description: id of the group
       owner:
         type: integer
+        description: id of the user owner of the group
       members:
         type: array
+        description: id of the users members of the group
         items:
           type: integer
       name:
         type: string
+        description: name of the group
     required:   
     - id
     - owner
     - members
     - name
   Exam:
-    title: Exam
-    type: object
-    properties:
-      id:
-        type: integer
-      owner_id:
-        type: integer
-      name:
-        type: string
-      duration:
-        type: integer
-      deadline:
-        type: string
-      startDate:
-        type: string
-      tasks :
-        type: array
-        items:
+      title: Exam
+      type: object
+      properties:
+        id:
           type: integer
-      groupId:
-        type: integer
-      countTask:
-        type: integer
-    required:  
-      - id
-      - owner_id
-      - name
-      - duration
-      - deadline
-      - startDate
-      - tasks
-      - groupId
-      - countTask
+          description : id of specific exam
+        owner_id:
+          type: integer
+          description :  id of specific user who created the exam 
+        name:
+          type: string
+          description :  name of the exam
+        duration:
+          type: integer 
+          description : duration of the exam
+        deadline:
+          type: string
+          description : deadline of the exam 
+        startDate:
+          type: string
+          description : Starting date of the exam
+        tasks :
+          type: array
+          description : array that contains all the tasks in a specific exam
+          items:
+            type: integer
+        groupId:
+          type: integer
+          description : id of each user who has to take the specific exam
+        countTask:
+          type: integer
       
   Task:
     title: Task
@@ -743,37 +751,44 @@ definitions:
     properties:
       id:
         type: integer
+        description: id of the task
       text:
         type: string
+        description: question
       options: 
         type: array
+        description: options for multiple choices (not required)
         items:
           type: string
       score:
         type: integer
+        description: points of the task
       isPeerReview:
         type: boolean
+        description: is the task enabled to peer review
       category:
         type: string
+        description: multiple choice or open question
       correctAnswer:
         type: string
+        description: answer for multiple choice
     required:  
       - id
       - text
-      - options
       - score 
       - isPeerReview
       - category
-      - correctAnswer
-      
+
   Answer:
     title: Answer
     type: object
     properties:
       id: 
         type: object
+        description: id of the answer
       value:
         type: string
+        description: answer submitted by the user
     required:
       - id
       - value
