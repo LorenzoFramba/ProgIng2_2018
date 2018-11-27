@@ -10,6 +10,8 @@ app.get('/greeting', (req, res) => {
    res.json(greeting)
 })
 
-require('./app/routes')(app, {});
+
+require('./api/user')(app);
+
 
 app.listen(PORT, () => console.log('ProgIng2 app listening on port'+ PORT))
