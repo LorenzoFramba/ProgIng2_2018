@@ -3,12 +3,13 @@ let router = express.Router();
 let User = require("../model/user");
 let users = new Array();
 
+//TODO: sistemare problema JSON.parse <anonymous>
 router.post("/", function(req, res) {
     let usrOnBody = req.body;
     
     if(usrOnBody === undefined){
         res.status(400).send();
-        return;
+        return; //evito di andare avanti
     }
     if(usrOnBody.name === undefined 
         || usrOnBody.lastname === undefined
@@ -20,8 +21,7 @@ router.post("/", function(req, res) {
             return;
         }
     
-     let id = new Date().getTime();
-     //console.log(req.body);
+     let id = new Date().getTime(); //TODO: generare l'id in altro modo
      let user = new User(
          id,
          req.body.name,
@@ -37,7 +37,6 @@ router.post("/", function(req, res) {
 })
 
 router.get("/:id", function(req,res) {
-    //console.log(req.params.id);
     let userId = req.params.id;
     if(userId == undefined){
         res.status(400).send();
