@@ -5,6 +5,24 @@ let tasks = new Array();
 
 // post a new task 
 router.post("/", function(req, res){
+
+    let tkOnBody = req.body;
+
+    if (tkOnBody === undefined){
+        res.status(400).send();
+        return;
+    }
+    if (tkOnBody.id === undefined 
+        || tkOnBody.text === undefined
+        || tkOnBody.options === undefined
+        || tkOnBody.score === undefined
+        || tkOnBody.isPeerReview === undefined
+        || tkOnBody.category === undefined
+        || tkOnBody.correctAnswer === undefined){
+            res.status(400).send();
+            return;
+        }
+
     let task = new Task (
         req.body.id,
         req.body.text,
@@ -16,6 +34,7 @@ router.post("/", function(req, res){
     );
     tasks.push(task);
     res.status(201).send(task);
+    return;
 })
 
 // get a task from ID 
