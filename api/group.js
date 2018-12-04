@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let Group = require("../model/group");
+
 const groupLogic = require("../logic/groupLogic");
 
 let groups = new Array();
@@ -16,9 +17,9 @@ router.post("/", function(req, res) {
     }
 
     //Check del token di autenticazione
-    let authToken = req.headers['x-access-token'];
+    /*let authToken = req.headers['x-access-token'];
     if (!token) 
-        return res.status(401).send({ auth: false, message: 'No token provided.' });
+        return res.status(401).send({ auth: false, message: 'No token provided.' });*/
     //TODO check correttezza del token
 
     let group = groupLogic.insertNewGroup(params.name, params.members, params.owner);
