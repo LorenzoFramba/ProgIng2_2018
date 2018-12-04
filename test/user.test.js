@@ -5,7 +5,7 @@ let users = Array();
 //inizializzo i casi di test
 beforeAll(() => {
     users.push(new User(123, "Gino", "Pino", "ginopino", "gino@pino.it", "ciccio", []));
-    jest.setTimeout(10000); //evito che le richieste vadano in timeout troppo presto (mi serve per debug)
+    jest.setTimeout(100000); //evito che le richieste vadano in timeout troppo presto (mi serve per debug)
 })
 
 //classe di test par la post user
@@ -31,8 +31,7 @@ describe('create user', () => {
     test("wrong body data, should return 400", () => {
         let options = {
             method: 'POST',
-            body: "wrong data",
-            headers: { 'Content-Type': 'application/json' }
+            body: "wrong data"
         }
         
         expect.assertions(1); //mi aspetto 1 expect, il return è importante se no mi salta

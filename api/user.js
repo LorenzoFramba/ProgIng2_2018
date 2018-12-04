@@ -5,12 +5,13 @@ let users = new Array();
 
 //TODO: sistemare problema JSON.parse <anonymous>
 router.post("/", function(req, res) {
+    console.log("Post incoming ",req.body);
     let usrOnBody = req.body;
     
     if(usrOnBody === undefined){
         res.status(400).send();
         return; //evito di andare avanti
-    }
+    }   
     if(usrOnBody.name === undefined 
         || usrOnBody.lastname === undefined
         || usrOnBody.username === undefined
@@ -53,5 +54,14 @@ router.get("/:id", function(req,res) {
     }
     
 })
+
+function isJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 
 module.exports = router;
