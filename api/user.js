@@ -22,7 +22,7 @@ router.post("/", function(req, res) {
             return;
         }
     
-     let id = new Date().getTime(); //TODO: generare l'id in altro modo
+     let id = new Date().getTime();
      let user = new User(
          id,
          req.body.name,
