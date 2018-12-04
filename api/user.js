@@ -5,11 +5,7 @@ let users = new Array();
 
 //TODO: sistemare problema JSON.parse <anonymous>
 router.post("/", function(req, res) {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
     console.log("Post incoming ",req.body);
->>>>>>> 5581606c71c90d2ff7b31ed28dd177f92de1baa3
     let usrOnBody = req.body;
     
     if(usrOnBody === undefined){
@@ -25,11 +21,8 @@ router.post("/", function(req, res) {
             res.status(400).send();
             return;
         }
-    
-     let id = new Date().getTime(); //TODO: generare l'id in altro modo
-=======
+
      let id = new Date().getTime();
->>>>>>> Stashed changes
      let user = new User(
          id,
          req.body.name,
