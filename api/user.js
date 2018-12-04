@@ -55,13 +55,53 @@ router.get("/:id", function(req,res) {
     
 })
 
-function isJsonString(str) {
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        return false;
+router.put("/:id", function(req,res) {
+    let userId = req.params.id;
+    if(userId == undefined){
+        res.status(400).send();
+        return;
     }
-    return true;
-}
+
+    let valueReturned = users.find((user) => {return user.id == userId});
+    if(valueReturned == undefined) {
+        res.status(404).send();
+        return;
+    }
+    else{
+        let newUser = req.body;
+        if(newUser == undefined){
+            res.status(400).send();
+            return;
+        }
+        
+        users.forEach((element, index) => {
+            if(element.id === valueReturned.id) {
+                users[index] = newUser;
+                res.status(200).send(valueReturned);
+                break;
+            }
+        });
+    }
+})
+
+router.delete("/:id", function(req,res) {
+    let userId = req.params.id;
+
+    if(userId == undefined){
+        res.status(400).send();
+        return;
+    }
+
+    if(Number.isNaN(userId)){
+        res.status(404).send();
+        return;
+    }
+    users.find((user,index) => {
+        if(user.id == userId)
+            users.splice(index,1);
+    });
+    
+    res.status(200).send();
+})
 
 module.exports = router;
