@@ -227,10 +227,10 @@ paths:
           description: item modified 
         401:
           description: ApiKey not valid
-        409:
-          description: an existing item already exists
         400:
           description: Bad Request
+        404:
+          description: User not found
     delete:
       security:
         - ApiKeyAuth: []
@@ -246,6 +246,8 @@ paths:
           description: ApiKey not valid
         400:
           description: Bad Request
+        404:
+          description: User not found
     parameters:
       - in: path
         name: userId
