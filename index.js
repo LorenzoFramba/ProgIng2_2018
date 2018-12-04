@@ -13,9 +13,9 @@ const router_group = require("./api/group");
 app.use(bodyParser.json());
 
 //app.use("/answer", router_answer);
-app.use("/user",router_user);
+app.use("/users",router_user);
 //app.use("/task", router_task);
-app.use("/group", router_group);
+app.use("/groups", router_group);
 
 
 // app.get('/', (req, res) => res.send('Hello World!'))

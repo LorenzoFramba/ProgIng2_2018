@@ -19,7 +19,7 @@ describe('create user', () => {
         }
 
         expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
-        return fetch('http://localhost:3000/user', options).then(
+        return fetch('http://localhost:3000/users', options).then(
             res => res.json().then(userReturned => {
                 expect(res.status).toBe(201);
                 users[0].id = userReturned.id;
@@ -35,7 +35,7 @@ describe('create user', () => {
         }
 
         expect.assertions(1); //mi aspetto 1 expect, il return è importante se no mi salta
-        return fetch('http://localhost:3000/user', options).then(
+        return fetch('http://localhost:3000/users', options).then(
             res => {
                 expect(res.status).toBe(400);
             })
@@ -50,7 +50,7 @@ describe('create user', () => {
         }
 
         expect.assertions(1);
-        return fetch('http://localhost:3000/user', options).then(
+        return fetch('http://localhost:3000/users', options).then(
             res => {
                 expect(res.status).toBe(400);
             })
@@ -68,7 +68,7 @@ describe("get a user by id", () => {
         }
 
         expect.assertions(4);
-        return fetch('http://localhost:3000/user', options).then(
+        return fetch('http://localhost:3000/users', options).then(
             res => res.json().then(userReturned => {
                 expect(res.status).toBe(201);
                 users[0].id = userReturned.id;
@@ -76,10 +76,10 @@ describe("get a user by id", () => {
                 options = {
                     method: 'GET'
                 }
-                return fetch('http://localhost:3000/user/' + users[0].id, options).then(
+                return fetch('http://localhost:3000/users/' + users[0].id, options).then(
                     res2 => res2.json().then(userReturned2 => {
                         expect(userReturned2).toEqual(users[0]);
-                        expect(res.status).toBe(400);
+                        expect(res.status).toBe(201);
                     })
                 )
             })
@@ -89,13 +89,11 @@ describe("get a user by id", () => {
     test("wrong id, should return 400", () => {
         //opzioni da mettere nella richiesta
         let options = {
-            method: 'POST',
-            body: JSON.stringify(users[0]),
-            headers: { 'Content-Type': 'application/json' }
+            method: 'GET',
         }
 
         expect.assertions(1);
-        return fetch('http://localhost:3000/user/abcde', options).then(
+        return fetch('http://localhost:3000/users/abcde', options).then(
             res => expect(res.status).toBe(400)
         );   
     });
@@ -103,14 +101,12 @@ describe("get a user by id", () => {
     test("user not found, should return 404", () => {
         //opzioni da mettere nella richiesta
         let options = {
-            method: 'POST',
-            body: JSON.stringify(users[0]),
-            headers: { 'Content-Type': 'application/json' }
+            method: 'GET'
         }
 
         expect.assertions(1);
-        return fetch('http://localhost:3000/user/12345', options).then(
-            res => expect(res.status).toBe(400)
+        return fetch('http://localhost:3000/users/12345', options).then(
+            res => expect(res.status).toBe(404)
         );   
     });
 })

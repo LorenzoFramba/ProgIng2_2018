@@ -43,6 +43,12 @@ router.get("/:id", function(req,res) {
         res.status(400).send();
         return;
     }
+
+    if(isNaN(userId)){
+        res.status(400).send();
+        return;
+    }
+
     let valueReturned = users.find((user) => {return user.id == userId});
     if(valueReturned == undefined) {
         res.status(404).send();
@@ -62,6 +68,11 @@ router.put("/:id", function(req,res) {
         return;
     }
 
+    if(isNaN(userId)){
+        res.status(400).send();
+        return;
+    }
+
     let valueReturned = users.find((user) => {return user.id == userId});
     if(valueReturned == undefined) {
         res.status(404).send();
@@ -77,8 +88,7 @@ router.put("/:id", function(req,res) {
         users.forEach((element, index) => {
             if(element.id === valueReturned.id) {
                 users[index] = newUser;
-                res.status(200).send(valueReturned);
-                break;
+                return res.status(200).send(valueReturned); 
             }
         });
     }
@@ -92,8 +102,8 @@ router.delete("/:id", function(req,res) {
         return;
     }
 
-    if(Number.isNaN(userId)){
-        res.status(404).send();
+    if(isNaN(userId)){
+        res.status(400).send();
         return;
     }
     users.find((user,index) => {
