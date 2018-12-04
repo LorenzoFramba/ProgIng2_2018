@@ -1,6 +1,7 @@
-const insertGroup = require("../api/groupLogic").insertGroup;
-const checkMember = require("../logic/groupLogic").isMember;
+const insertGroup = require("../logic/groupLogic").insertNewGroup;
+const checkMember = require("../logic/groupLogic").checkMember;
 let User = require("../model/user");
+const fetch = require("node-fetch");
 
 let usersList = new Array();
 
@@ -39,98 +40,98 @@ describe("Insert new group", () => {
         let name = undefined
         let members = []
         let owner   = usersList[0].id
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('members is not defined', () => {
         let name = "Marco"
         let members = undefined
         let owner = usersList[0].id
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('owner is not defined', () => {
         let name = "Marco"
         let members = []
         let owner = undefined
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('name is a number', () => {
         let name = 12
         let members = []
         let owner = usersList[0].id
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('name is an array of int', () => {
         let name = [12, 12]
         let members = []
         let owner = usersList[0].id
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('members is a string', () => {
         let name = "Marco"
         let members = "Ccc"
         let owner = usersList[0].id
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('members is an array of string', () => {
         let name = "Marco"
         let members = ["Ccc", "Abb"]
         let owner = usersList[0].id
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('members is an array of negative numbers', () => {
         let name = "Marco"
         let members = [-12, -12]
         let owner = usersList[0].id
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('members is an array of non-members', () => {
         let name = "Marco"
         let members = [111111,222222]
         let owner = usersList[0].id
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('owner is a string', () => {
         let name = "Marco"
         let members = []
         let owner = "Matteo"
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('owner is a negative number', () => {
         let name = "Marco"
         let members = []
         let owner = -15
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('owner is a non-member', () => {
         let name = "Marco"
         let members = []
         let owner = 111111
-        expect(insertGroup(name, members, owner)).toBe(null);
+        expect(insertGroup(name, members, owner)).toBeNull();
     });
 
     test('Correct group 1', () => {
         let name = "Marco"
         let members = []
         let owner = usersList[0].id
-        expect(insertGroup(name, members, owner)).not.toBe(null);
+        expect(insertGroup(name, members, owner)).not.toBeNull();
     });
 
     test('Correct group 2', () => {
         let name = "Matteo"
         let members = [usersList[1].id, usersList[2].id]
         let owner = usersList[0].id
-        expect(insertGroup(name, members, owner)).not.toBe(null);
+        expect(insertGroup(name, members, owner)).not.toBeNull();
     });
 })
 
@@ -139,26 +140,26 @@ describe("Insert new group", () => {
 describe("Check members", () => {
     test('member is undefined', () => {
         let member = undefined
-        expect(checkMember(member)).toBe(false);
+        expect(checkMember(member)).toBeFalsy;
     });
 
     test('member is a string', () => {
         let member = "Matteo"
-        expect(checkMember(member)).toBe(false);
+        expect(checkMember(member)).toBeFalsy;
     });
 
     test('member is an array', () => {
         let member = []
-        expect(checkMember(member)).toBe(false);
+        expect(checkMember(member)).toBeFalsy;
     });
 
     test('member is not a real member', () => {
         let member = 111
-        expect(checkMember(member)).toBe(false);
+        expect(checkMember(member)).toBeFalsy;
     });
 
     test('member is a real member', () => {
         let member = usersList[0].id
-        expect(checkMember(member)).toBe(true);
+        expect(checkMember(member)).toBeFalsy;
     });
 })

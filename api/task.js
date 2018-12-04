@@ -1,7 +1,24 @@
 let express = require('express');
 let router = express.Router();
 let Task = require("../model/task");
+const bodyParser = require('body-parser');
 let tasks = new Array();
+
+// get a task from ID 
+router.get("/:id", function(req, res){
+    const requestedId = req.params.id;
+    let task = tasks.filter(task => {
+        return task.id == requestedId;
+    })
+
+    if (!task){
+        res.status(404).json({message : 'Task not found'});
+    }
+    else {
+        res.status(200).json(task[0]);
+    }
+})
+
 
 // post a new task 
 router.post("/", function(req, res){
@@ -37,26 +54,43 @@ router.post("/", function(req, res){
     return;
 })
 
-// get a task from ID 
-router.get("/:id", function(req, res){
-    let taskId = req.url.id;
-    if (taskId == undefined)
-        res.status(400).send();
-    let valueReturned = tasks.find((taskId) => {return task.id == taskId});
-    if (valueReturned == undefined)
-        res.status(404).send("task not found");
-    else 
-        res.status(200).send(valueReturned);
-})
-
 // change body's task from ID
 router.put("/:id", function(req, res){
-    res.end();
+
+    const requestedId = req.params.id;
+    let task = tasks.filter(task => {
+        return task.id == requestedId;
+    })[0];
+
+    if (!task){
+        res.status(404).json({message : 'Task not found'});
+    }
+
+    const index = tasks.indexOf(task);
+    const keys = Object.keys(request.body);
+
+    keys.forEach(key => {
+        task[key] = request.body[key];
+    })
+    tasks[index] = task;
+    res.status(200).json(tasks[index]);
 })
 
 // delete task from ID
 router.delete("/:id", function(req, res){
-    res.end();
+    const requestedId = req.params.id;
+    let task = tasks.filter(task => {
+        return task.id == requestedId;
+    })
+
+    if (!task){
+        res.status(404).json({message : 'Task not found'});
+    }
+
+    const index = tasks.indexOf(task);
+    tasks.splice(index,1);
+
+    res.json({message : 'Task deleted'});
 })
 
 module.exports = router;
