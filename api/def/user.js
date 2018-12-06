@@ -1,28 +1,24 @@
 let express = require('express');
 let router = express.Router();
 let User = require("../../model/user");
+const userLogic = require("../impl/userImpl");
+
 let users = new Array();
 
-//TODO: sistemare problema JSON.parse <anonymous>
 router.post("/", function(req, res) {
     console.log("Post incoming ",req.body);
     let usrOnBody = req.body;
     
     if(usrOnBody === undefined){
-        res.status(400).send();
-        return; //evito di andare avanti
+        return res.status(400).send();
     }   
-    if(usrOnBody.name === undefined 
-        || usrOnBody.lastname === undefined
-        || usrOnBody.username === undefined
-        || usrOnBody.email === undefined
-        || usrOnBody.password === undefined
-        || usrOnBody.exams === undefined){
-            res.status(400).send();
-            return;
-        }
-
+    
+    if(userLogic.checkPostParams(usrOnBody) === false){
+            return res.status(400).send();
+    }
+    
      let id = new Date().getTime();
+
      let user = new User(
          id,
          req.body.name,
@@ -32,6 +28,7 @@ router.post("/", function(req, res) {
          req.body.password,
          req.body.exams         
      );
+
      users.push(user);
      return res.status(201).send(user);
 
@@ -40,13 +37,12 @@ router.post("/", function(req, res) {
 router.get("/:id", function(req,res) {
     let userId = req.uid;
     if(userId == undefined){
-        res.status(400).send();
-        return;
+        return res.status(400).send();
     }
 
+    
     if(isNaN(userId)){
-        res.status(400).send();
-        return;
+        return res.status(400).send(); 
     }
 
     let valueReturned = users.find((user) => {return user.id == userId});
@@ -64,54 +60,55 @@ router.get("/:id", function(req,res) {
 router.put("/:id", function(req,res) {
     let userId = req.params.id;
     if(userId == undefined){
-        res.status(400).send();
-        return;
+        return res.status(400).send();
     }
 
     if(isNaN(userId)){
-        res.status(400).send();
-        return;
+        return res.status(400).send();
     }
 
     let valueReturned = users.find((user) => {return user.id == userId});
     if(valueReturned == undefined) {
-        res.status(404).send();
-        return;
+        return res.status(404).send();
     }
-    else{
-        let newUser = req.body;
-        if(newUser == undefined){
-            res.status(400).send();
-            return;
+
+    let newUser = req.body;
+    if(newUser == undefined){
+        return res.status(400).send();
+    }
+
+    for(let [index,element] of users.entries()) {
+        if(element.id === valueReturned.id) {
+            users[index] = newUser;
+            return res.status(200).send(valueReturned); 
         }
-        
-        users.forEach((element, index) => {
-            if(element.id === valueReturned.id) {
-                users[index] = newUser;
-                return res.status(200).send(valueReturned); 
-            }
-        });
     }
+    
 })
 
 router.delete("/:id", function(req,res) {
     let userId = req.params.id;
 
     if(userId == undefined){
-        res.status(400).send();
-        return;
+        return res.status(400).send();
     }
 
     if(isNaN(userId)){
-        res.status(400).send();
-        return;
+        return res.status(400).send();
     }
-    users.find((user,index) => {
-        if(user.id == userId)
+
+    let notfound = true;
+    users.forEach((user,index) => {
+        if(user.id == userId){
             users.splice(index,1);
+            notfound = false;
+        }      
     });
+
+    if(notfound)
+        return res.status(404).send();
     
-    res.status(200).send();
+    return res.status(200).send();
 })
 
 module.exports = router;
