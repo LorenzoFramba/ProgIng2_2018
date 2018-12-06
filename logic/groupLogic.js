@@ -4,12 +4,15 @@ let Group = require("../model/group");
 const urlUserAPI = "http://localhost:3000/user/";
 
 module.exports = {
+
     /* Funzione che controlla se idMember è un utente registrato */
     checkMember : function(idMember) {
 
         //Check del parametro
         if (arguments.length !== 1 || !idMember || typeof idMember !== "number")
             return false;
+
+        console.log("URL checkMembers: " + urlUserAPI + idMember);
 
         return fetch(urlUserAPI + idMember)
             .then(res => {
@@ -34,13 +37,15 @@ module.exports = {
         else if (typeof owner !== "number")
             return null;
 
-        console.error("ERROR - " + members);
-
         //Controllo che i membri e l'owner del gruppo siano veri utenti registrati
-        if (!(members.every(this.checkMember) && this.checkMember(owner) === true))
+        if (!(members.every(module.exports.checkMember) && module.exports.checkMember(owner) === true))
             return null;
 
         let id = new Date().getTime();
-        return new Group(id, name, members, owner);
+
+        let nuovoGruppo = new Group(id, name, members, owner);
+        console.log("NEW_GROUP = " + JSON.stringify(nuovoGruppo));
+
+        return nuovoGruppo;
     }
 }

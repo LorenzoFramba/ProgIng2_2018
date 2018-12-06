@@ -22,6 +22,52 @@ beforeAll(() => {
     let usr4 = new User(4, "U4", "L4", "USRN4", "M4", "P4", []);
     usersList.push(usr1, usr2, usr3, usr4);
 
+    let opt1 = { method : "POST", body : JSON.stringify(usr1), headers : {'Content-Type': 'application/json'}};
+    let opt2 = { method : "POST", body : JSON.stringify(usr2), headers : {'Content-Type': 'application/json'}};
+    let opt3 = { method : "POST", body : JSON.stringify(usr3), headers : {'Content-Type': 'application/json'}};
+    let opt4 = { method : "POST", body : JSON.stringify(usr4), headers : {'Content-Type': 'application/json'}};
+
+    let p1 = new Promise(() => {
+       return fetch('http://localhost:3000/user', opt1).then(
+           userReturned => userReturned.json().then(
+               res => {
+                   if (res !== undefined && res !== null)
+                       usr1.id = res.id;
+               }))
+    });
+    let p2 = new Promise(() => {
+        return fetch('http://localhost:3000/user', opt2).then(
+            userReturned => userReturned.json().then(
+                res => {
+                    if (res !== undefined && res !== null)
+                        usr2.id = res.id;
+                }))
+    });
+    let p3 = new Promise(() => {
+        return fetch('http://localhost:3000/user', opt3).then(
+            userReturned => userReturned.json().then(
+                res => {
+                    if (res !== undefined && res !== null)
+                        usr3.id = res.id;
+                }))
+    });
+    let p4 = new Promise(() => {
+        return fetch('http://localhost:3000/user', opt4).then(
+            userReturned => userReturned.json().then(
+                res => {
+                    if (res !== undefined && res !== null)
+                        usr4.id = res.id;
+                }))
+    });
+
+    Promise.all([p1, p2, p3, p4]).then(
+        values => { console.log(values) }
+    );
+
+    /*var p3 = new Promise((resolve, reject) => {
+        setTimeout(resolve, 100, "foo");
+    });
+
     for (var i=0; i<usersList.length; i++) {
         let options = {
             method: 'POST',
@@ -31,11 +77,15 @@ beforeAll(() => {
 
         let index = i;
 
-        let res = await fetch('http://localhost:3000/user', options);
-        let userReturned = await res.json();
-        if (userReturned !== undefined && userReturned !== null)
-                    usersList[index].id = userReturned.id;
-    }
+        fetch('http://localhost:3000/user', options).then(
+            userReturned => userReturned.json().then(
+                res => {
+                    if (res !== undefined && res !== null)
+                        usersList[index].id = res.id;
+                }
+            )
+        );
+    }*/
 
     //Gruppi non validi
     let badG1 = new Group(1, "Nome", [], 14);
@@ -176,16 +226,18 @@ describe("Create new groups", () => {
             body: JSON.stringify(goodGroupList[0]),
             headers: { 'Content-Type': 'application/json' }
         }
-        
-        expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
+
 
         return fetch('http://localhost:3000/groups', options).then(
             res => res.json().then(groupReturned => {
                 expect(res.status).toBe(201);
                 goodGroupsList[0].id = groupReturned.id;
                 expect(groupReturned).toEqual(goodGroupsList[0]);
+
+                expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
             })
         )
+
         
     });
 
@@ -196,12 +248,13 @@ describe("Create new groups", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
+        //expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
         return fetch('http://localhost:3000/groups', options).then(
             res => res.json().then(groupReturned => {
                 expect(res.status).toBe(201);
-                goodGroupsList[0].id = groupReturned.id;
-                expect(groupReturned).toEqual(goodGroupsList[0]);
+                goodGroupsList[1].id = groupReturned.id;
+                expect(groupReturned).toEqual(goodGroupsList[1]);
+                expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
             })
         )
         
@@ -218,10 +271,10 @@ describe("Create new groups", () => {
         return fetch('http://localhost:3000/groups', options).then(
             res => res.json().then(groupReturned => {
                 expect(res.status).toBe(201);
-                goodGroupsList[0].id = groupReturned.id;
-                expect(groupReturned).toEqual(goodGroupsList[0]);
+                goodGroupsList[2].id = groupReturned.id;
+                expect(groupReturned).toEqual(goodGroupsList[2]);
+                //expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
             })
         )
-        expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
     });
 })
