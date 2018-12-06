@@ -31,12 +31,10 @@ beforeAll(() => {
 
         let index = i;
 
-        fetch('http://localhost:3000/user', options).then(
-            res => res.json().then(userReturned => {
-                if (userReturned !== undefined && userReturned !== null)
+        let res = await fetch('http://localhost:3000/user', options);
+        let userReturned = await res.json();
+        if (userReturned !== undefined && userReturned !== null)
                     usersList[index].id = userReturned.id;
-            })
-        )
     }
 
     //Gruppi non validi
@@ -67,10 +65,10 @@ describe("Create new groups", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res => {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
@@ -81,7 +79,7 @@ describe("Create new groups", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
+        return fetch('http://localhost:3000/groups', options).then(
             res => res.json().then(groupReturned => {
                 expect(res.status).toBe(400);
             })
@@ -95,10 +93,10 @@ describe("Create new groups", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res => {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
@@ -109,10 +107,10 @@ describe("Create new groups", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res=> {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
@@ -123,10 +121,10 @@ describe("Create new groups", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res =>  {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
@@ -137,10 +135,10 @@ describe("Create new groups", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res => {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
@@ -151,10 +149,10 @@ describe("Create new groups", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res => {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
@@ -165,10 +163,10 @@ describe("Create new groups", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res => {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
@@ -178,16 +176,17 @@ describe("Create new groups", () => {
             body: JSON.stringify(goodGroupList[0]),
             headers: { 'Content-Type': 'application/json' }
         }
+        
+        expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
 
-        //expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
-        return fetch('http://localhost:3000/group', options).then(
+        return fetch('http://localhost:3000/groups', options).then(
             res => res.json().then(groupReturned => {
                 expect(res.status).toBe(201);
                 goodGroupsList[0].id = groupReturned.id;
                 expect(groupReturned).toEqual(goodGroupsList[0]);
             })
         )
-        expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
+        
     });
 
     test('09 - Group valid', () => {
@@ -197,15 +196,15 @@ describe("Create new groups", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        //expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
-        return fetch('http://localhost:3000/group', options).then(
+        expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
+        return fetch('http://localhost:3000/groups', options).then(
             res => res.json().then(groupReturned => {
                 expect(res.status).toBe(201);
                 goodGroupsList[0].id = groupReturned.id;
                 expect(groupReturned).toEqual(goodGroupsList[0]);
             })
         )
-        expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
+        
     });
 
     test('10 - Group valid', () => {
@@ -215,8 +214,8 @@ describe("Create new groups", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        //expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
-        return fetch('http://localhost:3000/group', options).then(
+        expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
+        return fetch('http://localhost:3000/groups', options).then(
             res => res.json().then(groupReturned => {
                 expect(res.status).toBe(201);
                 goodGroupsList[0].id = groupReturned.id;
