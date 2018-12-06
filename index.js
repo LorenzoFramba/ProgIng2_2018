@@ -1,4 +1,4 @@
- const express = require('express');
+const express = require('express');
 const bodyParser = require ('body-parser');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,11 +14,11 @@ const router_group = require("./api/group");
 
 app.use(bodyParser.json());
 app.use("/answer", router_answer);
-app.use("/user",router_user);
+app.use("/users",router_user);
 app.use("/task", router_task);
 app.use("/exam", require("./api/exam"));
 app.listen(PORT);
-app.use("/group", router_group);
+app.use("/groups", router_group);
 
 
 

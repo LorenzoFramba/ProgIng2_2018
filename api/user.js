@@ -43,6 +43,12 @@ router.get("/:id", function(req,res) {
         res.status(400).send();
         return;
     }
+
+    if(isNaN(userId)){
+        res.status(400).send();
+        return;
+    }
+
     let valueReturned = users.find((user) => {return user.id == userId});
     if(valueReturned == undefined) {
         res.status(404).send();
@@ -55,13 +61,57 @@ router.get("/:id", function(req,res) {
     
 })
 
-function isJsonString(str) {
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        return false;
+router.put("/:id", function(req,res) {
+    let userId = req.params.id;
+    if(userId == undefined){
+        res.status(400).send();
+        return;
     }
-    return true;
-}
+
+    if(isNaN(userId)){
+        res.status(400).send();
+        return;
+    }
+
+    let valueReturned = users.find((user) => {return user.id == userId});
+    if(valueReturned == undefined) {
+        res.status(404).send();
+        return;
+    }
+    else{
+        let newUser = req.body;
+        if(newUser == undefined){
+            res.status(400).send();
+            return;
+        }
+        
+        users.forEach((element, index) => {
+            if(element.id === valueReturned.id) {
+                users[index] = newUser;
+                return res.status(200).send(valueReturned); 
+            }
+        });
+    }
+})
+
+router.delete("/:id", function(req,res) {
+    let userId = req.params.id;
+
+    if(userId == undefined){
+        res.status(400).send();
+        return;
+    }
+
+    if(isNaN(userId)){
+        res.status(400).send();
+        return;
+    }
+    users.find((user,index) => {
+        if(user.id == userId)
+            users.splice(index,1);
+    });
+    
+    res.status(200).send();
+})
 
 module.exports = router;

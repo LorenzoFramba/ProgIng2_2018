@@ -2,14 +2,18 @@ const fetch = require("node-fetch");
 let User = require("../model/user");
 let Group = require("../model/group");
 
-let goodGroupsList = new Array();
-let badGroupList = new Array();
-let usersList = new Array();
+var goodGroupList;
+var badGroupList;
+var usersList;
 
 //--------------- INIZIALIZZAZIONE DEI TEST -----------------------------------------
 beforeAll(() => {
 
     jest.setTimeout(10000);
+
+    usersList = new Array();
+    badGroupList = new Array();
+    goodGroupList = new Array();
 
     //Inserisco un po' di utenti nel sistema
     let usr1 = new User(1, "U1", "L1", "USRN1", "M1", "P1", []);
@@ -25,12 +29,12 @@ beforeAll(() => {
             headers: {'Content-Type': 'application/json'}
         }
 
-        fetch('http://localhost:3000/user', options).then(
-            res => res.json().then(userReturned => {
-                if (userReturned !== undefined && userReturned !== null)
-                    usersList[i].id = userReturned.id;
-            })
-        )
+        let index = i;
+
+        let res = await fetch('http://localhost:3000/user', options);
+        let userReturned = await res.json();
+        if (userReturned !== undefined && userReturned !== null)
+                    usersList[index].id = userReturned.id;
     }
 
     //Gruppi non validi
@@ -48,142 +52,144 @@ beforeAll(() => {
     let goodG1 = new Group(1,"Nome", [], usersList[0].id);
     let goodG2 = new Group(2, "Nome", [usersList[1].id, usersList[2].id], usersList[0].id);
     let goodG3 = new Group(3, "Nomes", [usersList[1].id], usersList[1].id);
-    goodGroupsList.push(goodG1, goodG2, goodG3);
+    goodGroupList.push(goodG1, goodG2, goodG3);
 
 })
 
 //--------------- TEST POST /group per inserimento nuovi gruppi ----------------------------------
 describe("Create new groups", () => {
-    test('0 - Group not valid', () => {
+    test('00 - Group not valid', () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(badGroupList[0]),
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res => {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
-    test('1 - Group not valid', () => {
+    test('01 - Group not valid', () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(badGroupList[1]),
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
+        return fetch('http://localhost:3000/groups', options).then(
             res => res.json().then(groupReturned => {
                 expect(res.status).toBe(400);
             })
         )
     });
 
-    test('2 - Group not valid', () => {
+    test('02 - Group not valid', () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(badGroupList[2]),
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res => {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
-    test('3 - Group not valid', () => {
+    test('03 - Group not valid', () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(badGroupList[3]),
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res=> {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
-    test('4 - Group not valid', () => {
+    test('04 - Group not valid', () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(badGroupList[4]),
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res =>  {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
-    test('5 - Group not valid', () => {
+    test('05 - Group not valid', () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(badGroupList[5]),
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res => {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
-    test('6 - Group not valid', () => {
+    test('06 - Group not valid', () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(badGroupList[6]),
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res => {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
-    test('7 - Group not valid', () => {
+    test('07 - Group not valid', () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(badGroupList[7]),
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch('http://localhost:3000/group', options).then(
-            res => res.json().then(groupReturned => {
+        return fetch('http://localhost:3000/groups', options).then(
+            res => {
                 expect(res.status).toBe(400);
-            })
+            }
         )
     });
 
-    test('8 - Group valid', () => {
+    test('08 - Group valid', () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(goodGroupList[0]),
             headers: { 'Content-Type': 'application/json' }
         }
-
+        
         expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
-        return fetch('http://localhost:3000/group', options).then(
+
+        return fetch('http://localhost:3000/groups', options).then(
             res => res.json().then(groupReturned => {
                 expect(res.status).toBe(201);
                 goodGroupsList[0].id = groupReturned.id;
                 expect(groupReturned).toEqual(goodGroupsList[0]);
             })
         )
+        
     });
 
-    test('9 - Group valid', () => {
+    test('09 - Group valid', () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(goodGroupList[1]),
@@ -191,13 +197,14 @@ describe("Create new groups", () => {
         }
 
         expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
-        return fetch('http://localhost:3000/group', options).then(
+        return fetch('http://localhost:3000/groups', options).then(
             res => res.json().then(groupReturned => {
                 expect(res.status).toBe(201);
                 goodGroupsList[0].id = groupReturned.id;
                 expect(groupReturned).toEqual(goodGroupsList[0]);
             })
         )
+        
     });
 
     test('10 - Group valid', () => {
@@ -208,12 +215,13 @@ describe("Create new groups", () => {
         }
 
         expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
-        return fetch('http://localhost:3000/group', options).then(
+        return fetch('http://localhost:3000/groups', options).then(
             res => res.json().then(groupReturned => {
                 expect(res.status).toBe(201);
                 goodGroupsList[0].id = groupReturned.id;
                 expect(groupReturned).toEqual(goodGroupsList[0]);
             })
         )
+        expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
     });
 })
