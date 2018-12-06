@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
-let User = require("../model/user");
-let Group = require("../model/group");
+let User = require("../../model/user");
+let Group = require("../../model/group");
 
 var goodGroupList;
 var badGroupList;

@@ -1,4 +1,4 @@
-class task {
+class Task {
     constructor(id,text,options,score,isPeerReview,category,correctAnswer){
         this.id = id;
         this.text = text;
@@ -10,4 +10,4 @@ class task {
     }
 }
 
-module.exports = task;
+module.exports = Task;
