@@ -1,7 +1,6 @@
 let express = require('express');
 let router = express.Router();
-let Task = require("../model/task");
-const bodyParser = require('body-parser');
+let Task = require("../../model/task");
 let tasks = new Array();
 
 // get a task from ID 

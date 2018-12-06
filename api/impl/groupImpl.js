@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-let Group = require("../model/group");
+let Group = require("../../model/group");
 
 const urlUserAPI = "http://localhost:3000/user/";
 

@@ -1,6 +1,6 @@
 const express = require('express');
 let router_exam = express.Router();
-let Exam = require('..model/exam');
+let Exam = require('../../model/exam');
 var exami = new Array();
   
 router_exam.get("/:id", function (req, res) {
