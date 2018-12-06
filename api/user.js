@@ -33,8 +33,8 @@ router.post("/", function(req, res) {
          req.body.exams         
      );
      users.push(user);
-     res.status(201).send(user);
-     return;
+     return res.status(201).send(user);
+
 })
 
 router.get("/:id", function(req,res) {

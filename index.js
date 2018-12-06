@@ -30,3 +30,6 @@ app.use("/group", router_group);
 
 
 app.listen(PORT, () => console.log('ProgIng2 app listening on port'+ PORT))
+
+
+module.exports= {string_square: string_square };
