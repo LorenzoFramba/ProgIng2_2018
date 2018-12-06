@@ -13,7 +13,7 @@ const router_group = require("./api/group");
 app.use(bodyParser.json());
 
 //app.use("/answer", router_answer);
-app.use("/users",router_user);
+app.use("/Users",router_user);
 //app.use("/task", router_task);
 app.use("/groups", router_group);
 
