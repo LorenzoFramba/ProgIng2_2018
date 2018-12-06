@@ -28,7 +28,7 @@ module.exports = {
         else if (typeof name !== "string")
             return null;
         else if (members.constructor !== Array || members.every(function (element) {
-            return (typeof element === "number" && element > 0)
+            return (Number.isInteger(element) && element > 0)
         }))
             return null;
         else if (typeof owner !== "number")
