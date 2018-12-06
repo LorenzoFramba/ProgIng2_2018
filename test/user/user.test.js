@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-let User = require("../model/user");
+let User = require("../../model/user");
 
 let users = Array();
 const USER_ENDPOINT = "http://localhost:3000/Users/";

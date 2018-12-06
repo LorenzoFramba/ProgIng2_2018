@@ -1,8 +1,8 @@
 let express = require('express');
 let router = express.Router();
-let Group = require("../model/group");
+let Group = require("../../model/group");
 
-const groupLogic = require("../logic/groupLogic");
+const groupLogic = require("../impl/groupImpl");
 
 let groups = new Array();
 

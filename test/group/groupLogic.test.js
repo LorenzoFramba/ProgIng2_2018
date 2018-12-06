@@ -1,6 +1,6 @@
 const insertGroup = require("../logic/groupLogic").insertNewGroup;
 const checkMember = require("../logic/groupLogic").checkMember;
-let User = require("../model/user");
+let User = require("../../model/user");
 const fetch = require("node-fetch");
 
 let usersList = new Array();

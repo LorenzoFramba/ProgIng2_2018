@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
-let User = require("../model/user");
-const userLogic = require("../logic/userLogic");
+let User = require("../../model/user");
+const userLogic = require("../impl/userImpl");
 
 let users = new Array();
 
@@ -30,13 +30,12 @@ router.post("/", function(req, res) {
      );
 
      users.push(user);
+     return res.status(201).send(user);
 
-     res.status(201).send(user);
-     return;
 })
 
 router.get("/:id", function(req,res) {
-    let userId = req.params.id;
+    let userId = req.uid;
     if(userId == undefined){
         return res.status(400).send();
     }
