@@ -13,7 +13,7 @@ const router_task = require("./api/def/task");
 
 const mwBearerToken = require('express-bearer-token')();
 const mwAuth = require('./middleware/mwAuth.js');
-const mwErrorHandler = require('./middleware/mxErrorHandler');
+const mwErrorHandler = require('./middleware/mwErrorHandler');
 
 mwBearerToken.unless = unless;
 mwAuth.unless = unless;
