@@ -15,6 +15,8 @@ beforeAll(() => {
     badGroupList = new Array();
     goodGroupList = new Array();
 
+    //Prendo il token di autenticazione
+
     //Inserisco un po' di utenti nel sistema
     let usr1 = new User(1, "U1", "L1", "USRN1", "M1", "P1", []);
     let usr2 = new User(2, "U2", "L2", "USRN2", "M2", "P2", []);
