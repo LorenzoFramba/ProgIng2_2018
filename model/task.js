@@ -1,6 +1,7 @@
 class Task {
-    constructor(id,text,options,score,isPeerReview,category,correctAnswer){
+    constructor(id, examId, text, options, score, isPeerReview, category, correctAnswer){
         this.id = id;
+        this.examId = examId;
         this.text = text;
         this.options = options;
         this.score = score;

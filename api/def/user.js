@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let User = require("../../model/user");
-let users = new Array();
+let user_data = require("../../mock/data/user_data");
 
 //TODO: sistemare problema JSON.parse <anonymous>
 router.post("/", function(req, res) {
@@ -49,16 +49,13 @@ router.get("/:id", function(req,res) {
         return;
     }
 
-    let valueReturned = users.find((user) => {return user.id == userId});
-    if(valueReturned == undefined) {
-        res.status(404).send();
-        return;
+    let valueReturned = user_data.find(user => user.id === userId);
+    if (valueReturned === undefined) {
+        res.status(404).end();
     }
     else{
         res.status(200).send(valueReturned);
-        return;
     }
-    
 })
 
 router.put("/:id", function(req,res) {

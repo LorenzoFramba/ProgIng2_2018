@@ -13,3 +13,5 @@ class ExamPrototype extends AbstractPrototype {
         throw new InternalError(modelErrors.MISSING_OVERRIDE);
     }
 }
+
+module.exports = ExamPrototype;
