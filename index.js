@@ -10,13 +10,15 @@ const router_token = require('./api/def/token.js');
 const router_group = require("./api/def/group");
 const router_exam = require("./api/def/exam");
 const router_task = require("./api/def/task");
+
 const mwBearerToken = require('express-bearer-token')();
 const mwAuth = require('./middleware/mwAuth.js');
+const mwErrorHandler = require('./middleware/mwErrorHandler');
 
 mwBearerToken.unless = unless;
 mwAuth.unless = unless;
 
-// TODO: unless module
+// filter middleware
 app.use(bodyParser.json());
 app.use(mwBearerToken.unless({path: '/Token'}));
 app.use(mwAuth.unless({path: '/Token'}));

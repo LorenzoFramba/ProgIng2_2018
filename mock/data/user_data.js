@@ -1,7 +1,7 @@
 //Contenuto del DB nel documento user
 let user_data = [
     { 
-        id: 123,
+        id: 0,
         name: 'Gino',
         lastname: 'Pino',
         username: 'ginopino',
