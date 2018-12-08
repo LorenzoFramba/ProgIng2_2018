@@ -1,63 +1,63 @@
 let answer_data = [
     {
-        'User_Id': 0,
-        'Exam_Id': 0,
-        'Task_Id': 0,
-        'Value': 'f: answer000'
+        'userId': 0,
+        'examId': 0,
+        'taskId': 0,
+        'value': 1
     },
     {
-        'User_Id': 0,
-        'Exam_Id': 0,
-        'Task_Id': 1,
-        'Value': 'f: answer001'
+        'userId': 0,
+        'examId': 0,
+        'taskId': 1,
+        'value': 'f: answer001'
     },
     {
-        'User_Id': 0,
-        'Exam_Id': 0,
-        'Task_Id': 2,
-        'Value': 'c: 1,2'
+        'userId': 0,
+        'examId': 0,
+        'taskId': 2,
+        'value': 'c: 1,2'
     },
     {
-        'User_Id': 0,
-        'Exam_Id': 1,
-        'Task_Id': 1,
-        'Value': 'f: answer011'
+        'userId': 0,
+        'examId': 1,
+        'taskId': 1,
+        'value': 'f: answer011'
     },
     {
-        'User_Id': 0,
-        'Exam_Id': 1,
-        'Task_Id': 2,
-        'Value': 'r: 2'
+        'userId': 0,
+        'examId': 1,
+        'taskId': 2,
+        'value': 'r: 2'
     },
     {
-        'User_Id': 1,
-        'Exam_Id': 0,
-        'Task_Id': 0,
-        'Value': 'f: answer100'
+        'userId': 1,
+        'examId': 0,
+        'taskId': 0,
+        'value': 'f: answer100'
     },
     {
-        'User_Id': 1,
-        'Exam_Id': 0,
-        'Task_Id': 1,
-        'Value': 'f: answer101'
+        'userId': 1,
+        'examId': 0,
+        'taskId': 1,
+        'value': 'f: answer101'
     },
     {
-        'User_Id': 1,
-        'Exam_Id': 0,
-        'Task_Id': 2,
-        'Value': 'c: 1,2'
+        'userId': 1,
+        'examId': 0,
+        'taskId': 2,
+        'value': 'c: 1,2'
     },
     {
-        'User_Id': 1,
-        'Exam_Id': 1,
-        'Task_Id': 1,
-        'Value': 'f: answer111'
+        'userId': 1,
+        'examId': 1,
+        'taskId': 1,
+        'value': 'f: answer111'
     },
     {
-        'User_Id': 1,
-        'Exam_Id': 1,
-        'Task_Id': 2,
-        'Value': 'r: 2'
+        'userId': 1,
+        'examId': 1,
+        'taskId': 2,
+        'value': 'r: 2'
     }
 ];
 

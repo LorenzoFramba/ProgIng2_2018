@@ -5,25 +5,32 @@ const errors = require('../errorMsg.js');
 
 module.exports = {
     createToken: function(userId) {
-        let payload = {
-            id: userId
-        };
-
-        let options = {
-            expiresIn: '1h'
-        }
-
-        let token = jwt.sign(payload, key, options);
-
-        return token;
+        return new Promise((resolve, reject) => {
+            let payload = {
+                id: userId
+            };
+    
+            let options = {
+                expiresIn: '1h'
+            }
+    
+            jwt.sign(payload, key, options, (err, token) => {
+                if (err) {
+                    reject(err);
+                }
+                else
+                    resolve(token);
+            });
+        });
     },
     verifyToken: function(token) {
-        try {
-            let decoded = jwt.verify(token, key);
-            return decoded.id;
-        }
-        catch(err) {
-            return errors.INVALID_TOKEN;
-        }
+        return new Promise((resolve, reject) => {
+            jwt.verify(token, key, (err, decoded) => {
+                if (err)
+                    reject(errors.INVALID_TOKEN);
+                else
+                    resolve(decoded.id);
+            });
+        });
     }
 }

@@ -2,9 +2,6 @@ let express = require('express');
 let router = express.Router();
 let User = require("../../model/user");
 let user_data = require("../../mock/data/user_data");
-const userLogic = require("../impl/userImpl");
-
-let users = new Array();
 
 router.post("/", function(req, res) {
     console.log("Post incoming ",req.body);
@@ -50,13 +47,10 @@ router.get("/:id", function(req,res) {
     let valueReturned = user_data.find(user => user.id === userId);
     if (valueReturned === undefined) {
         res.status(404).end();
-        return;
     }
     else{
         res.status(200).send(valueReturned);
-        return;
     }
-    
 })
 
 router.put("/:id", function(req,res) {
