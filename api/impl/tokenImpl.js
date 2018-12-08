@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const key = fs.readFileSync('./private/jwt_secret.key');
 const errors = require('../errorMsg.js');
-
+    
 module.exports = {
     createToken: function(userId) {
         let payload = {

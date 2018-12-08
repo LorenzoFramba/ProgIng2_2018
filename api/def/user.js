@@ -2,11 +2,12 @@ let express = require('express');
 let router = express.Router();
 let User = require("../../model/user");
 const userLogic = require("../impl/userImpl");
+let user_data = require("../../mock/data/user_data");
 
 let users = new Array();
 
 router.post("/", function(req, res) {
-    console.log("Post incoming ",req.body);
+    //console.log("Post incoming ",req.body);
     let usrOnBody = req.body;
     
     if(usrOnBody === undefined){
@@ -17,6 +18,7 @@ router.post("/", function(req, res) {
             return res.status(400).send();
     }
     
+    //TODO: Cambiare con un id incrementale
      let id = new Date().getTime();
 
      let user = new User(
@@ -40,25 +42,29 @@ router.get("/:id", function(req,res) {
         return res.status(400).send();
     }
 
-    
     if(isNaN(userId)){
-        return res.status(400).send(); 
+        return res.status(400).send();
     }
 
-    let valueReturned = users.find((user) => {return user.id == userId});
-    if(valueReturned == undefined) {
-        res.status(404).send();
-        return;
+    if(userLogic.checkPostParams(req.body) === false) {
+        return res.status(400).send();
+    }
+
+    for(let user of user_data) {
+        
+    }
+    let valueReturned = user_data.find(user => user.id === userId);
+
+    if (valueReturned === undefined) {
+        return res.status(404).end();
     }
     else{
-        res.status(200).send(valueReturned);
-        return;
+        return res.status(200).send(valueReturned);
     }
-    
 })
 
 router.put("/:id", function(req,res) {
-    let userId = req.params.id;
+    let userId = req.uid;
     if(userId == undefined){
         return res.status(400).send();
     }

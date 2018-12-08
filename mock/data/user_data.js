@@ -1,3 +1,4 @@
+//Contenuto del DB nel documento user
 let user_data = [
     { 
         id: 123,
@@ -6,8 +7,9 @@ let user_data = [
         username: 'ginopino',
         email: 'gino@pino.it',
         password: 'ciccio',
-        exams: [] 
-    }
+        exams: []
+    },
+    
 ];
 
 module.exports = user_data;
