@@ -6,13 +6,13 @@ const errorMsg = require('./error');
 
 //Intefaccia con DB (in questo caso mocked), inserire operazioni strettamente legate al DB
 class MockedUser extends UserPrototype {
-    
-    lastUserId = 0;
 
     constructor() {
         super();
         this.__ids__ = ['id'];
-        genericMockFunctions(MockedUser, User, user_data);
+        
+        let boundedInjector = genericMockFunctions.bind(this);
+        boundedInjector(MockedUser, User, user_data);
     }
 
     getExams(user) {
@@ -22,8 +22,6 @@ class MockedUser extends UserPrototype {
     getTasks(user, exam) {
         //...
     }
-
-    getLastUserId()
 
     authenticate(username, password) {
         return new Promise((resolve, reject) => {

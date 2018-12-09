@@ -1,120 +1,129 @@
 let express = require('express');
 let router = express.Router();
-let User = require("../../model/user");
-const userLogic = require("../impl/userImpl");
-let user_data = require("../../mock/data/user_data");
 
-let users = new Array();
+const userImpl = require("../impl/userImpl");
+const apiUtility = require('../utility.js');
+const errors = require('../errorMsg.js');
 
-router.post("/", function(req, res) {
-    //console.log("Post incoming ",req.body);
-    let usrOnBody = req.body;
-    
-    if(usrOnBody === undefined){
-        return res.status(400).send();
-    }   
-    
-    if(userLogic.checkPostParams(usrOnBody) === false){
-            return res.status(400).send();
+router.post("/", async function (req, res, next) {
+
+    if (req.body === undefined) {
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
     }
-    
-    //TODO: Cambiare con un id incrementale
-     let id = new Date().getTime();
 
-     let user = new User(
-         id,
-         req.body.name,
-         req.body.lastname,
-         req.body.username,
-         req.body.email,
-         req.body.password,
-         req.body.exams         
-     );
+    if (apiUtility.validateParamsUndefined(
+        req.body.name,
+        req.body.lastname,
+        req.body.email,
+        req.body.password)) {
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
+    }
 
-     users.push(user);
-     return res.status(201).send(user);
+    if (userImpl.validateEmail(req.body.email) === false) {
+        return res.status(400).json(errors.INVALID_DATA);
+    }
 
+    try{
+        await userImpl.addUser(
+            req.body.name,
+            req.body.lastname,
+            req.body.email,
+            req.body.password, 
+            []);
+        
+        return res.status(204).end();
+    }
+    catch (e) {
+        next(e);
+    }
 })
 
-router.get("/:id", function(req,res) {
+router.get("/", async function (req, res, next) {
     let userId = req.uid;
-    if(userId == undefined){
-        return res.status(400).send();
+
+    if (userId === undefined) {
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
     }
 
-    if(isNaN(userId)){
-        return res.status(400).send();
+    if(apiUtility.validateParamsNumber(userId)){
+        return res.status(400).json(errors.INVALID_DATA);
     }
 
-    if(userLogic.checkPostParams(req.body) === false) {
-        return res.status(400).send();
-    }
+    try {
+        let user = await userImpl.getUser(userId);
 
-    for(let user of user_data) {
+        if(user === undefined){
+            return res.status(404).json(errors.ENTITY_NOT_FOUND);
+        }
+        else {
+            return res.status(200).json(user);
+        }
         
     }
-    let valueReturned = user_data.find(user => user.id === userId);
-
-    if (valueReturned === undefined) {
-        return res.status(404).end();
-    }
-    else{
-        return res.status(200).send(valueReturned);
+    catch (e) {
+        next(e);
     }
 })
 
-router.put("/:id", function(req,res) {
+router.put("/", async function (req, res, next) {
     let userId = req.uid;
-    if(userId == undefined){
-        return res.status(400).send();
-    }
-
-    if(isNaN(userId)){
-        return res.status(400).send();
-    }
-
-    let valueReturned = users.find((user) => {return user.id == userId});
-    if(valueReturned == undefined) {
-        return res.status(404).send();
-    }
-
-    let newUser = req.body;
-    if(newUser == undefined){
-        return res.status(400).send();
-    }
-
-    for(let [index,element] of users.entries()) {
-        if(element.id === valueReturned.id) {
-            users[index] = newUser;
-            return res.status(200).send(valueReturned); 
-        }
-    }
     
+    
+    if (req.body === undefined) {
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
+    }
+
+    if (apiUtility.validateParamsUndefined(
+        userId,
+        req.body.name,
+        req.body.lastname,
+        req.body.email,
+        req.body.password)) {
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
+    }
+
+    if(apiUtility.validateParamsNumber(userId)){
+        return res.status(400).json(errors.INVALID_DATA);
+    }
+
+    if (userImpl.validateEmail(req.body.email) === false) {
+        return res.status(400).json(errors.INVALID_DATA);
+    }
+
+    try{
+        await userImpl.updateUser(userId,
+            req.body.name,
+            req.body.lastname,
+            req.body.email,
+            req.body.password);
+        
+        return res.status(204).end();
+    }
+    catch (e) {
+        next(e);
+    }
+
 })
 
-router.delete("/:id", function(req,res) {
+router.delete("/", async function (req, res, next) {
     let userId = req.params.id;
 
-    if(userId == undefined){
-        return res.status(400).send();
+    if(apiUtility.validateParamsUndefined(userId)){
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
     }
 
-    if(isNaN(userId)){
-        return res.status(400).send();
+    if(apiUtility.validateParamsNumber(userId)){
+        return res.status(400).json(errors.INVALID_DATA);    
     }
 
-    let notfound = true;
-    users.forEach((user,index) => {
-        if(user.id == userId){
-            users.splice(index,1);
-            notfound = false;
-        }      
-    });
+    try {
+        await userImpl.deleteUser(userId);
+        return res.status(204).end();
+    }
+    catch (e) {
+        next(e);
+    }
 
-    if(notfound)
-        return res.status(404).send();
-    
-    return res.status(200).send();
 })
 
 module.exports = router;
