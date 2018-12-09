@@ -25,9 +25,19 @@ async function check_body(body) {
 }
 
 //creates the exam
-function createExam(userId, examId, value) {
-    return new Exam(userId, examId, value);
+function createExam(body) {
+    return new Exam(
+        body.id,
+        body.ownerId,
+        body.name, 
+        body.duration,
+        body.deadline,
+        body.startDate,
+        body.groupId,
+        body.countTask 
+    );
 }
+
 
 // gets the exam
 async function getExam(userId, examId) {
@@ -41,9 +51,9 @@ async function getExam(userId, examId) {
 }
 
 // adds the exam, by first creating it and then inserting it in the mocked DB
-async function addExam(userId, examId, value) {
+async function addExam(value) {
     try {
-        let exam = createExam(userId, examId, value);
+        let exam = createExam(value);
         let examDb = new ExamDb();
 
         await examDb.create(exam);
@@ -53,9 +63,9 @@ async function addExam(userId, examId, value) {
     }
 }
 //updates un exam, it requires the owner of the exam, the Id of the exam and the value of the exam (body)
-async function updateExam(userId, examId, value) {
+async function updateExam(value) {
     try {
-        let exam = createExam(userId, examId, value);   
+        let exam = createExam(value);   
         let examDb = new ExamDb();
 
         await examDb.update(exam);

@@ -24,7 +24,6 @@ router_exam.get("/:examId", async function (req, res, next) {
     try {
         if (!(await examimpl.checkUserAccessOnExam(userId, examId)))  //checks if user is the owner of the exam
             res.status(400).json(errors.ACCESS_NOT_GRANTED);
-
         let exam = await examimpl.getExam(userId, examId);
         if (exam === undefined)
             res.status(404).send(errors.ENTITY_NOT_FOUND);
@@ -45,10 +44,9 @@ router_exam.post('/', async function (req, res, next) {
     if (body === undefined)
         res.status(400).json(errors.PARAMS_UNDEFINED);
     if (!ExamImplementation.check_body(body))
-        res.status(400).json(errors.PARAMS_UNDEFINED);
-        
+        res.status(400).json(errors.PARAMS_UNDEFINED);  
     try {
-        await examImpl.addExam(userId, body);
+        await examImpl.addExam(body);
         res.status(204).end();
     }
     catch (err) {
@@ -76,7 +74,7 @@ router_exam.put('/:examId', async function (req, res, next) {
     try {
         if (!(await examimpl.checkUserAccessOnExam(userId, examId)))
             res.status(400).json(errors.ACCESS_NOT_GRANTED);
-        await examImpl.updateExam(userId, examId, body);
+        await examImpl.updateExam(body);
         res.status(204).end();
     }
     catch (err) {
