@@ -1,7 +1,7 @@
 class Exam {
-    constructor(id, owner_id, name, duration, deadline, startDate, tasks, groupId, countTask) {
+    constructor(id, ownerId, name, duration, deadline, startDate, tasks, groupId, countTask) {
         this.id = id;
-        this.owner_id = owner_id;
+        this.ownerId = ownerId;
         this.name = name;
         this.duration = duration;
         this.deadline = deadline;

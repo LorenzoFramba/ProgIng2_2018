@@ -1,11 +1,18 @@
 let UserPrototype = require('../model/abstract/userPrototype.js');
+const User = require('../model/user');
 const user_data = require('./data/user_data');
 const genericMockFunctions = require('./mockedEntity.js');
+const errorMsg = require('./error');
 
+//Intefaccia con DB (in questo caso mocked), inserire operazioni strettamente legate al DB
 class MockedUser extends UserPrototype {
+    
+    lastUserId = 0;
+
     constructor() {
         super();
-        genericMockFunctions(this.constructor, user_data);
+        this.__ids__ = ['id'];
+        genericMockFunctions(MockedUser, User, user_data);
     }
 
     getExams(user) {
@@ -16,9 +23,17 @@ class MockedUser extends UserPrototype {
         //...
     }
 
+    getLastUserId()
+
     authenticate(username, password) {
-        let userFound = user_data.find(u => u.username == username && u.password == password);
-        return userFound ? userFound.id : undefined;
+        return new Promise((resolve, reject) => {
+            let userFound = user_data.find(u => u.username == username && u.password == password);
+
+            if (userFound === undefined)
+                reject(errorMsg.ENTITY_NOT_FOUND);
+            else
+                resolve(userFound.id);
+        });
     }
 }
 
