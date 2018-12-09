@@ -8,4 +8,4 @@ class TaskPrototype extends AbstractPrototype {
     }
 }
 
-module.exports = AnswerPrototype;
+module.exports = TaskPrototype;

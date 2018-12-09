@@ -22,7 +22,6 @@ router.get('/', async function(req, res, next) {
     try {
         if (!(await answerImpl.checkUserAccessOnExam(q_userid, userId, q_examid)))
             res.status(400).json(errors.ACCESS_NOT_GRANTED);
-
         let answer = await answerImpl.getAnswer(q_userid, q_examid, q_taskid);
         if (answer === undefined)
             res.status(404).send(errors.ENTITY_NOT_FOUND);
@@ -55,7 +54,7 @@ router.post('/', async function(req, res, next) {
     }
 });
 
-router.put('/', async function(req, res, next) {
+router.put('/', async function(req, res, next) { 
     let q_taskid = parseInt(req.query.task);
     let q_examid = parseInt(req.query.exam);
     let b_value = req.body.value;
@@ -67,7 +66,7 @@ router.put('/', async function(req, res, next) {
     if (!apiUtility.validateParamsNumber(q_taskid, q_examid))
         res.status(400).json(errors.PARAMS_WRONG_TYPE);
 
-    try {
+    try {  
         await answerImpl.updateAnswer(userId, q_taskid, q_examid, b_value);
         res.status(204).end();
     }

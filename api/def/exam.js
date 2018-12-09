@@ -1,64 +1,108 @@
 const express = require('express');
+const apiUtility = require('../utility.js');
+const errors = require('../errorMsg.js');
+const examimpl = require('../impl/examImpl');
+
 let router_exam = express.Router();
-let Exam = require('../../model/exam');
+let exam_model = require('../../model/exam.js');
+let ExamDb = require('../../mock/mockedExam');
+
 var exami = new Array();
-  
-router_exam.get("/:id", function (req, res) {
-    let examId = req.params.id;
-    if (examId == undefined)
-        res.status(400).send();
-    let valuereturned = exami.find((exami) => { return exami.id == examId });
-
-    if (valuereturned == undefined)
-        res.status(404).send();
-    else
-        res.status(200).send(valuereturned);
-})
 
 
-router_exam.post("/", function (req, res) {
 
-    let tkOnBody = req.body;
-    if (tkOnBody === undefined){
-        res.status(400).send();
-        return;
+router_exam.get("/:examId", async function (req, res, next) {
+
+    let examId = parseInt(req.params.examId); // parsing the examID from the URL
+    let userId = req.uid; 
+
+    if (apiUtility.validateParamsUndefined(userId, examId))  //checking if the paramiters are defined
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+
+    if (!apiUtility.validateParamsNumber(userId, examId))  //checking if parameters are number, otherwise they are not valid
+        res.status(400).json(errors.PARAMS_WRONG_TYPE);
+    try {
+        if (!(await examimpl.checkUserAccessOnExam(userId, examId)))  //checks if user is the owner of the exam
+            res.status(400).json(errors.ACCESS_NOT_GRANTED);
+        let exam = await examimpl.getExam(userId, examId);
+        if (exam === undefined)
+            res.status(404).send(errors.ENTITY_NOT_FOUND);
+        else
+            res.status(200).json(exam);
     }
+    catch (err) {
+        next(err);
+    }
+});
 
 
-    if (tkOnBody.id === undefined 
-        || tkOnBody.name === undefined
-        || tkOnBody.duration === undefined
-        || tkOnBody.deadline === undefined
-        || tkOnBody.startDate === undefined
-        || tkOnBody.groupId === undefined
-        || tkOnBody.CountTaks === undefined){
-            res.status(400).send();
-            return;
-        }
+router_exam.post('/', async function (req, res, next) {
 
-    let exam = new Exam(
-        id,
-        req.body.name,
-        req.body.duration,
-        req.body.deadline,
-        req.body.startDate,
-        req.body.groupId,
-        req.body.countTask
-    );
-    exami.push(exam);
-    res.status(201).send(exam);
-    return;
-})
+    let body = req.body;
+    let userId = req.uid;
 
-router_exam.delete("/:id", function (req, res) {
+    if (body === undefined)
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+    if (!ExamImplementation.check_body(body))
+        res.status(400).json(errors.PARAMS_UNDEFINED);  
+    try {
+        await examImpl.addExam(body);
+        res.status(204).end();
+    }
+    catch (err) {
+        next(err);
+    }
+});
 
-    res.send({ type: 'DELETE' });
-})
 
-router_exam.put("/:id", function (req, res) {
+router_exam.put('/:examId', async function (req, res, next) {
+    let examId = parseInt(req.params.examId);
 
-    res.end({ type: 'PUT' });
-})
+    let userId = req.uid;
+    let body = req.body;
+
+    if (apiUtility.validateParamsUndefined(userId, examId))
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+
+    if (!apiUtility.validateParamsNumber(userId, examId))
+        res.status(400).json(errors.PARAMS_WRONG_TYPE);
+
+    if (body === undefined)
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+    if (!ExamImplementation.check_body(body))
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+    try {
+        if (!(await examimpl.checkUserAccessOnExam(userId, examId)))
+            res.status(400).json(errors.ACCESS_NOT_GRANTED);
+        await examImpl.updateExam(body);
+        res.status(204).end();
+    }
+    catch (err) {
+        next(err);
+    }
+});
+
+router_exam.delete('/:examId', async function (req, res, next) {
+    let examId = parseInt(req.params.examId);
+
+    let userId = req.uid;
+
+    if (apiUtility.validateParamsUndefined(userId, examId))
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+
+    if (!apiUtility.validateParamsNumber(userId, examId))
+        res.status(400).json(errors.PARAMS_WRONG_TYPE);
+
+    try {
+        if (!(await examimpl.checkUserAccessOnExam(userId, examId)))
+            res.status(400).json(errors.ACCESS_NOT_GRANTED);
+        await examImpl.deleteExam(userId, examId);
+        res.status(204).end();
+    }
+    catch (err) {
+        next(err);
+    }
+});
 
 module.exports = router_exam;
 

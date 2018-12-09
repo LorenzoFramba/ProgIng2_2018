@@ -30,4 +30,6 @@ app.use("/v1/Groups", router_group);
 app.use("/v1/Exams", router_exam);
 app.use("/v1/Tasks", router_task);
 
+// exception handling middleware
+app.use(mwErrorHandler);
 app.listen(PORT, () => console.log('ProgIng2 app listening on port '+ PORT));
