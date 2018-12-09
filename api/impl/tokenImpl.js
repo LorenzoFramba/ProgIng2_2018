@@ -11,7 +11,7 @@ module.exports = {
             };
     
             let options = {
-                expiresIn: '1h'
+                expiresIn: '10d'
             }
     
             jwt.sign(payload, key, options, (err, token) => {

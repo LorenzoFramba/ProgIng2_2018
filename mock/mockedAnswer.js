@@ -6,10 +6,10 @@ const genericMockFunctions = require('./mockedEntity');
 class MockedAnswer extends AnswerPrototype {
     constructor() {
         super();
-        this.__ids__ = ['userId', 'examId', 'taskId'];
+        this.__ids__ = ['userId', 'examId', 'taskId']; 
         
-        let boundedInjector = genericMockFunctions.bind(this);
-        boundedInjector(MockedAnswer, Answer, answer_data);
+        let boundedInjector = genericMockFunctions.bind(this); 
+        boundedInjector(MockedAnswer, Answer, answer_data);  
     }
 }
 
