@@ -1,10 +1,6 @@
 let user_data = [
     { 
-<<<<<<< HEAD
-        id: 1,
-=======
         id: 0,
->>>>>>> 0cfa72bee9fdfeb9cf040e7a9706c8324ce9bcac
         name: 'Gino',
         lastname: 'Pino',
         username: 'ginopino',

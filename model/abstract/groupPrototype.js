@@ -12,6 +12,10 @@ class GroupPrototype extends AbstractPrototype{
     getUsers(group) {
         throw new InternalError(modelErrors.MISSING_OVERRIDE);
     }
+
+    searchByOwner(owner){
+        throw new InternalError(modelErrors.MISSING_OVERRIDE);
+    }
 }
 
-module.exports = AnswerPrototype;
+module.exports = GroupPrototype;

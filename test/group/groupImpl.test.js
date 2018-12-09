@@ -1,5 +1,10 @@
-const insertGroup = require("../logic/groupLogic").insertNewGroup;
-const checkMember = require("../logic/groupLogic").checkMember;
+const insertGroup = require("../../api/impl/groupImpl").insertNewGroup;
+const checkMember = require("../../api/impl/groupImpl").checkMember;
+const retrieveAllGroups = require("../../api/impl/groupImpl").retrieveAllGroups;
+
+const user_data = require("../../mock/data/user_data");
+const group_data = require("../../mock/data/group_data");
+
 let User = require("../../model/user");
 const fetch = require("node-fetch");
 
@@ -9,72 +14,6 @@ let usr1, usr2, usr3, usr4;
 //--------------- INIZIALIZZAZIONE DEI TEST -----------------------------------------
 beforeAll(() => {
     jest.setTimeout(10000);
-
-    //Inserisco un po' di utenti nel sistema
-    usr1 = new User(1, "U1", "L1", "USRN1", "M1", "P1", []);
-    usr2 = new User(2, "U2", "L2", "USRN2", "M2", "P2", []);
-    usr3 = new User(3, "U3", "L3", "USRN3", "M3", "P3", []);
-    usr4 = new User(4, "U4", "L4", "USRN4", "M4", "P4", []);
-
-    let opt1 = { method : "POST", body : JSON.stringify(usr1), headers : {'Content-Type': 'application/json'}};
-    let opt2 = { method : "POST", body : JSON.stringify(usr2), headers : {'Content-Type': 'application/json'}};
-    let opt3 = { method : "POST", body : JSON.stringify(usr3), headers : {'Content-Type': 'application/json'}};
-    let opt4 = { method : "POST", body : JSON.stringify(usr4), headers : {'Content-Type': 'application/json'}};
-
-    let p1 = new Promise(() => {
-        return fetch('http://localhost:3000/user', opt1).then(
-            userReturned => userReturned.json().then(
-                res => {
-                    if (res !== undefined && res !== null)
-                        usr1.id = res.id;
-                }))
-    });
-    let p2 = new Promise(() => {
-        return fetch('http://localhost:3000/user', opt2).then(
-            userReturned => userReturned.json().then(
-                res => {
-                    if (res !== undefined && res !== null)
-                        usr2.id = res.id;
-                }))
-    });
-    let p3 = new Promise(() => {
-        return fetch('http://localhost:3000/user', opt3).then(
-            userReturned => userReturned.json().then(
-                res => {
-                    if (res !== undefined && res !== null)
-                        usr3.id = res.id;
-                }))
-    });
-    let p4 = new Promise(() => {
-        return fetch('http://localhost:3000/user', opt4).then(
-            userReturned => userReturned.json().then(
-                res => {
-                    if (res !== undefined && res !== null)
-                        usr4.id = res.id;
-                }))
-    });
-
-    Promise.all([p1, p2, p3, p4]).then(
-        values => { console.log(values) }
-    );
-
-    /*usersList.push(usr1, usr2, usr3, usr4);
-
-    //Inserisco gli utenti tramite l'API e prendo il loro id
-    for (var i=0; i<usersList.length; i++) {
-        let options = {
-            method: 'POST',
-            body: JSON.stringify(usersList[i]),
-            headers: {'Content-Type': 'application/json'}
-        }
-
-        fetch('http://localhost:3000/user', options).then(
-            res => res.json().then(userReturned => {
-                if (userReturned !== undefined && userReturned !== null)
-                    usersList[i].id = userReturned.id;
-            })
-        )
-    }*/
 })
 
 //--------------- TEST insertGroup(name, members, owner) ----------------------------------
@@ -204,5 +143,32 @@ describe("Check members", () => {
     test('member is a real member', () => {
         let member = usersList[0].id
         expect(checkMember(member)).toBeFalsy;
+    });
+})
+
+//--------------- TEST retrieveAllGroups(idUser) ----------------------------------
+describe("Retrieve all groups", () => {
+    test('idUser is a string', () => {
+        expect(retrieveAllGroups("ciao")).toBeNull;
+    });
+
+    test('Call function with 2 parameters', () => {
+        expect(retrieveAllGroups("ciao", 23)).toBeNull;
+    });
+
+    test('call function with 0 parameters', () => {
+        expect(retrieveAllGroups()).toBeNull;
+    });
+
+    test('idUser is not a real user', () => {
+        expect(retrieveAllGroups(12321121)).toBeNull;
+    });
+
+    test('idUser is a negative number', () => {
+        expect(retrieveAllGroups(-151)).toBeNull;
+    });
+
+    test('idUser is a real user', () => {
+        expect(retrieveAllGroups(group_data[0].owner)).toEqual(group_data[0]);
     });
 })

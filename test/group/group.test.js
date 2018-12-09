@@ -2,6 +2,8 @@ const fetch = require("node-fetch");
 let User = require("../../model/user");
 let Group = require("../../model/group");
 
+const tokenURL = "http://localhost:3000/Token";
+
 var goodGroupList;
 var badGroupList;
 var usersList;
@@ -16,6 +18,18 @@ beforeAll(() => {
     goodGroupList = new Array();
 
     //Prendo il token di autenticazione
+    let options = {
+        username: "ginopino",
+        password: "abc"
+    };
+
+    let token = fetch(tokenURL, options)
+        .then(res => {
+            if (res.status !== 200)
+                throw "Can't retrieve token for group tests";
+                
+            return res.body;
+        })
 
     //Inserisco un po' di utenti nel sistema
     let usr1 = new User(1, "U1", "L1", "USRN1", "M1", "P1", []);
