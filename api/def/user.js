@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let User = require("../../model/user");
+let user_data = require("../../mock/data/user_data");
 const userLogic = require("../impl/userImpl");
 let user_data = require("../../mock/data/user_data");
 
@@ -39,7 +40,8 @@ router.post("/", function(req, res) {
 router.get("/:id", function(req,res) {
     let userId = req.uid;
     if(userId == undefined){
-        return res.status(400).send();
+        res.status(400).send();
+        return;
     }
 
     if(isNaN(userId)){
