@@ -4,11 +4,14 @@ const user_data = require('./data/user_data');
 const genericMockFunctions = require('./mockedEntity.js');
 const errorMsg = require('./error');
 
+//Intefaccia con DB (in questo caso mocked), inserire operazioni strettamente legate al DB
 class MockedUser extends UserPrototype {
     constructor() {
         super();
         this.__ids__ = ['id'];
-        genericMockFunctions(MockedUser, User, user_data);
+
+        let boundedInjector = genericMockFunctions.bind(this);
+        boundedInjector(MockedUser, User, user_data);
     }
 
     getExams(user) {

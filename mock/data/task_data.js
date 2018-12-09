@@ -28,6 +28,16 @@ let task_data = [
         'isPeerReview': false,
         'category': 'check',
         'correctAnswer': [1, 2]
+    },
+    {
+        'id': 0,
+        'examId': 1,
+        'text': 'what?',
+        'options': ['maybe', 'ok', 'sure'],
+        'score': 15,
+        'isPeerReview': false,
+        'category': 'radio',
+        'correctAnswer': [1, 2, 3]
     }
 ];
 

@@ -4,5 +4,8 @@ module.exports = {
     },
     validateParamsNumber: function(...params) {
         return !params.some(p => typeof(p) !== 'number');
+    },
+    validateParamsString : function(...params) {
+        return !params.some(p => typeof(p) !== 'string');
     }
 }
