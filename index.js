@@ -20,8 +20,8 @@ mwAuth.unless = unless;
 
 // filter middleware
 app.use(bodyParser.json());
-app.use(mwBearerToken.unless({path:'/Token'},{path:'/Users', method : 'POST'}));
-app.use(mwAuth.unless({path: '/Token'},{path:'/Users', method : 'POST'}));
+app.use(mwBearerToken.unless({path: '/v1/Token'}));
+app.use(mwAuth.unless({path: '/v1/Token'}));
 
 app.use("/v1/Answers", router_answer);
 app.use("/v1/Users", router_user);
