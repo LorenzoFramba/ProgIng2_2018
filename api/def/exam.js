@@ -26,7 +26,7 @@ router_exam.get("/", async function (req, res, next) {
         if (!(await examimpl.checkUserAccessOnExam(q_userid, userId, q_examid)))
             res.status(400).json(errors.ACCESS_NOT_GRANTED);
 
-        let exam = await examimpl.getAnswer(q_userid, q_examid, q_taskid);
+        let exam = await examimpl.getExam(q_userid, q_examid);
         if (exam === undefined)
             res.status(404).send(errors.ENTITY_NOT_FOUND);
         else
@@ -51,7 +51,7 @@ router_exam.post('/', async function (req, res, next) {
         res.status(400).json(errors.PARAMS_WRONG_TYPE);
 
     try {
-        await examImpl.addExam(userId, q_taskid, q_examid, b_value);
+        await examImpl.addExam(userId, q_examid, b_value);
         res.status(204).end();
     }
     catch (err) {
