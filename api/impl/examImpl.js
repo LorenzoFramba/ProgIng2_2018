@@ -38,7 +38,6 @@ function createExam(body) {
     );
 }
 
-
 // gets the exam
 async function getExam(userId, examId) {
     try {

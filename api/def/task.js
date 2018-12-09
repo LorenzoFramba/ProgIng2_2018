@@ -8,16 +8,16 @@ const taskImplementation = require('../impl/taskImpl');
 
 // implementation
 // we include next to catch errors passing with the middleware
-router.get('/:id/:exam', async function (req, res, next) {   
+router.get('/:id/:exam', async function (req, res, next) {
     const task_id = parseInt(req.params.id);
     const exam_id = parseInt(req.params.exam);
     let userId = req.uid;
     // check if some parameter is undefined or not valid
     if (apiUtility.validateParamsUndefined(task_id, exam_id))
         res.status(400).json(errors.PARAMS_UNDEFINED);
-    if (!apiUtility.validateParamsNumber(task_id,exam_id))
+    if (!apiUtility.validateParamsNumber(task_id, exam_id))
         res.status(400).json(errors.PARAMS_WRONG_TYPE);
-    
+
     // if it is found return the object, else return status code 404 not found
     try {
         let check = await taskImplementation.checkParams(task_id, exam_id);
@@ -27,11 +27,11 @@ router.get('/:id/:exam', async function (req, res, next) {
             res.status(200).json(check);
     }
     catch (err) {
-        next(err);  
+        next(err);
     }
 });
 
-router.post('/', async function(req, res, next) {
+router.post('/', async function (req, res, next) {
     let tkBody = req.body;
     let userId = req.uid;
     //check the single status of the body and also every parameters
@@ -52,16 +52,16 @@ router.post('/', async function(req, res, next) {
     }
 });
 
-router.put('/:id/:exam', async function (req,res,next){
+router.put('/:id/:exam', async function (req, res, next) {
     const task_id = parseInt(req.params.id);
     const exam_id = parseInt(req.params.exam);
     let tkBody = req.body;
     let userId = req.uid;
-    
+
     // check if some parameter is undefined or not valid
     if (apiUtility.validateParamsUndefined(task_id, exam_id))
         res.status(400).json(errors.PARAMS_UNDEFINED);
-    if (!apiUtility.validateParamsNumber(task_id,exam_id))
+    if (!apiUtility.validateParamsNumber(task_id, exam_id))
         res.status(400).json(errors.PARAMS_WRONG_TYPE);
 
     //check the single status of the body and also every parameters
@@ -74,8 +74,7 @@ router.put('/:id/:exam', async function (req,res,next){
         let check = await taskImplementation.checkParams(task_id, exam_id);
         if (check === undefined)
             res.status(404).send(errors.ENTITY_NOT_FOUND);
-        else 
-        {
+        else {
             await taskImplementation.updateTask(tkBody);
             res.status(204).end();
             // to do: return the json already intert to check if all functions 
@@ -86,7 +85,7 @@ router.put('/:id/:exam', async function (req,res,next){
     }
 });
 
-router.delete('/:id/:exam', async function (req,res,next){
+router.delete('/:id/:exam', async function (req, res, next) {
     const task_id = parseInt(req.params.id);
     const exam_id = parseInt(req.params.exam);
     let userId = req.uid;
@@ -94,19 +93,18 @@ router.delete('/:id/:exam', async function (req,res,next){
     // check if some parameter is undefined or not valid
     if (apiUtility.validateParamsUndefined(task_id, exam_id))
         res.status(400).json(errors.PARAMS_UNDEFINED);
-    if (!apiUtility.validateParamsNumber(task_id,exam_id))
+    if (!apiUtility.validateParamsNumber(task_id, exam_id))
         res.status(400).json(errors.PARAMS_WRONG_TYPE);
 
     try {
         let check = await taskImplementation.checkParams(task_id, exam_id);
         if (check === undefined)
             res.status(404).send(errors.ENTITY_NOT_FOUND);
-        else 
-        {
-            await taskImplementation.deleteTask(task_id,exam_id);
+        else {
+            await taskImplementation.deleteTask(task_id, exam_id);
             res.status(204).end();
         }
-    } 
+    }
     catch {
         next(err);
     }
