@@ -20,6 +20,10 @@ class UserPrototype extends AbstractPrototype {
     authenticate(username, password) {
         throw new InternalError(modelErrors.MISSING_OVERRIDE);
     }
+
+    getUserByMail(mail){
+        throw new InternalError(modelErrors.MISSING_OVERRIDE);
+    }
 }
 
 module.exports = UserPrototype;

@@ -32,6 +32,26 @@ class MockedUser extends UserPrototype {
                 resolve(userFound.id);
         });
     }
+
+    getUserByMail(mail){
+        if (arguments.length !== 1 || typeof mail !== "string")
+            return null;
+
+        //cls cls.... storage
+        return new Promise((resolve, reject) => {
+
+            var user = null;
+            for (let u of user_data){
+                if (u.email === mail){
+                    user = u.id;
+                    break;
+                }
+            }
+
+            //let entity = Object.assign(Object.create(User), user);
+            resolve(user);
+        });
+    }
 }
 
 module.exports = MockedUser;

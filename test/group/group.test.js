@@ -332,8 +332,8 @@ describe("Modify an existing group", () => {
     test('08 - Group valid', () => {
 
         //groupAdded = new Group(15112, "Nome1", [], user_data[0].id);
-        let groupMod = groupAdded;
-        groupMod.name = "NOME_MODIFICATO";
+        let groupMod = group_data[0];
+        groupMod.name = "MODIFICATO_DA_TEST";
 
         let options = {
             method: 'PUT',
@@ -342,10 +342,9 @@ describe("Modify an existing group", () => {
         }
 
         return fetch(groupURL + "/1", options).then(
-            res => res.json().then( groupReturned => {
+            res => {
                 expect(res.status).toBe(200);
-                expect(JSON.stringify(groupReturned)).toEqual(JSON.stringify(groupMod));
-            }))
+            })
     });
 
     test('11 - Token not valid', () => {
@@ -358,6 +357,135 @@ describe("Modify an existing group", () => {
         return fetch(groupURL + "/1", options).then(
             res => {
                 expect(res.status).toBe(401);
+            }
+        )
+    });
+})
+
+//--------------- TEST GET /Groups/id per avere tutte le info sul gruppo ----------------------------------
+describe("Get all info about a group", () => {
+    test('00 - Token not valid', () => {
+        let options = {
+            method: 'GET',
+            //headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+        }
+
+        return fetch(groupURL + "/0", options).then(
+            res => {
+                expect(res.status).toBe(401);
+            }
+        )
+    });
+
+    test('02 - Try to retrieve info about other groups', () => {
+        let options = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+        }
+
+        return fetch(groupURL + "/3", options).then(
+            res => res.json().then(result => {
+                expect(res.status).toBe(404);
+            }
+        ))
+    });
+
+    test('02 - Successful GET', () => {
+        let options = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+        }
+
+        return fetch(groupURL + "/2", options).then(
+            res => res.json().then(result => {
+                expect(res.status).toBe(200);
+                expect(JSON.stringify(result)).toEqual(JSON.stringify(group_data[1]));
+            }
+        ))
+    });
+})
+
+//--------------- TEST DELETE /Groups/id per eliminare un gruppo ----------------------------------
+describe("Delete a group", () => {
+    test('00 - Token not valid', () => {
+        let options = {
+            method: 'DELETE',
+            //headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+        }
+
+        return fetch(groupURL + "/1", options).then(
+            res => {
+                expect(res.status).toBe(401);
+            }
+        )
+    });
+
+    test('02 - Try to delete other groups', () => {
+        let options = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+        }
+
+        return fetch(groupURL + "/3", options).then(
+            res => res.json().then(result => {
+                expect(res.status).toBe(404);
+            }
+        ))
+    });
+
+    test('02 - Successful DELETE', () => {
+        let options = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+        }
+
+        return fetch(groupURL + "/" + groupAdded.id, options).then(
+            res => {
+                expect(res.status).toBe(200);
+            }
+        )
+    });
+})
+
+//--------------- TEST PUT /Groups/id/Users per aggiungere membri a un gruppo dalla mail ----------------------------------
+describe("Add members by mail", () => {
+    test('00 - Token not valid', () => {
+        let options = {
+            method: 'PUT',
+            //headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+        }
+
+        return fetch(groupURL + "/1/Users", options).then(
+            res => {
+                expect(res.status).toBe(401);
+            }
+        )
+    });
+
+    test('02 - Try to modify other groups', () => {
+        let options = {
+            method: 'PUT',
+            body: JSON.stringify({members: ["mail@mail.com"]}),
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+        }
+
+        return fetch(groupURL + "/3/Users", options).then(
+            res => res.json().then(result => {
+                expect(res.status).toBe(404);
+            }
+        ))
+    });
+
+    test('02 - Successful concat', () => {
+        let options = {
+            method: 'PUT',
+            body: JSON.stringify({members: ["matteo@bianchi.it"]}),
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+        }
+
+        return fetch(groupURL + "/1/Users", options).then(
+            res => {
+                expect(res.status).toBe(200);
             }
         )
     });
