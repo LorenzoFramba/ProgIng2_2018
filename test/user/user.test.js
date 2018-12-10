@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
-let User = require("../../model/user");
+const User = require("../../model/user");
+const ExamUser = require("../../model/examUser");
 const errors = require('../../api/errorMsg');
 const utils = require('../utility');
 
@@ -209,4 +210,72 @@ describe('PUT /Users', () => {
 
     });
 
+})
+
+describe("GET /Users/Exams", () => {
+    let options;
+    let exams = [];
+    beforeAll(() => {
+        options = {
+            method: 'GET',
+            headers: header
+        };
+        exams.push(new ExamUser(0,12345,[1,2,3,4,5],25))
+    });
+
+    test("Success -> 200 (OK)", async () => {
+        expect.assertions(2);
+        let res = await fetch(userEndpoint + "/Exams", options);
+        let examsReturned = await res.json();
+        expect(res.status).toBe(200);
+        expect(examsReturned).toEqual(exams);
+    });
+
+    test("Failed -> 401 (Unauthorized) :: Token not valid", async () => {
+        //opzioni da mettere nella richiesta
+        let optionsWrong = {
+            method: 'GET'
+        }
+
+        expect.assertions(2);
+        let res = await fetch(userEndpoint + "/Exams", optionsWrong);
+        let jsonRes = await res.json();
+        expect(res.status).toBe(401);
+        expect(jsonRes).toEqual(errors.INVALID_TOKEN);
+        
+    });
+})
+
+describe("GET /Users/Exams/:examId/Tasks", () => {
+    let options;
+    let tasks = [];
+    beforeAll(() => {
+        options = {
+            method: 'GET',
+            headers: header
+        };
+        tasks = [1,2,3,4,5];
+    });
+
+    test("Success -> 200 (OK)", async () => {
+        expect.assertions(2);
+        let res = await fetch(userEndpoint + "/Exams/0/Tasks", options);
+        let tasksReturned = await res.json();
+        expect(res.status).toBe(200);
+        expect(tasksReturned).toEqual(tasks);
+    });
+
+    test("Failed -> 401 (Unauthorized) :: Token not valid", async () => {
+        //opzioni da mettere nella richiesta
+        let optionsWrong = {
+            method: 'GET'
+        }
+
+        expect.assertions(2);
+        let res = await fetch(userEndpoint + "/Exams/0/Tasks", optionsWrong);
+        let jsonRes = await res.json();
+        expect(res.status).toBe(401);
+        expect(jsonRes).toEqual(errors.INVALID_TOKEN);
+        
+    });
 })
