@@ -61,6 +61,26 @@ async function deleteUser(userId) {
     }
 }
 
+async function getExams(userId) {
+    try {
+        let userDb = new UserDb();
+        return await userDb.getExams(userId);
+    }
+    catch (err) {
+        throw err;
+    }
+}
+
+async function getTasks(userId, examId) {
+    try {
+        let userDb = new UserDb();
+        return await userDb.getTasks(userId,examId);
+    }
+    catch (err) {
+        throw err;
+    }
+}
+
 function validateEmail(email) 
 {
     var re = /\S+@\S+\.\S+/;
@@ -72,5 +92,7 @@ module.exports = {
     updateUser : updateUser,
     getUser : getUser,
     deleteUser : deleteUser,
-    validateEmail : validateEmail
+    validateEmail : validateEmail,
+    getExams : getExams,
+    getTasks : getTasks
 }

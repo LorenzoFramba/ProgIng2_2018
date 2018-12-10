@@ -6,7 +6,14 @@ let user_data = [
         lastname: 'Pino',
         email: 'gino@pino.it',
         password: 'ciccio',
-        exams: []
+        exams: [
+            {
+                id : 0,
+                startCompiling : 12345,
+                assignedTasks : [1,2,3,4,5],
+                points : 25
+            }
+        ]
     },
     { 
         id: 1,
