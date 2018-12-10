@@ -12,7 +12,7 @@ const userData = {
 
 const userToDel = {
     email : "mario@rossi.it",
-    password : "ciccio"
+    password : "mario"
 }
 
 let header;
@@ -21,17 +21,9 @@ let headerToDel;
 //inizializzo i casi di test
 beforeAll(async () => {
     users.push(new User(null, "Gino", "Pino", "gino@pino.it", "ciccio", []));
-
-    token = await utils.getToken(userData.email, userData.password);
-    tokenToDel = await utils.getToken(userToDel.email, userToDel.password);
-    
-    header = {
-        'Authorization': `Bearer ${token}`
-    };
-
-    headerToDel = {
-        'Authorization': `Bearer ${tokenToDel}`
-    };
+ 
+    header = await utils.getAuthHeader(userData.email, userData.password);
+    headerToDel = await utils.getAuthHeader(userToDel.email, userToDel.password);
 
     jest.setTimeout(100000); //evito che le richieste vadano in timeout troppo presto (mi serve per debug)
 })
@@ -98,6 +90,7 @@ describe("GET /Users", () => {
         let userReturned = await res.json();
         expect(res.status).toBe(200);
         users[0].id = userReturned.id;
+        users[0].exams = userReturned.exams;
         expect(userReturned).toEqual(users[0]);
     });
 
