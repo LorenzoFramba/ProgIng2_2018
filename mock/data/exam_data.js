@@ -30,7 +30,7 @@ let exam_data = [
         'countTask': 12
     },
     {
-        'id': 0,
+        'id': 3,
         'ownerId': 1,
         'name': 'CI',
         'duration': 80,
@@ -40,7 +40,7 @@ let exam_data = [
         'countTask': 6
     },
     {
-        'id': 0,
+        'id': 4,
         'ownerId': 2,
         'name': 'CI',
         'duration': 115,
