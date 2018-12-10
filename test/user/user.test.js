@@ -146,7 +146,7 @@ describe('PUT /Users', () => {
         const usrToMod = {
                 "name" : "Mario",
                 "lastname" : "Rossi",
-                "email" : "mario@ross.it",
+                "email" : "mario@rossi.it",
                 "password" : "ciccio"
             }
 
