@@ -8,15 +8,15 @@ const errors = require('../errorMsg.js');
 const UserDb = require('../../mock/mockedUser.js');
 
 router.post('/', async function(req, res) {
-    let b_username = req.body.username;
+    let b_email = req.body.email;
     let b_pwd = req.body.password;
 
-    if (apiUtility.validateParamsUndefined(b_username, b_pwd))
+    if (apiUtility.validateParamsUndefined(b_email, b_pwd))
         res.status(400).json(errors.PARAMS_UNDEFINED);
 
     let userDb = new UserDb();
     try {
-        let userId = await userDb.authenticate(b_username, b_pwd);
+        let userId = await userDb.authenticate(b_email, b_pwd);
         let token = await tokenImpl.createToken(userId);
         res.status(200).send(token);
     }

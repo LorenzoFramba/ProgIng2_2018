@@ -4,8 +4,8 @@
   "description": "Ciao a tutti, sono il Bulba",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
-    "start": "node index.js", 
+    "test": "jest",
+    "start": "node index.js",
     "build": "NODE_ENV=development"
   },
   "jest": {
