@@ -38,6 +38,26 @@ let task_data = [
         'isPeerReview': false,
         'category': 'radio',
         'correctAnswer': 2
+    },
+    {
+        'id': 2,
+        'examId': 1,
+        'text': 'what?',
+        'options': ['maybe', 'ok', 'sure'],
+        'score': 15,
+        'isPeerReview': false,
+        'category': 'radio',
+        'correctAnswer': 2
+    },
+    {
+        'id': 3,
+        'examId': 1,
+        'text': 'question?',
+        'options': null,
+        'score': 15,
+        'isPeerReview': true,
+        'category': 'open',
+        'correctAnswer': null
     }
 ];
 

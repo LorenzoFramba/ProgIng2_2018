@@ -11,9 +11,21 @@ function createUrl(path) {
 };
 
 function createQuery(...paramMap) {
-    return paramMap.reduce((acc, cur, i, arr) => {
-        return `${acc}${cur.name}=${cur.value}${i == arr.length - 1 ? "" : '&'}`;
-    }, '?');
+    return paramMap.filter(p => p !== undefined)
+        .reduce((acc, cur, i, arr) => {
+            return `${acc}${cur.name}=${cur.value}${i == arr.length - 1 ? "" : '&'}`;
+        }, '?');
+}
+
+async function getAuthHeader(email, password) {
+    try {
+        return {
+            'Authorization': `Bearer ${await getToken(email, password)}`
+        };
+    }
+    catch (err) {
+        throw err;
+    }
 }
 
 async function getToken(email, password) {
@@ -41,6 +53,7 @@ async function getToken(email, password) {
 
 module.exports = {
     createUrl: createUrl,
+    getAuthHeader: getAuthHeader,
     getToken: getToken,
     createQuery: createQuery
 };

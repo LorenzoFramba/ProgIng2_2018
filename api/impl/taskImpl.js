@@ -12,7 +12,7 @@ async function checkParams (taskID, examID) {
     }
 }
 
-async function check_body (bbody) {
+function check_body (bbody) {
     if (bbody.id === undefined 
         || bbody.userId === undefined
         || bbody.text === undefined
@@ -41,9 +41,14 @@ function nuevoTask (bbody){
 }
 
 async function addTask (bbody){
-    let task = nuevoTask(bbody);
-    let taskDb = new TaskDb();
-    await taskDb.create(task);
+    try {
+        let task = nuevoTask(bbody);
+        let taskDb = new TaskDb();
+        await taskDb.create(task);
+    }
+    catch (err) {
+        throw err;
+    }
 }
 
 async function updateTask (bbody){
