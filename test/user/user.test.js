@@ -9,8 +9,7 @@ const userData = {
 	email : "gino@pino.it",
 	password : "ciccio"
 }
-let token = null;
-const TOKEN_ENPOINT = "http://localhost:3000/v1/Token/";
+let header;
 
 //inizializzo i casi di test
 beforeAll(async () => {
