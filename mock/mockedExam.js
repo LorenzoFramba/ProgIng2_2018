@@ -7,6 +7,7 @@ class MockedExam extends ExamPrototype {
     constructor() {
         super();
         this.__ids__ = ['id'];
+        
         let boundedInjector = genericMockFunctions.bind(this);
         boundedInjector(MockedExam, Exam, exam_data);
     }

@@ -6,7 +6,6 @@ class Exam {
         this.duration = duration;
         this.deadline = deadline;
         this.startDate = startDate;
-        this.tasks = tasks;
         this.groupId = groupId;
         this.countTask = countTask;
     }

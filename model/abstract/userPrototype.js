@@ -6,7 +6,7 @@ const modelErrors = require('./error.js');
 class UserPrototype extends AbstractPrototype {
     constructor() {
         super();
-        utils.abstractCheck(UserPrototype);
+        utils.abstractCheck(UserPrototype, new.target);
     }
 
     getExams(user) {
