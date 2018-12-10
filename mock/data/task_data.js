@@ -37,7 +37,7 @@ let task_data = [
         'score': 15,
         'isPeerReview': false,
         'category': 'radio',
-        'correctAnswer': [1, 2, 3]
+        'correctAnswer': 2
     }
 ];
 
