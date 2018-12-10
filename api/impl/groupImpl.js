@@ -14,8 +14,6 @@ module.exports = {
     /* Funzione che controlla se idMember è un utente registrato */
     checkMember : async function(idMember) {
 
-        console.log("Entro");
-
         //Check del parametro
         if (arguments.length !== 1 || idMember === undefined || typeof idMember !== "number")
             return false;
@@ -23,7 +21,6 @@ module.exports = {
         try {
             let userDB = new UserDB();
             let response = await userDB.read({id: idMember});
-            console.log("CHECK: " + response);
             if (JSON.stringify(response) !== JSON.stringify({}))
                 return true;
             else 
@@ -109,8 +106,6 @@ module.exports = {
 
     /* Funzione che modifica il gruppo con id idGroup */
     modifyGroup : async function(idUser, idGroup, newGroup){
-        
-        console.log("CHIAMATA CON: "+ idUser + " " + idGroup + " " + newGroup);
 
         //Check dei parametri
         if (arguments.length !== 3 || idUser === undefined || idGroup === undefined || newGroup === undefined){
@@ -125,24 +120,20 @@ module.exports = {
             console.log("3");
             return false;
         }
-        else if (newGroup.constructor !== Group){
-            console.log("4");
-            return false;
-        }
 
         //Check dei campi dell'oggetto newGroup
-        if (newGroup.id !== idUser || newGroup.id !== idGroup){
+        if (newGroup.id === undefined || newGroup.name === undefined || newGroup.members === undefined || newGroup.owner === undefined){
             console.log("5");
             return false;
         }
-        else if (newGroup.id === undefined || newGroup.name === undefined || newGroup.members === undefined || newGroup.owner === undefined){
-            console.log("6");
+        else if (newGroup.owner !== idUser || newGroup.id != idGroup || typeof newGroup.name !== "string" || newGroup.members.constructor !== Array){
+            console.log("6 -> " + newGroup.id + "=" + idGroup);
             return false;
         }
 
         try {
             let groupDB = new GroupDB();
-            await userDB.update(newGroup);
+            await groupDB.update( this.createGroup(newGroup.id, newGroup.name, newGroup.members, newGroup.owner));
             return true;
         } catch (err){
             throw err;
