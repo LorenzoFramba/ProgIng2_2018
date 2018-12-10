@@ -15,18 +15,15 @@ router.get('/:id/:exam', async function (req, res, next) {
     // check if some parameter is undefined or not valid
     if (apiUtility.validateParamsUndefined(task_id, exam_id))
         res.status(400).json(errors.PARAMS_UNDEFINED);
-    if (!apiUtility.validateParamsNumber(task_id, exam_id))
-        res.status(400).json(errors.PARAMS_WRONG_TYPE);
 
-    // if it is found return the object, else return status code 404 not found
     try {
+        // if it is found return the object, else return status code 404 not found
         let check = await taskImplementation.checkParams(task_id, exam_id);
         if (check === undefined)
             res.status(404).send(errors.ENTITY_NOT_FOUND);
         else
             res.status(200).json(check);
-    }
-    catch (err) {
+    } catch (err) {
         next(err);
     }
 });
@@ -34,21 +31,30 @@ router.get('/:id/:exam', async function (req, res, next) {
 router.post('/', async function (req, res, next) {
     let tkBody = req.body;
     let userId = req.uid;
+
+    let id = tkBody.id;
+    let examId = tkBody.examId;
+    let text = tkBody.text;
+    let options = tkBody.options;
+    let score = tkBody.score;
+    let isPeerReview = tkBody.isPeerReview;
+    let category = tkBody.category;
+    let correctAnswer = tkBody.correctAnswer;
     //check the single status of the body and also every parameters
     if (tkBody === undefined)
         res.status(400).json(errors.PARAMS_UNDEFINED);
-    if (!taskImplementation.check_body(tkBody))
+    else if (apiUtility.validateParamsUndefined(id, examId, text, options, score, isPeerReview, category, correctAnswer))
         res.status(400).json(errors.PARAMS_UNDEFINED);
-
-    try {
-        await taskImplementation.addTask(tkBody);
-        // The server has successfully fulfilled the request and that 
-        // there is no additional content to send in the response payload body.
-        res.status(204).end();
-        //TO DO : return also the posted json, try on postman 
-    }
-    catch (err) {
-        next(err);
+    else {
+        try {
+            await taskImplementation.addTask(tkBody);
+            // The server has successfully fulfilled the request and that 
+            // there is no additional content to send in the response payload body.
+            return res.status(204).end();
+            //TO DO : return also the posted json, try on postman 
+        } catch (err) {
+            next(err);
+        }
     }
 });
 
@@ -79,8 +85,7 @@ router.put('/:id/:exam', async function (req, res, next) {
             res.status(204).end();
             // to do: return the json already intert to check if all functions 
         }
-    }
-    catch (err) {
+    } catch (err) {
         next(err);
     }
 });
@@ -104,8 +109,7 @@ router.delete('/:id/:exam', async function (req, res, next) {
             await taskImplementation.deleteTask(task_id, exam_id);
             res.status(204).end();
         }
-    }
-    catch (err) {
+    } catch (err) {
         next(err);
     }
 });
