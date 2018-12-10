@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const key = fs.readFileSync('./private/jwt_secret.key');
 const errors = require('../errorMsg.js');
-
+    
 module.exports = {
     createToken: function(userId) {
         return new Promise((resolve, reject) => {
@@ -11,7 +11,7 @@ module.exports = {
             };
     
             let options = {
-                expiresIn: '1h'
+                expiresIn: '10d'
             }
     
             jwt.sign(payload, key, options, (err, token) => {

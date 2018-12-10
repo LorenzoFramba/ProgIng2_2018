@@ -1,69 +1,97 @@
 const express = require('express');
+const apiUtility = require('../utility.js');
+const errors = require('../errorMsg.js');
+const examimpl = require('../impl/examImpl');
+
 let router_exam = express.Router();
-let Exam = require('../../model/exam');
-var exami = new Array();
-  
-router_exam.get("/:id", function (req, res) {
-    let examId = req.params.id;
-    if (examId == undefined)
-        res.status(400).send();
-    let valuereturned = exami.find((exami) => { return exami.id == examId });
-
-    if (valuereturned == undefined)
-        res.status(404).send();
-    else
-        res.status(200).send(valuereturned);
-})
+let exam_model = require('../../model/exam.js');
+let ExamDb = require('../../mock/mockedExam');
 
 
-router_exam.post("/", function (req, res) {
+router_exam.get('/:id', async function (req, res, next) {
+    let examId = parseInt(req.params.id); // parsing the examID from the URL
+    let userId = req.uid;
 
-    let tkOnBody = req.body;
-    if (tkOnBody === undefined){
-        res.status(400).send();
-        return;
+    if (apiUtility.validateParamsUndefined(userId, examId)) //checking if the paramiters are defined
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+
+    if (!apiUtility.validateParamsNumber(userId, examId)) //checking if parameters are number, otherwise they are not valid
+        res.status(400).json(errors.PARAMS_WRONG_TYPE);
+    try {
+        let exam = await examimpl.getExam(examId);
+        if (exam === undefined)
+            res.status(404).send(errors.ENTITY_NOT_FOUND);
+        else
+            res.status(200).json(exam);
+    } catch (err) {
+        next(err);
     }
+});
 
 
-    if (tkOnBody.id === undefined 
-        || tkOnBody.name === undefined
-        || tkOnBody.duration === undefined
-        || tkOnBody.deadline === undefined
-        || tkOnBody.startDate === undefined
-        || tkOnBody.groupId === undefined
-        || tkOnBody.CountTaks === undefined){
-            res.status(400).send();
-            return;
-        }
 
-    let exam = new Exam(
-        id,
-        req.body.name,
-        req.body.duration,
-        req.body.deadline,
-        req.body.startDate,
-        req.body.groupId,
-        req.body.countTask
-    );
-    exami.push(exam);
-    res.status(201).send(exam);
-    return;
-})
+router_exam.post('/', async function (req, res, next) {
 
-router_exam.delete("/:id", function (req, res) {
+    let body = req.body;
+    let userId = req.uid;
 
-    res.send({ type: 'DELETE' });
-})
+    if (body === undefined)
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+    if (!examimpl.check_body(body))
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+    try {
+        await examimpl.addExam(body);
+        res.status(204).end();
+    } catch (err) {
+        next(err);
+    }
+});
 
-router_exam.put("/:id", function (req, res) {
+router_exam.put('/:id', async function (req, res, next) {
+    let examId = parseInt(req.params.id);
 
-    res.end({ type: 'PUT' });
-})
+    let userId = req.uid;
+    let body = req.body;
 
+    // validate parameters
+    if (apiUtility.validateParamsUndefined(userId, examId))
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+    if (!apiUtility.validateParamsNumber(userId, examId))
+        res.status(400).json(errors.PARAMS_WRONG_TYPE);
+    if (body === undefined)
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+    if (!examimpl.check_body(body))
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+
+    try {
+        await examimpl.updateExam(body);
+        res.status(204).end();
+    } catch (err) {
+        next(err);
+    }
+});
+
+/*
+
+router_exam.delete('/:examId', async function (req, res, next) {
+    let examId = parseInt(req.params.examId);
+
+    let userId = req.uid;
+
+    if (apiUtility.validateParamsUndefined(userId, examId))
+        res.status(400).json(errors.PARAMS_UNDEFINED);
+
+    if (!apiUtility.validateParamsNumber(userId, examId))
+        res.status(400).json(errors.PARAMS_WRONG_TYPE);
+
+    try {
+        await examimpl.deleteExam(userId, examId);
+        res.status(204).end();
+    }
+    catch (err) {
+        next(err);
+    }
+});
+
+*/
 module.exports = router_exam;
-
-
-
-
-
-

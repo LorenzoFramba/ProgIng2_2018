@@ -3,8 +3,9 @@ const fetch = require('node-fetch');
 
 function createUrl(path) {
     let baseUrl = config.get('endpoint');
+    const basePath = config.get('basePath');
     let port = process.env.PORT || config.get('port');
-    let url = `${baseUrl}:${port}/${path}`;
+    let url = `${baseUrl}:${port}/${basePath}/${path}`;
 
     return url;
 };

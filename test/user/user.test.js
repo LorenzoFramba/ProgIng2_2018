@@ -1,64 +1,69 @@
 const fetch = require("node-fetch");
 let User = require("../../model/user");
+const errors = require('../../api/errorMsg');
 
 let users = Array();
-const USER_ENDPOINT = "http://localhost:3000/Users/";
+const USER_ENDPOINT = "http://localhost:3000/v1/Users/";
 //inizializzo i casi di test
 beforeAll(() => {
-    users.push(new User(123, "Gino", "Pino", "ginopino", "gino@pino.it", "ciccio", []));
+    users.push(new User(null, "Gino", "Pino", "gino@pino.it", "ciccio", []));
     jest.setTimeout(100000); //evito che le richieste vadano in timeout troppo presto (mi serve per debug)
+})
+
+describe('test stupido', () => {
+    test("shuold true", () => {
+        expect(1).toBe(1);
+    })
 })
 
 //classe di test par la post user
 describe('create user', () => {
-    test("should create user", () => {
+    test("should create user", async () => {
         //opzioni da mettere nella richiesta
         let options = {
             method: 'POST',
             body: JSON.stringify(users[0]),
             headers: { 'Content-Type': 'application/json' }
         }
-        
-        expect.assertions(2); //mi aspetto 2 expect, return importante se no salta, => indica la callback
-        return fetch(USER_ENDPOINT, options).then(
-            res => res.json().then(userReturned => {
-                expect(res.status).toBe(201);
-                users[0].id = userReturned.id;
-                expect(userReturned).toEqual(users[0]);
-            })
-        )
+
+        expect.assertions(1); //mi aspetto 2 expect, return importante se no salta, => indica la callback
+        let res = await fetch(USER_ENDPOINT, options);
+        expect(res.status).toBe(204);
+
     });
 
-    test("wrong body data, should return 400", () => {
+    test("wrong body data, should return 400", async () => {
         let options = {
             method: 'POST',
             body: "wrong data"
         }
 
-        expect.assertions(1); //mi aspetto 1 expect, il return è importante se no mi salta
-        return fetch(USER_ENDPOINT, options).then(
-            res => {
-                expect(res.status).toBe(400);
-            })
+        expect.assertions(2);
+        let res = await fetch(USER_ENDPOINT, options)
+        let jsonRes = await res.json();
+        expect(res.status).toBe(400);
+        expect(jsonRes).toEqual(errors.PARAMS_UNDEFINED);
+
+
     });
 
 
-    test("wrong user data, should return 400", () => {
+    test("wrong user data, should return 400", async () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(new User(123, "bo", undefined, undefined, undefined, undefined, undefined)),
             headers: { 'Content-Type': 'application/json' }
         }
 
-        expect.assertions(1);
-        return fetch(USER_ENDPOINT, options).then(
-            res => {
-                expect(res.status).toBe(400);
-            })
+        expect.assertions(2);
+        let res = await fetch(USER_ENDPOINT, options)
+        let jsonRes = await res.json();
+        expect(res.status).toBe(400);
+        expect(jsonRes).toEqual(errors.PARAMS_UNDEFINED);
     });
 
 })
-
+/*
 describe("get a user by id", () => {
     test("should return the specified user", () => {
         //opzioni da mettere nella richiesta
@@ -160,3 +165,4 @@ describe("delete a user by id", () => {
         );   
     });
 })
+*/

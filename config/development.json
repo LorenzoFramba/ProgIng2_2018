@@ -1,4 +1,5 @@
 {
     "endpoint": "http://localhost",
+    "basePath": "v1",
     "port": 3000
 }

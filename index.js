@@ -4,6 +4,7 @@ const app = express();
 const unless = require('express-unless');
 const config = require('config');
 
+const basePath = config.get("basePath");
 const PORT = process.env.PORT || config.get('port');
 const router_answer = require("./api/def/answer.js");
 const router_user = require("./api/def/user.js");
@@ -21,16 +22,15 @@ mwAuth.unless = unless;
 
 // filter middleware
 app.use(bodyParser.json());
-app.use(mwBearerToken.unless({path: '/Token'}));
-app.use(mwAuth.unless({path: '/Token'}));
+app.use(mwBearerToken.unless({ path: `/${basePath}/Token` }));
+app.use(mwAuth.unless({ path: `/${basePath}/Token` }));
 
-// router
-app.use("/Answers", router_answer);
-app.use("/Users", router_user);
-app.use("/Token", router_token);
-app.use("/Groups", router_group);
-app.use("/Exams", router_exam);
-app.use("/Tasks", router_task);
+app.use(`/${basePath}/Answers`, router_answer);
+app.use(`/${basePath}/Users`, router_user);
+app.use(`/${basePath}/Token`, router_token);
+app.use(`/${basePath}/Groups`, router_group);
+app.use(`/${basePath}/Exams`, router_exam);
+app.use(`/${basePath}/Tasks`, router_task);
 
 // exception handling middleware
 app.use(mwErrorHandler);

@@ -17,7 +17,6 @@ module.exports = function(cls, cls_model, storage) {
             if (e1[prop] !== e2[prop])
                 return false;
         }
-    
         return true;
     }
 
