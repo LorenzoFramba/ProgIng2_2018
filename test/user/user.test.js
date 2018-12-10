@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
-let User = require("../../model/user");
+const User = require("../../model/user");
+const ExamUser = require("../../model/examUser");
 const errors = require('../../api/errorMsg');
 const utils = require('../utility');
 
@@ -12,7 +13,7 @@ const userData = {
 
 const userToDel = {
     email : "mario@rossi.it",
-    password : "ciccio"
+    password : "mario"
 }
 
 let header;
@@ -21,17 +22,9 @@ let headerToDel;
 //inizializzo i casi di test
 beforeAll(async () => {
     users.push(new User(null, "Gino", "Pino", "gino@pino.it", "ciccio", []));
-
-    token = await utils.getToken(userData.email, userData.password);
-    tokenToDel = await utils.getToken(userToDel.email, userToDel.password);
-    
-    header = {
-        'Authorization': `Bearer ${token}`
-    };
-
-    headerToDel = {
-        'Authorization': `Bearer ${tokenToDel}`
-    };
+ 
+    header = await utils.getAuthHeader(userData.email, userData.password);
+    headerToDel = await utils.getAuthHeader(userToDel.email, userToDel.password);
 
     jest.setTimeout(100000); //evito che le richieste vadano in timeout troppo presto (mi serve per debug)
 })
@@ -98,6 +91,7 @@ describe("GET /Users", () => {
         let userReturned = await res.json();
         expect(res.status).toBe(200);
         users[0].id = userReturned.id;
+        users[0].exams = userReturned.exams;
         expect(userReturned).toEqual(users[0]);
     });
 
@@ -152,7 +146,7 @@ describe('PUT /Users', () => {
         const usrToMod = {
                 "name" : "Mario",
                 "lastname" : "Rossi",
-                "email" : "mario@ross.it",
+                "email" : "mario@rossi.it",
                 "password" : "ciccio"
             }
 
@@ -216,4 +210,72 @@ describe('PUT /Users', () => {
 
     });
 
+})
+
+describe("GET /Users/Exams", () => {
+    let options;
+    let exams = [];
+    beforeAll(() => {
+        options = {
+            method: 'GET',
+            headers: header
+        };
+        exams.push(new ExamUser(0,12345,[1,2,3,4,5],25))
+    });
+
+    test("Success -> 200 (OK)", async () => {
+        expect.assertions(2);
+        let res = await fetch(userEndpoint + "/Exams", options);
+        let examsReturned = await res.json();
+        expect(res.status).toBe(200);
+        expect(examsReturned).toEqual(exams);
+    });
+
+    test("Failed -> 401 (Unauthorized) :: Token not valid", async () => {
+        //opzioni da mettere nella richiesta
+        let optionsWrong = {
+            method: 'GET'
+        }
+
+        expect.assertions(2);
+        let res = await fetch(userEndpoint + "/Exams", optionsWrong);
+        let jsonRes = await res.json();
+        expect(res.status).toBe(401);
+        expect(jsonRes).toEqual(errors.INVALID_TOKEN);
+        
+    });
+})
+
+describe("GET /Users/Exams/:examId/Tasks", () => {
+    let options;
+    let tasks = [];
+    beforeAll(() => {
+        options = {
+            method: 'GET',
+            headers: header
+        };
+        tasks = [1,2,3,4,5];
+    });
+
+    test("Success -> 200 (OK)", async () => {
+        expect.assertions(2);
+        let res = await fetch(userEndpoint + "/Exams/0/Tasks", options);
+        let tasksReturned = await res.json();
+        expect(res.status).toBe(200);
+        expect(tasksReturned).toEqual(tasks);
+    });
+
+    test("Failed -> 401 (Unauthorized) :: Token not valid", async () => {
+        //opzioni da mettere nella richiesta
+        let optionsWrong = {
+            method: 'GET'
+        }
+
+        expect.assertions(2);
+        let res = await fetch(userEndpoint + "/Exams/0/Tasks", optionsWrong);
+        let jsonRes = await res.json();
+        expect(res.status).toBe(401);
+        expect(jsonRes).toEqual(errors.INVALID_TOKEN);
+        
+    });
 })

@@ -1,5 +1,6 @@
 let UserPrototype = require('../model/abstract/userPrototype.js');
 const User = require('../model/user');
+const ExamUser = require('../model/examUser');
 const user_data = require('./data/user_data');
 const genericMockFunctions = require('./mockedEntity.js');
 const errorMsg = require('./error');
@@ -15,11 +16,39 @@ class MockedUser extends UserPrototype {
     }
 
     getExams(user) {
-        //...
+        return new Promise((resolve,reject) => {
+            let userFound = user_data.find(u => u.id === user);
+
+            if(userFound === undefined)
+                resolve(undefined);
+            else if(userFound.exams === undefined)
+                resolve(undefined);
+            else
+                resolve(userFound.exams);
+        });
     }
 
     getTasks(user, exam) {
-        //...
+        return new Promise((resolve,reject) => {
+            let userFound = user_data.find(u => u.id === user);
+
+            if(userFound === undefined)
+                resolve(undefined);
+            else if(userFound.exams === undefined)
+                resolve(undefined);
+            else {
+                let examsReturned = userFound.exams;
+                let tmp = examsReturned.find(el => el.id === exam);
+                if(tmp === undefined)
+                    resolve(undefined);
+                else{
+                    let myexam = Object.create(ExamUser.prototype);
+                    Object.assign(myexam,tmp);
+                    resolve(myexam.assignedTasks);
+                }
+            }
+                
+        });
     }
 
     authenticate(email, password) {
