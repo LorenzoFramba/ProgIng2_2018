@@ -3,6 +3,6 @@ module.exports = {
         return params.some(p => p === undefined);
     },
     validateParamsNumber: function(...params) {
-        return !params.some(p => typeof(p) !== 'number');
+        return !params.some(p => typeof(p) !== 'number' || isNaN(p));
     }
 }

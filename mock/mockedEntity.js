@@ -36,7 +36,7 @@ module.exports = function(cls, cls_model, storage) {
 
         let tempStorage = storage.filter(e => e[composedIds[0]] === entity[composedIds[0]]);
 
-        [del, ...composedIds] = composedIds;
+        composedIds = composedIds.slice(1);
         composedIds.forEach(id => {
             tempstorage = tempStorage.concat(storage.filter(e => e[id] === entity[id]));
         });

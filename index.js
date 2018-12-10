@@ -2,8 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const unless = require('express-unless');
+const config = require('config');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || config.get('port');
 const router_answer = require("./api/def/answer.js");
 const router_user = require("./api/def/user.js");
 const router_token = require('./api/def/token.js');
@@ -34,4 +35,4 @@ app.use("/Tasks", router_task);
 // exception handling middleware
 app.use(mwErrorHandler);
 
-app.listen(PORT, () => console.log('ProgIng2 app listening on port'+ PORT));
+app.listen(PORT, () => console.log(`App listening on port ${PORT} on uri ${config.endpoint}`));

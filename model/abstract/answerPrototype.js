@@ -4,7 +4,7 @@ let AbstractPrototype = require('./abstractPrototype.js');
 class AnswerPrototype extends AbstractPrototype{
     constructor() {
         super();
-        utils.abstractCheck(AnswerPrototype);
+        utils.abstractCheck(AnswerPrototype, new.target);
     }
 }
 
