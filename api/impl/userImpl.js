@@ -31,8 +31,9 @@ async function addUser(name, lastname, email, password,exams) {
     }
 }
 
-async function updateUser(id, name, lastname, email, password) {
+async function updateUser(userId, name, lastname, email, password) {
     let examUser;
+    let userDb = new UserDb();
     try {
         let userFound = await userDb.read({id : userId});
         examUser = userFound.exams;
@@ -42,9 +43,7 @@ async function updateUser(id, name, lastname, email, password) {
     }
     
     try {
-        let user = createUser(id, name, lastname, email, password, examUser);
-        
-        let userDb = new UserDb();
+        let user = createUser(userId, name, lastname, email, password, examUser);
         await userDb.update(user);
     }
     catch (err) {
