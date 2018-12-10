@@ -6,14 +6,30 @@ let userData = {
 	email : "gino@pino.it",
 	password : "ciccio"
 }
-let token;
 let header;
 
+function createAnswerQuery(userId, taskId, examId) {
+    return utils.createQuery(
+        userId === undefined ? undefined : 
+        {
+            name: 'user',
+            value: userId
+        }, 
+        taskId === undefined ? undefined :
+        {
+            name: 'task',
+            value: taskId
+        }, 
+        examId === undefined ? undefined :
+        {
+            name: 'exam',
+            value: examId
+        }
+    );
+}
+
 beforeAll(async () => {
-    token = await utils.getToken(userData.email, userData.password);
-    header = {
-        'Authorization': `Bearer ${token}`
-    };
+    header = await utils.getAuthHeader(userData.email, userData.password);
 });
 
 describe('GET /Answers', () => {
@@ -29,18 +45,7 @@ describe('GET /Answers', () => {
         let userId = 0;
         let taskId = 0;
         let examId = 0;
-        let queries = utils.createQuery({
-            name: 'user',
-            value: userId
-        },
-        {
-            name: 'task',
-            value: taskId
-        },
-        {
-            name: 'exam',
-            value: examId
-        });
+        let queries = createAnswerQuery(userId, taskId, examId);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -59,10 +64,7 @@ describe('GET /Answers', () => {
     });
 
     test('Failed -> 400 (Bad Request) :: Undefined params', async () => {
-        let queries = utils.createQuery({
-            name: 'user',
-            value: 0
-        });
+        let queries = createAnswerQuery(1)
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -71,23 +73,12 @@ describe('GET /Answers', () => {
             expect(res.status).toBe(400);
 
             let retObj = await res.json();
-            expect(retObj.code).toEqual('A0008');
+            expect(retObj.code).toEqual('A0001');
         });
     });
 
     test('Failed -> 400 (Bad Request) :: Wrong type params', async () => {
-        let queries = utils.createQuery({
-            name: 'user',
-            value: 0
-        },
-        {
-            name: 'task',
-            value: 'test'
-        },
-        {
-            name: 'exam',
-            value: 1.234
-        });
+        let queries = createAnswerQuery("1.23", "test", 3.43)
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -101,18 +92,7 @@ describe('GET /Answers', () => {
     });
 
     test('Failed -> 401 (Unauthorized) :: User access on not owned answer', async () => {
-        let queries = utils.createQuery({
-            name: 'user',
-            value: 1
-        },
-        {
-            name: 'task',
-            value: 0
-        },
-        {
-            name: 'exam',
-            value: 0
-        });
+        let queries = createAnswerQuery(1, 0, 0);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -126,18 +106,7 @@ describe('GET /Answers', () => {
     });
 
     test('Failed -> 404 (Not Found) :: answer does not exist', async () => {
-        let queries = utils.createQuery({
-            name: 'user',
-            value: 0
-        },
-        {
-            name: 'task',
-            value: 100
-        },
-        {
-            name: 'exam',
-            value: 0
-        });
+        let queries = createAnswerQuery(0, 100, 0);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -151,10 +120,197 @@ describe('GET /Answers', () => {
     });
 });
 
-// describe('POST /Answers', () => {
-//     test('Success -> 204 (No Content)', async () => {
+describe('POST /Answers', () => {
+    let options;
+    beforeAll(() => {
+        options = {
+            method: 'POST',
+            headers: header,
+            body: {
+                value: 'answer'
+            }
+        };
+    });
 
-//     });
+    test('Success -> 204 (No Content)', () => {
+        let queries = createAnswerQuery(undefined, 3, 1);
+        let testUrl = url + queries;
 
-//     test('Failed -> ');
-// });
+        expect.assertions(1);
+
+        return fetch(testUrl, options).then((res) => {
+            expect(res.status).toBe(204);
+        });
+    });
+
+    test('Failed -> 400 (Bad Request) :: Undefined params', async () => {
+        let queries = createAnswerQuery(undefined, 2, undefined);
+        let testUrl = url + queries;
+
+        expect.assertions(2);
+
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(400);
+
+            let retObj = await res.json();
+            expect(retObj.code).toEqual('A0001');
+        });
+    });
+
+    test('Failed -> 400 (Bad Request) :: Wrong type params', async () => {
+        let queries = createAnswerQuery(undefined, 'test', 1.23);
+        let testUrl = url + queries;
+
+        expect.assertions(2);
+
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(400);
+
+            let retObj = await res.json();
+            expect(retObj.code).toEqual('A0008');
+        });
+    });
+
+    test('Failed -> 400 (Bad Request) :: Duplicated Answer', async () => {
+        let queries = createAnswerQuery(undefined, 0, 0);
+        let testUrl = url + queries;
+
+        expect.assertions(2);
+
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(400);
+
+            let retObj = await res.json();
+            expect(retObj.code).toEqual('M0003');
+        });
+    });
+});
+
+describe('PUT /Answers', () => {
+    let options;
+    beforeAll(() => {
+        options = {
+            method: 'PUT',
+            headers: header,
+            body: {
+                value: 2
+            }
+        };
+    });
+
+    test('Success -> 204 (No Content)', () => {
+        let queries = createAnswerQuery(undefined, 0, 0);
+        let testUrl = url + queries;
+
+        expect.assertions(1);
+
+        return fetch(testUrl, options).then((res) => {
+            expect(res.status).toBe(204);
+        });
+    });
+
+    test('Failed -> 400 (Bad Request) :: Undefined params', async () => {
+        let queries = createAnswerQuery(1);
+        let testUrl = url + queries;
+
+        expect.assertions(2);
+
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(400);
+
+            let retObj = await res.json();
+            expect(retObj.code).toEqual('A0001');
+        });
+    });
+
+    test('Failed -> 400 (Bad Request) :: Wrong type params', async () => {
+        let queries = createAnswerQuery(undefined, 'test', '1.2345');
+        let testUrl = url + queries;
+
+        expect.assertions(2);
+
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(400);
+
+            let retObj = await res.json();
+            expect(retObj.code).toEqual('A0008');
+        });
+    });
+
+    test('Failed -> 404 (Not Found) :: Answer not found', async () => {
+        let queries = createAnswerQuery(undefined, 100, 0);
+        let testUrl = url + queries;
+
+        expect.assertions(2);
+
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(404);
+
+            let retObj = await res.json();
+            expect(retObj.code).toEqual('M0002');
+        });
+    });
+});
+
+describe('DELETE /Answers', () => {
+    let options;
+    beforeAll(() => {
+        options = {
+            method: 'DELETE',
+            headers: header
+        };
+    });
+
+    test('Success -> 204 (No Content)', async () => {
+        let queries = createAnswerQuery(undefined, 1, 1);
+        let testUrl = url + queries;
+
+        expect.assertions(1);
+
+        return fetch(testUrl, options).then((res) => {
+            expect(res.status).toBe(204);
+        });
+    });
+
+    test('Failed -> 400 (Bad Request) :: Undefined params', async () => {
+        let queries = createAnswerQuery(1);
+        let testUrl = url + queries;
+
+        expect.assertions(2);
+
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(400);
+
+            let retObj = await res.json();
+            expect(retObj.code).toEqual('A0001');
+        });
+    });
+
+    test('Failed -> 400 (Bad Request) :: Wrong type params', async () => {
+        let queries = createAnswerQuery(undefined, 'test', '1.2345');
+        let testUrl = url + queries;
+
+        expect.assertions(2);
+
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(400);
+
+            let retObj = await res.json();
+            expect(retObj.code).toEqual('A0008');
+        });
+    });
+
+    test('Failed -> 404 (Not Found) :: Answer not found', async () => {
+        let queries = createAnswerQuery(undefined, 105, 0);
+        let testUrl = url + queries;
+
+        expect.assertions(2);
+
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(404);
+
+            let retObj = await res.json();
+            expect(retObj.code).toEqual('M0002');
+        });
+    });
+});

@@ -4,7 +4,7 @@ let UserDb = require('../../mock/mockedUser');
 const Exam = require('../../model/exam');
 
 //checks the body and returns false if any of the parameters are not defined, otherwise returns true
-async function check_body(body) {
+function check_body(body) {
     if (body.id === undefined 
         || body.ownerId === undefined
         || body.name === undefined

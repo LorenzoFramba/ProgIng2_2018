@@ -1,3 +1,7 @@
+function canBeParsedInt(n) {
+    return Number(n) === parseInt(n);
+}
+
 module.exports = {
     validateParamsUndefined: function(...params) {
         return params.some(p => p === undefined);
@@ -7,5 +11,8 @@ module.exports = {
     },
     validateParamsString : function(...params) {
         return !params.some(p => typeof(p) !== 'string');
+    },
+    castToInt: function(value) {
+        return canBeParsedInt(value) ? parseInt(value) : undefined;
     }
 }
