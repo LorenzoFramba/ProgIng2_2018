@@ -22,9 +22,9 @@ class MockedUser extends UserPrototype {
         //...
     }
 
-    authenticate(username, password) {
+    authenticate(email, password) {
         return new Promise((resolve, reject) => {
-            let userFound = user_data.find(u => u.username == username && u.password == password);
+            let userFound = user_data.find(u => u.email == email && u.password == password);
 
             if (userFound === undefined)
                 reject(errorMsg.ENTITY_NOT_FOUND);

@@ -16,9 +16,9 @@ function createQuery(...paramMap) {
     }, '?');
 }
 
-async function getToken(username, password) {
+async function getToken(email, password) {
     let userData = {
-        "username": username,
+        "email": email,
         "password": password
     }
 

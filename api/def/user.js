@@ -45,7 +45,7 @@ router.get("/", async function (req, res, next) {
         return res.status(400).json(errors.PARAMS_UNDEFINED);
     }
 
-    if(apiUtility.validateParamsNumber(userId)){
+    if(!apiUtility.validateParamsNumber(userId)){
         return res.status(400).json(errors.INVALID_DATA);
     }
 
@@ -82,7 +82,7 @@ router.put("/", async function (req, res, next) {
         return res.status(400).json(errors.PARAMS_UNDEFINED);
     }
 
-    if(apiUtility.validateParamsNumber(userId)){
+    if(!apiUtility.validateParamsNumber(userId)){
         return res.status(400).json(errors.INVALID_DATA);
     }
 
@@ -106,13 +106,13 @@ router.put("/", async function (req, res, next) {
 })
 
 router.delete("/", async function (req, res, next) {
-    let userId = req.params.id;
+    let userId = req.uid;
 
     if(apiUtility.validateParamsUndefined(userId)){
         return res.status(400).json(errors.PARAMS_UNDEFINED);
     }
 
-    if(apiUtility.validateParamsNumber(userId)){
+    if(!apiUtility.validateParamsNumber(userId)){
         return res.status(400).json(errors.INVALID_DATA);    
     }
 
