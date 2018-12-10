@@ -3,14 +3,14 @@ const utils = require('../utility');
 
 let url = utils.createUrl('Answers');
 let userData = {
-	"username": "ginopino",
-	"password": "ciccio"
+	email : "gino@pino.it",
+	password : "ciccio"
 }
 let token;
 let header;
 
 beforeAll(async () => {
-    token = await utils.getToken(userData.username, userData.password);
+    token = await utils.getToken(userData.email, userData.password);
     header = {
         'Authorization': `Bearer ${token}`
     };

@@ -1,12 +1,26 @@
 const fetch = require("node-fetch");
 let User = require("../../model/user");
 const errors = require('../../api/errorMsg');
+const utils = require('../utility');
 
 let users = Array();
-const USER_ENDPOINT = "http://localhost:3000/v1/Users/";
+let USER_ENDPOINT = utils.createUrl('Users');
+const userData = {
+	email : "gino@pino.it",
+	password : "ciccio"
+}
+let header;
+
 //inizializzo i casi di test
-beforeAll(() => {
+beforeAll(async () => {
     users.push(new User(null, "Gino", "Pino", "gino@pino.it", "ciccio", []));
+
+
+    token = await utils.getToken(userData.email, userData.password);
+    header = {
+        'Authorization': `Bearer ${token}`
+    };
+
     jest.setTimeout(100000); //evito che le richieste vadano in timeout troppo presto (mi serve per debug)
 })
 
