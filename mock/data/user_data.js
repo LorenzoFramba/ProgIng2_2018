@@ -8,6 +8,14 @@ let user_data = [
         password: 'ciccio',
         exams: []
     },
+    { 
+        id: 1,
+        name: 'Mario',
+        lastname: 'Rossi',
+        email: 'mario@rossi.it',
+        password: 'ciccio',
+        exams: []
+    },
     
 ];
 
