@@ -31,7 +31,7 @@ beforeAll(async () => {
     badGroupList.push(badG1, badG2, badG3, badG4, badG5, badG6, badG7, badG8);
 })
 
-//--------------- TEST POST /group per inserimento nuovi gruppi ----------------------------------
+//--------------- TEST POST /Groups per inserimento nuovi gruppi ----------------------------------
 describe("Create new groups", () => {
     test('00 - Group not valid', () => {
         let options = {
@@ -163,4 +163,23 @@ describe("Create new groups", () => {
                 expect(JSON.stringify(groupReturned)).toEqual(JSON.stringify(newGroup));
             }))
     });
+
+    test('11 - Token not valid', () => {
+        let options = {
+            method: 'POST',
+            body: JSON.stringify(badGroupList[7]),
+            headers: { 'Content-Type': 'application/json' }
+        }
+
+        return fetch(groupURL, options).then(
+            res => {
+                expect(res.status).toBe(401);
+            }
+        )
+    });
 })
+
+//--------------- TEST GET /Groups per inserimento nuovi gruppi ----------------------------------
+/*describe("Get all user groups", () => {
+
+})*/
