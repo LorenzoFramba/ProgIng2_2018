@@ -44,7 +44,6 @@ app.use(`/${basePath}/Groups`, router_group);
 app.use(`/${basePath}/Exams`, router_exam);
 app.use(`/${basePath}/Tasks`, router_task);
 
-
 // exception handling middleware
 app.use(mwErrorHandler);
 

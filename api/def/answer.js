@@ -6,13 +6,13 @@ const errors = require('../errorMsg.js');
 const answerImpl = require('../impl/answerImpl');
 
 router.get('/', async function(req, res, next) {
-    let q_userid = parseInt(req.query.user);
-    let q_taskid = parseInt(req.query.task);
-    let q_examid = parseInt(req.query.exam);
-    let userId = req.uid;
+    if (apiUtility.validateParamsUndefined(req.query.user, req.query.task, req.query.exam))
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
 
-    if (apiUtility.validateParamsUndefined(q_userid, q_taskid, q_examid))
-        return res.status(400).json(errors.PARAMS_WRONG_TYPE);
+    let q_userid = apiUtility.castToInt(req.query.user);
+    let q_taskid = apiUtility.castToInt(req.query.task);
+    let q_examid = apiUtility.castToInt(req.query.exam);
+    let userId = req.uid;
 
     if (!apiUtility.validateParamsNumber(q_userid, q_taskid, q_examid))
         return res.status(400).json(errors.PARAMS_WRONG_TYPE);
@@ -33,13 +33,13 @@ router.get('/', async function(req, res, next) {
 });
 
 router.post('/', async function(req, res, next) {
-    let q_taskid = parseInt(req.query.task);
-    let q_examid = parseInt(req.query.exam);
+    if (apiUtility.validateParamsUndefined(req.query.task, req.query.exam))
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
+
+    let q_taskid = apiUtility.castToInt(req.query.task);
+    let q_examid = apiUtility.castToInt(req.query.exam);
     let b_value = req.body.value;
     let userId = req.uid;
-
-    if (apiUtility.validateParamsUndefined(q_taskid, q_examid))
-        return res.status(400).json(errors.PARAMS_UNDEFINED);
 
     if (!apiUtility.validateParamsNumber(q_taskid, q_examid))
         return res.status(400).json(errors.PARAMS_WRONG_TYPE);
@@ -57,13 +57,13 @@ router.post('/', async function(req, res, next) {
 });
 
 router.put('/', async function(req, res, next) { 
-    let q_taskid = parseInt(req.query.task);
-    let q_examid = parseInt(req.query.exam);
+    if (apiUtility.validateParamsUndefined(req.query.task, req.query.exam))
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
+
+    let q_taskid = apiUtility.castToInt(req.query.task);
+    let q_examid = apiUtility.castToInt(req.query.exam);
     let b_value = req.body.value;
     let userId = req.uid;
-
-    if (apiUtility.validateParamsUndefined(q_taskid, q_examid))
-        return res.status(400).json(errors.PARAMS_UNDEFINED);
 
     if (!apiUtility.validateParamsNumber(q_taskid, q_examid))
         return res.status(400).json(errors.PARAMS_WRONG_TYPE);
@@ -81,12 +81,12 @@ router.put('/', async function(req, res, next) {
 });
 
 router.delete('/', async function(req, res, next) {
-    let q_taskid = parseInt(req.query.task);
-    let q_examid = parseInt(req.query.exam);
-    let userId = req.uid;
-
-    if (apiUtility.validateParamsUndefined(userId, q_taskid, q_examid))
+    if (apiUtility.validateParamsUndefined(req.query.task, req.query.exam))
         return res.status(400).json(errors.PARAMS_UNDEFINED);
+
+    let q_taskid = apiUtility.castToInt(req.query.task);
+    let q_examid = apiUtility.castToInt(req.query.exam);
+    let userId = req.uid;
 
     if (!apiUtility.validateParamsNumber(q_taskid, q_examid))
         return res.status(400).json(errors.PARAMS_WRONG_TYPE);

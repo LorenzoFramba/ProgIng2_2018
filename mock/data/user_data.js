@@ -8,7 +8,6 @@ let user_data = [
         password: 'ciccio',
         exams: []
     },
-
     {
         id: 1,
         name: 'Mario',

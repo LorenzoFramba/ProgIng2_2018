@@ -45,8 +45,10 @@ module.exports = function(cls, cls_model, storage) {
 
     cls.prototype.create = function(entity) {
         return new Promise((resolve, reject) => {
-            if (!checkEntityPrototype(entity))
+            if (!checkEntityPrototype(entity)) {
                 reject(errorMsg.MODEL_INVALID);
+                return;
+            }
             let newId = generateNewId(entity);
 
             if (newId === undefined) {
@@ -56,8 +58,10 @@ module.exports = function(cls, cls_model, storage) {
                 }, {});
                 let dupl = storage.find(e => compareOnId(e, objId));
 
-                if (dupl !== undefined)
+                if (dupl !== undefined) {
                     reject(errorMsg.DUPLICATE_ENTITY);
+                    return;
+                }
             }
             else
                 entity.id = newId;
@@ -71,8 +75,10 @@ module.exports = function(cls, cls_model, storage) {
     cls.prototype.read = (id) => {
         return new Promise((resolve, reject) => {
             let objFound = storage.find(e => compareOnId(e, id));
-            if (objFound === undefined)
+            if (objFound === undefined) {
                 resolve(undefined);
+                return;
+            }
 
             let entity = castObjectToEntity(objFound);
             resolve(entity);
@@ -81,11 +87,15 @@ module.exports = function(cls, cls_model, storage) {
 
     cls.prototype.update = function(entity) {
         return new Promise((resolve, reject) => {
-            if (!checkEntityPrototype(entity))
+            if (!checkEntityPrototype(entity)) {
                 reject(errorMsg.MODEL_INVALID); 
+                return;
+            }
             let index = storage.findIndex(e => compareOnId(e, entity));
-            if (index === -1)
+            if (index === -1) {
                 reject(errorMsg.ENTITY_NOT_FOUND);
+                return;
+            }
 
             storage[index] = entity;
 
@@ -96,8 +106,10 @@ module.exports = function(cls, cls_model, storage) {
     cls.prototype.delete = function(id) {
         return new Promise((resolve, reject) => {
             let index = storage.findIndex(e => compareOnId(e, id));
-            if (index === -1)
+            if (index === -1) {
                 reject(errorMsg.ENTITY_NOT_FOUND);
+                return;
+            }
 
             storage.splice(index, 1);
             resolve();
