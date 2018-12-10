@@ -69,14 +69,6 @@ module.exports = {
             if (await module.exports.checkMember(member) === false)
                 return null;
         }
-        
-
-        //Controllo che i membri e l'owner del gruppo siano veri utenti registrati
-        //if (!((members.length !== 0 && members.every(module.exports.checkMemberWrapper)) && module.exports.checkMemberWrapper(owner) === true))
-        /*if (!module.exports.checkMemberWrapper(owner) || (members.length !== 0 && !members.every(module.exports.checkMemberWrapper))){
-            console.log("NULL");
-            return null;
-        }*/
 
         let id = new Date().getTime();
         let nuovoGruppo = new Group(id, name, members, owner);
