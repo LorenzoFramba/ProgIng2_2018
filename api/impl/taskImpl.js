@@ -14,7 +14,7 @@ async function checkParams (taskID, examID) {
 
 function check_body (bbody) {
     if (bbody.id === undefined 
-        || bbody.userId === undefined
+        || bbody.examId === undefined
         || bbody.text === undefined
         || bbody.options === undefined
         || bbody.score === undefined

@@ -1,22 +1,18 @@
 const fetch = require('node-fetch');
 const utils = require('../utility');
 let Task = require('../../model/task');
-
+let tasks = Array();
 // tp do : adjust post method because test doesn't pass
 
 let url = utils.createUrl('Tasks');
 let userData = {
     email : "gino@pino.it",
 	password : "ciccio"
-}
-let token;
+};
 let header;
 
 beforeAll(async () => {
-    token = await utils.getToken(userData.email, userData.password);
-    header = {
-        'Authorization': `Bearer ${token}`
-    };
+    header = await utils.getAuthHeader(userData.email, userData.password);
 });
 
 // test for test the test
@@ -84,35 +80,40 @@ describe('GET /Tasks', () => {
 });
 
 // TEST FOR POST 
-describe('POST  /Tasks', () => {
-
+describe('POST /Tasks', () => {
+    let newHeader;  
+    beforeAll(() => {
+        newHeader = Object.assign({},header,{ 'Content-Type': 'application/json'});
+    });
     test('204 ok -> post success', async () => {
         let options = {
             method: 'POST',
-            body: {
-                "id": 0,
-                "examId": 0,
-                "text": "2 + 2",
-                "options": [
-                    "3",
+            body: JSON.stringify({
+                id: "0",
+                examId: "0",
+                text: "2 + 2",
+                options: [
+                    "4",
                     "4",
                     "5"
                 ],
-                "score": 6,
-                "isPeerReview": false,
-                "category": "radio",
-                "correctAnswer": 1
-            },
-            headers: header
+                score: "5",
+                isPeerReview: "false",
+                category: "radio",
+                correctAnswer: "1"
+            }),
+            headers: newHeader
         };
 
+        
         expect.assertions(1);
-        return fetch(url, options).then(async (res) => {
+        return fetch(url, options).then( async (res) => {
+
             expect(res.status).toBe(204);
         });
     });
 
-    test('400 Bad request -> wrong data User', async () => {
+    test('400 Bad request -> wrong data Task', async () => {
         let options = {
             method: 'POST',
             body: JSON.stringify(new Task(1,12,undefined,undefined,2,undefined,undefined,undefined)),
@@ -139,36 +140,123 @@ describe('POST  /Tasks', () => {
     });
 });
 
+
+
 // TEST FOR PUT 
 describe('PUT /Tasks', () => {
-    let testUrl = url + '/0/0';
+    let testUrl;
+    let newHeader;  
+    beforeAll(() => {
+        newHeader = Object.assign({},header,{ 'Content-Type': 'application/json'});
+        testUrl = url + '/0/0';
+    });
     test('204 ok -> put success', async () => {
         let options = {
             method: 'PUT',
-            body: {
+            body: JSON.stringify({
                 "id": 0,
                 "examId": 0,
                 "text": "2 + 2",
                 "options": [
                     "3",
-                    "5",
+                    "1",
                     "5"
                 ],
                 "score": 5,
                 "isPeerReview": false,
                 "category": "radio",
                 "correctAnswer": 1
-            },
+            }),
+            headers: newHeader
+        };
+
+        expect.assertions(1);
+        return fetch(testUrl, options).then( async (res) => {
+            expect(res.status).toBe(204);
+        });
+    });
+
+    test('400 Bad request -> wrong data Task', async () => {
+        let options = {
+            method: 'PUT',
+            body: JSON.stringify(new Task(1,12,undefined,undefined,2,undefined,undefined,undefined)),
             headers: header
         };
 
         expect.assertions(1);
         return fetch(testUrl, options).then(async (res) => {
-            expect(res.status).toBe(204);
+            expect(res.status).toBe(400);
+        });
+    });
+
+    test('400 error body', async () => {
+        let options = {
+            method: 'PUT',
+            body: "wrong data",
+            headers: header
+        };
+
+        expect.assertions(1);
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(400);
+        });
+    });
+
+    test('404 NOT FOUND -> put fail', async () => {
+        let options = {
+            method: 'PUT',
+            body: JSON.stringify({
+                "id": 0,
+                "examId": 0,
+                "text": "2 + 2",
+                "options": [
+                    "3",
+                    "1",
+                    "5"
+                ],
+                "score": 5,
+                "isPeerReview": false,
+                "category": "radio",
+                "correctAnswer": 1
+            }),
+            headers: newHeader
+        };
+        let failUrl = url + '0/16';
+        expect.assertions(1);
+        return fetch(failUrl, options).then( async (res) => {
+            expect(res.status).toBe(404);
         });
     });
 });
+
 // TEST FOR DELETE 
+describe('DELETE /Tasks', () => {
+    let options;
+    let testUrl;
+    beforeAll(() => {
+        options = {
+            method: 'DELETE',
+            headers: header
+        };
+        testUrl = url + '/0/0';
+    });
+
+    test("204 No content DELETE -> success", async () => {
+        expect.assertions(1);
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(204);
+        });
+    });
+
+    test('404 NOT FOUND -> DELETE fail', async () => {
+    
+        let failUrl = url + '0/17';
+        expect.assertions(1);
+        return fetch(failUrl, options).then( async (res) => {
+            expect(res.status).toBe(404);
+        });
+    });
+});
 
 
 
