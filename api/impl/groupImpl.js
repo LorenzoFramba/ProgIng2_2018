@@ -13,7 +13,6 @@ module.exports = {
 
     /* Funzione che controlla se idMember è un utente registrato */
     checkMember : async function(idMember) {
-
         //Check del parametro
         if (arguments.length !== 1 || idMember === undefined || typeof idMember !== "number")
             return false;
@@ -21,7 +20,7 @@ module.exports = {
         try {
             let userDB = new UserDB();
             let response = await userDB.read({id: idMember});
-            if (JSON.stringify(response) !== JSON.stringify({}))
+            if (response !== undefined && JSON.stringify(response) !== JSON.stringify({}))
                 return true;
             else 
                 return false;
@@ -32,14 +31,13 @@ module.exports = {
 
     /* Funzione che controlla se idGroup è realmente un gruppo esistente */
     checkGroup : async function(idGroup){
-
         //Check del parametro
         if (arguments.length !== 1 || idGroup === undefined || isNaN(idGroup))
             return false;
 
         try {
             let groupDB = new GroupDB();
-            let response = await groupDB.read({id: idGroup}); 
+            let response = await groupDB.read({id: idGroup});
             if (JSON.stringify(response) !== JSON.stringify({}))
                 return true;
             else
@@ -57,16 +55,28 @@ module.exports = {
             return null;
         else if (typeof name !== "string")
             return null;
-        else if (members.constructor !== Array || members.every(function (element) {
+        else if (members.constructor !== Array || (members.length !== 0 && members.every(function (element) {
             return (Number.isInteger(element) && element > 0)
-        }))
+        })))
             return null;
-        else if (typeof owner !== "number")
+        else if (isNaN(owner))
+            return null;
+        else if (await module.exports.checkMember(owner) === false)
             return null;
 
+        //Controllo dell'array dei membri
+        for (let member of members){
+            if (await module.exports.checkMember(member) === false)
+                return null;
+        }
+        
+
         //Controllo che i membri e l'owner del gruppo siano veri utenti registrati
-        if (!(members.every(await module.exports.checkMember) && await module.exports.checkMember(owner) === true))
+        //if (!((members.length !== 0 && members.every(module.exports.checkMemberWrapper)) && module.exports.checkMemberWrapper(owner) === true))
+        /*if (!module.exports.checkMemberWrapper(owner) || (members.length !== 0 && !members.every(module.exports.checkMemberWrapper))){
+            console.log("NULL");
             return null;
+        }*/
 
         let id = new Date().getTime();
         let nuovoGruppo = new Group(id, name, members, owner);
@@ -108,28 +118,18 @@ module.exports = {
     modifyGroup : async function(idUser, idGroup, newGroup){
 
         //Check dei parametri
-        if (arguments.length !== 3 || idUser === undefined || idGroup === undefined || newGroup === undefined){
-            console.log("1");
+        if (arguments.length !== 3 || idUser === undefined || idGroup === undefined || newGroup === undefined)
             return false;
-        }
-        else if (isNaN(idUser) || await this.checkMember(idUser) === false){
-            console.log("2");
+        else if (isNaN(idUser) || await module.exports.checkMember(idUser) === false)
             return false;
-        }
-        else if (isNaN(idGroup) || await this.checkGroup(idGroup) === false){
-            console.log("3");
+        else if (isNaN(idGroup) || await module.exports.checkGroup(idGroup) === false)
             return false;
-        }
 
         //Check dei campi dell'oggetto newGroup
-        if (newGroup.id === undefined || newGroup.name === undefined || newGroup.members === undefined || newGroup.owner === undefined){
-            console.log("5");
+        if (newGroup.id === undefined || newGroup.name === undefined || newGroup.members === undefined || newGroup.owner === undefined)
             return false;
-        }
-        else if (newGroup.owner !== idUser || newGroup.id != idGroup || typeof newGroup.name !== "string" || newGroup.members.constructor !== Array){
-            console.log("6 -> " + newGroup.id + "=" + idGroup);
+        else if (newGroup.owner !== idUser || newGroup.id != idGroup || typeof newGroup.name !== "string" || newGroup.members.constructor !== Array)
             return false;
-        }
 
         try {
             let groupDB = new GroupDB();

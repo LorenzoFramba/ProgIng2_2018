@@ -1,7 +1,9 @@
+const errors = require('./error');
+
 module.exports = {
-    abstractCheck: function(cls) {
-        if (new.target === cls) {
-            throw new TypeError(`Cannot Instantiate abstract class ${cls.name}`);
+    abstractCheck: function(cls, target) {
+        if (target === cls) {
+            throw new TypeError(errors.CANNOT_INSTANCE_ABSTRACT);
         }
     }
 }

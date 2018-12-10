@@ -7,9 +7,9 @@ module.exports = async function(req, res, next) {
     try {
         let userId = await tokenImpl.verifyToken(req.token);
         req['uid'] = userId;
-        next();
+        return next();
     }
     catch (e) {
-        res.status(401).json(e);
+        return res.status(401).json(e);
     }
 };

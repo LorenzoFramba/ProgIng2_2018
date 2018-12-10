@@ -3,11 +3,6 @@ let UserDb = require('../../mock/mockedUser');
 
 const Exam = require('../../model/exam');
 
-//it checks whether the user can get acces to an exam by giving the exam id. only the owner can get access to it, to modify it, get it or erase it 
-async function checkUserAccessOnExam( userId_caller, examId) {
-    return userId_caller === await getExamOwner(examId);
-}
-
 //checks the body and returns false if any of the parameters are not defined, otherwise returns true
 async function check_body(body) {
     if (body.id === undefined 
@@ -39,10 +34,10 @@ function createExam(body) {
 }
 
 // gets the exam
-async function getExam(userId, examId) {
+async function getExam(examId) {
     try {
         let examDb = new ExamDb();
-        return await ExamDb.read({ userId: userId, examId: examId });
+        return await examDb.read({id: examId});
     }
     catch (err) {
         throw err;
@@ -77,7 +72,7 @@ async function updateExam(value) {
 async function deleteExam(userId, examId) {
     try {
         let examDb = new ExamDb();
-        await examDb.delete({ userId: userId, examId: examId });
+        await examDb.delete({id: examId, ownerId: userId});
     }
     catch (err) {
         throw err;
@@ -85,7 +80,6 @@ async function deleteExam(userId, examId) {
 }
 //exports the modules
 module.exports = {
-    checkUserAccessOnExam: checkUserAccessOnExam,
     check_body: check_body,
     addExam: addExam,
     getExam: getExam,

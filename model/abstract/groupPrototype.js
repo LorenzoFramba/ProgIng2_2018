@@ -6,7 +6,7 @@ const modelErrors = require('./error.js');
 class GroupPrototype extends AbstractPrototype{
     constructor() {
         super();
-        utils.abstractCheck(GroupPrototype);
+        utils.abstractCheck(GroupPrototype, new.target);
     }
 
     getUsers(group) {

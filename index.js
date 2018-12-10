@@ -2,8 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const unless = require('express-unless');
+const config = require('config');
 
-const PORT = process.env.PORT || 3000;
+const basePath = config.get("basePath");
+const PORT = process.env.PORT || config.get('port');
 const router_answer = require("./api/def/answer.js");
 const router_user = require("./api/def/user.js");
 const router_token = require('./api/def/token.js');
@@ -20,20 +22,17 @@ mwAuth.unless = unless;
 
 // filter middleware
 app.use(bodyParser.json());
+app.use(mwBearerToken.unless({ path: `/${basePath}/Token` }));
+app.use(mwAuth.unless({ path: `/${basePath}/Token` }));
 
-/*app.use(mwBearerToken.unless({path:'/Token'},{path:'/Users', method : 'POST'}));
-app.use(mwAuth.unless({path: '/Token'},{path:'/Users', method : 'POST'}));*/
-
-app.use(mwBearerToken.unless({path: '/v1/Token'}));
-app.use(mwAuth.unless({path: '/v1/Token'}));
-
-app.use("/v1/Answers", router_answer);
-app.use("/v1/Users", router_user);
-app.use("/v1/Token", router_token);
-app.use("/v1/Groups", router_group);
-app.use("/v1/Exams", router_exam);
-app.use("/v1/Tasks", router_task);
+app.use(`/${basePath}/Answers`, router_answer);
+app.use(`/${basePath}/Users`, router_user);
+app.use(`/${basePath}/Token`, router_token);
+app.use(`/${basePath}/Groups`, router_group);
+app.use(`/${basePath}/Exams`, router_exam);
+app.use(`/${basePath}/Tasks`, router_task);
 
 // exception handling middleware
 app.use(mwErrorHandler);
-app.listen(PORT, () => console.log('ProgIng2 app listening on port '+ PORT));
+
+app.listen(PORT, () => console.log(`App listening on port ${PORT} on uri ${config.endpoint}`));

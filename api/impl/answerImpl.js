@@ -6,14 +6,24 @@ let AnswerDb = require('../../mock/mockedAnswer');
 const Answer = require('../../model/answer');
 
 async function getExamOwner(examId) {
-    let examDb = new ExamDb();
-    let exam = await examDb.read({ id: examId });
+    try {
+        let examDb = new ExamDb();
+        let exam = await examDb.read({ id: examId });
 
-    return exam === undefined ? undefined : exam.owner_id;
+        return exam === undefined ? undefined : exam.owner_id;
+    }
+    catch (err) {
+        throw err;
+    }
 }
 
 async function checkUserAccessOnExam(userId_answer, userId_caller, examId) {
-    return userId_caller === userId_answer || userId_caller === await getExamOwner(examId);
+    try {
+        return userId_caller === userId_answer || userId_caller === await getExamOwner(examId);
+    }
+    catch (err) {
+        throw err;
+    }
 }
 
 function createAnswer(userId, taskId, examId, value) {

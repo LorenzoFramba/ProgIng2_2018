@@ -20,7 +20,7 @@ router.post("/", async function(req, res, next) {
 
         res.status(resCode).send(group);
     } catch (err){
-        nexxt(err);
+        next(err);
     }
 });
 
