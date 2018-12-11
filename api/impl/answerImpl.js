@@ -11,7 +11,7 @@ async function checkAnswerReferTask(userId, examId, taskId) {
         let userFound = await userDb.read({ id: userId });
 
         let examFound = userFound.exams.find(e => e.examId === examId);
-        return examFound !== undefined ? examFound.assignedTask.includes(taskId) : false;
+        return examFound !== undefined ? examFound.assignedTasks.includes(taskId) : false;
     } 
     catch (err) {
         throw err;
