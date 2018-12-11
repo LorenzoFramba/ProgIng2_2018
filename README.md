@@ -32,21 +32,26 @@ You need to see the [Apiary](https://proging2.docs.apiary.io/#)  document to und
 
 ## Installation
 
+
+
+
+### Example
+
+A step by step series of examples that tell you how to work with any aspect of our env.
+
+First and foremost, we need to to install the package manager for JavaScript, therefore go in the project's folder with the terminal window, and type:
+
 ```
 npm install
 ```
 
-### Example
-
-A step by step series of examples that tell you how to work with any aspect of our env 
-
-First and foremost, we need to start up the server, so go in the project's folder with the terminal window, and type
+then start up the server:
 
 ```
 npm start
 ```
 
-this will be the respond 
+this will be the respond:
 
 ```
 > proging2_2018@1.0.0 start /Users/macbookproretina/Desktop/API2/ProgIng2_2018
@@ -55,8 +60,26 @@ this will be the respond
 App listening on port 3000 on uri http://localhost
 
 ```
+**GET /Token**
 
-**POST /EXAM**
+Firsty, we need to acquire the correct token, so let's do a **POST** request on the token
+
+```
+http://localhost:3000/v1/Token/
+```
+
+furthermore, in the application/json body, we will need to insert the email and the password.
+
+```
+{
+    "email": "gino@pino.it",
+    "password": "ciccio"
+}
+```
+
+what we will get in the response, is the Bearer token for Authorization! we will use it in the following examples.
+
+**POST /Exams**
 In this case, we will see how to create an Exam. Open Postman, select POST and type 
 
 ```
