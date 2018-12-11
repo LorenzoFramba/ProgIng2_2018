@@ -28,9 +28,13 @@ In this [Apiary](https://proging2.docs.apiary.io/#)  document you will be able t
 
 ### Prerequisites
 
-You need to see the [Apiary](https://proging2.docs.apiary.io/#)  document to understand the API, but also you need to check out this [chart](https://ProgIng2_2018/Chart.png) so you have a basic idea of how the system was structured and implemented. 
+You need to see the [Apiary](https://proging2.docs.apiary.io/#)  document to understand the API, but also you need to check out this [chart](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png) so you have a basic idea of how the system was structured and implemented. 
 
+## Installation
 
+```
+npm install
+```
 
 ### Example
 
@@ -45,7 +49,6 @@ npm start
 this will be the respond 
 
 ```
-
 > proging2_2018@1.0.0 start /Users/macbookproretina/Desktop/API2/ProgIng2_2018
 > node index.js
 
@@ -135,7 +138,6 @@ In the body response you will get a Json containing something like this
 So to change a password you need to do a **PUT** request on the User, and send in the Body
 
 ```
-
 {
     "name": "Gino",
     "lastname": "Pino",
