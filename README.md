@@ -30,9 +30,13 @@ In this [Apiary](https://proging2.docs.apiary.io/#)  document you will be able t
 
 You need to see the [Apiary](https://proging2.docs.apiary.io/#)  document to understand the API, but also you need to check out this [chart](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png) so you have a basic idea of how the system was structured and implemented. 
 
-First of all, the program **will not** work without the secret key, so ask politely to us and it will be provided! Then run the following command in your terminal: 
+First of all, the program **will not** work without the secret key, so ask politely to us and it will be provided! Then run the following command in your terminal **on the project root** (eg: D:\PersonalProjects\ProgIng2_2018> "commands"): 
 ```
+//For Windows users
 SET PRIVATE_KEY_PROGING2='<provided key>'
+
+//For Mac/Unix users
+export PRIVATE_KEY_PROGING2='<provided key>'
 ```
 
 
