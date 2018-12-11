@@ -17,7 +17,7 @@ Our project will allow users to create tasks, combined in exams and assign it to
 
 ## General idea of the Scheme
 
-![https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png](https://github.com/dadebulba/ProgIng2_2018)
+![Alt Text](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png)
 
 
 
