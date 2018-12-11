@@ -79,7 +79,7 @@ describe('GET /Tasks', () => {
     });
 
     test('401 (not authorized)', async () => {
-        let testUrl = url + '/0/5';
+        let testUrl = url + '/0/3';
         expect.assertions(1);
 
         return fetch(testUrl, options).then(async (res) => {

@@ -1,19 +1,21 @@
 const fetch = require("node-fetch");
 const User = require("../../model/user");
 const ExamUser = require("../../model/examUser");
+const PrAnswer = require("../../model/prAnswer");
 const errors = require('../../api/errorMsg');
 const utils = require('../utility');
 
 let users = Array();
+let prAnswers = Array();
 let userEndpoint = utils.createUrl('Users');
 const userData = {
-    email: "gino@pino.it",
-    password: "ciccio"
+    email: 'marco@rossi.it',
+    password: 'marco'
 }
 
 const userToDel = {
-    email : "mario@rossi.it",
-    password : "mario"
+    email: 'luca@biachi.it',
+    password: 'luca'
 }
 
 let header;
@@ -21,8 +23,8 @@ let headerToDel;
 
 //inizializzo i casi di test
 beforeAll(async () => {
-    users.push(new User(null, "Gino", "Pino", "gino@pino.it", "ciccio", []));
- 
+    users.push(new User(null, "Marco", "Rossi",'marco@rossi.it', "marco", []));
+    prAnswers.push(new PrAnswer(1,1))
     header = await utils.getAuthHeader(userData.email, userData.password);
     headerToDel = await utils.getAuthHeader(userToDel.email, userToDel.password);
 
@@ -31,7 +33,7 @@ beforeAll(async () => {
 
 //classe di test par la post user
 describe('POST /Users', () => {
-    test("Success -> 204 (OK)", async () => {
+    test("Success -> 201 (Created)", async () => {
         //opzioni da mettere nella richiesta
         let options = {
             method: 'POST',
@@ -41,7 +43,7 @@ describe('POST /Users', () => {
 
         expect.assertions(1); //mi aspetto 2 expect, return importante se no salta, => indica la callback
         let res = await fetch(userEndpoint, options);
-        expect(res.status).toBe(204);
+        expect(res.status).toBe(201);
 
     });
     
@@ -220,15 +222,20 @@ describe("GET /Users/Exams", () => {
             method: 'GET',
             headers: header
         };
-        exams.push(new ExamUser(0,12345,[1,2,3,4,5],25))
+        exams.push(new ExamUser(0,
+            '2018-12-05T14:43:00.000Z',
+            [1,2,3,4,5],
+            prAnswers,
+            25))
     });
 
     test("Success -> 200 (OK)", async () => {
         expect.assertions(2);
         let res = await fetch(userEndpoint + "/Exams", options);
         let examsReturned = await res.json();
+
         expect(res.status).toBe(200);
-        expect(examsReturned).toEqual(exams);
+        expect(examsReturned).toMatchObject(exams);
     });
 
     test("Failed -> 401 (Unauthorized) :: Token not valid", async () => {

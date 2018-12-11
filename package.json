@@ -4,7 +4,7 @@
   "description": "Software Engineering 2",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --testPathPattern=task",
     "start": "node index.js",
     "build": "NODE_ENV=development"
   },
