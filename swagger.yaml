@@ -54,9 +54,11 @@ paths:
             items:
               type: integer
         401:
-          description: ApiKey not valid 
+          description: Token not valid 
         400:
           description: Bad Request
+        404: 
+          description: Group not found
     post:
       security:
         - ApiKeyAuth: []
@@ -80,9 +82,7 @@ paths:
           schema:
             $ref: '#/definitions/User'
         401:
-          description: ApiKey not valid 
-        409:
-          description: an existing item already exists
+          description: Token not valid 
         400:
           description: Bad Request
           
@@ -103,11 +103,11 @@ paths:
         200:
           description: item modified 
         401:
-          description: ApiKey not valid  
-        409:
-          description: an existing item already exists
+          description: Token not valid 
         400:
           description: Bad Request
+        404: 
+          description: Group not found
     put:
       security:
         - ApiKeyAuth: []
@@ -129,11 +129,11 @@ paths:
         200:
           description: item modified 
         401:
-          description: ApiKey not valid   
-        409:
-          description: an existing item already exists
+          description: Token not valid
         400:
           description: Bad Request
+        404:
+          description: Group not found
           
     delete:
       security:
@@ -148,9 +148,11 @@ paths:
         200:
           description: group deleted 
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
+        404: 
+          description: Group not found
     parameters:
       - in: path
         name: groupId
@@ -174,10 +176,9 @@ paths:
           description: item created
           schema:
             $ref: '#/definitions/User'
-        409:
-          description: an existing item already exists
         400:
           description: Bad Request
+        
 
   
   /Users/{userId}:     
@@ -188,7 +189,7 @@ paths:
       - Users
       summary: List all the users info by UserID
       description: |
-        By passing the appropriate token, the system returns the right user and all its informations.
+        By passing the appropriate ID, the system returns the right user and all its informations.
       produces:
       - application/json
       responses:
@@ -198,8 +199,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/User'
-        401:
-          description: ApiKey not valid 
         400:
           description: Bad Request
         404:
@@ -223,12 +222,12 @@ paths:
         schema:
            $ref: '#/definitions/User'
       responses:
-        200:
+        204:
           description: item modified 
-        401:
-          description: ApiKey not valid
         400:
           description: Bad Request
+        401:
+          description: Token not valid
         404:
           description: User not found
     delete:
@@ -240,10 +239,10 @@ paths:
       description: 
         delete a user
       responses:
-        200:
+        204:
           description: user deleted 
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
         404:
@@ -273,7 +272,7 @@ paths:
             items: 
               type: integer
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
   
@@ -301,7 +300,7 @@ paths:
             items: 
               type: integer
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
 
@@ -334,31 +333,12 @@ paths:
           description: Logged in successfully 
           schema:
             type: string
+        401:
+          description: Invalid Credentials
         400:
           description: Bad Request
 
-          
-  /Token/{tokenId}:     
-    delete:
-      security:
-        - ApiKeyAuth: []
-      tags:
-      - Users
-      summary: logs out from the website
-      description: log out from the current account
-      parameters:
-      - name: tokenId
-        in: path
-        description: token
-        required: true
-        type: integer
-      responses:
-        200:
-          description: logged out correctly 
-        401:
-          description: ApiKey not valid
-        400:
-          description: Bad Request
+ 
 
   /Exams:
     get:
@@ -377,7 +357,9 @@ paths:
             items:
               type: integer
         401:
-          description: ApiKey not valid
+          description: Token not valid
+        404:
+          description : Exam not found
         400:
           description: Bad Request
     post:
@@ -393,10 +375,10 @@ paths:
           schema:
             $ref: "#/definitions/Exam"
       responses:
-        200:
+        204:
           description: exam created
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
                     
@@ -415,9 +397,11 @@ paths:
           schema:
             $ref: '#/definitions/Exam'
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
+        404:
+          description: Exam not found
           
     put:
       security:
@@ -433,10 +417,10 @@ paths:
         schema:
             $ref: "#/definitions/Exam"
       responses:
-        200:
+        204:
           description: Exam modified
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
         
@@ -448,12 +432,14 @@ paths:
       summary: Delete an existing exam
       description: Delete the specified exam
       responses:
-        200:
+        204:
           description: Exam deleted
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
+        404: 
+          description: Exam not found
     parameters:
       - name: examId
         in: path
@@ -486,8 +472,11 @@ paths:
           description: ApiKey not valid
         400:
           description: Bad Request
+        404:
+          description: Exam not found
           
   /Tasks: 
+  
     post:
       security:
         - ApiKeyAuth: []
@@ -502,14 +491,15 @@ paths:
         schema:
           $ref: "#/definitions/Task"
       responses:
-        200:
+        204:
           description: Task has been correctly created
         401:
-          description: apiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
-      
-  /Tasks/{taskId}:
+        404:
+          description: Task not found
+  /Tasks/{taskId}/{examId}:
     get:
       security:
         - ApiKeyAuth: []
@@ -520,14 +510,16 @@ paths:
       produces:
       - application/json
       responses:
-        200:
+        204:
           description: Task
           schema:
             $ref: "#/definitions/Task"
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
+        404:
+          description: Task not found
       
     put:
       security:
@@ -543,13 +535,14 @@ paths:
         schema:
             $ref: "#/definitions/Task"  
       responses:
-        200:
+        204:
           description: Task modified
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
-          
+        404:
+          description: Task not found 
     delete:
       security:
         - ApiKeyAuth: []
@@ -558,18 +551,25 @@ paths:
       summary: Delete an existing task
       description: Delete the specified task
       responses:
-        200:
+        204:
           description: task deleted
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
+        404:
+          description: Task not found
     parameters:
     - name: taskId
       in: path
       description: ID of the Task
       required: true
       type: integer
+    - name: examId
+      in: path
+      description: ID of the Exam 
+      required: true
+      type: integer  
     
   /Answers:
     get:
@@ -583,13 +583,15 @@ paths:
       - application/json
       responses:
         200:
-          description: answer returned
+          description: Answer returned
           schema:
             $ref: "#/definitions/Answer"
         401:
-          description: ApiKey not valid
+          description: Token not valid
         400:
           description: Bad Request
+        404:
+          description : Answer not found
     put:
       security:
         - ApiKeyAuth: []
@@ -606,12 +608,14 @@ paths:
         schema:
             $ref: "#/definitions/Answer"
       responses:
-        200:
-          description: answer modified 
+        204:
+          description: Answer modified 
         401:
-          description: ApiKey not valid   
+          description: Token not valid   
         400:
           description: Bad Request
+        404:
+          description: Answer not found
     post:
       security:
         - ApiKeyAuth: []
@@ -626,12 +630,14 @@ paths:
           schema:
             type: string
       responses:
-        200: 
+        204: 
           description: the answer has been correctly received
         401: 
-          description: apikey not valid
+          description: Token not valid
         400:
           description: Bad Request
+        404: 
+          description: Answer not found
     delete:
       security:
         - ApiKeyAuth: []
@@ -640,12 +646,13 @@ paths:
       summary: delete an answer
       description: delete the answer of the specified task assigned to a user
       responses:
-        200: 
+        204: 
           description: the answer has been correctly deleted
         401: 
           description: apikey not valid
         400:
           description: Bad Request
+          
     parameters:
     - name: exam
       in: query
@@ -673,25 +680,18 @@ definitions:
       lastname:
         type: string
         description: surname of the user
-      username:
-        type: string
-        description: username of the user
       email:
         type: string
         description: email of the user
       password:
         type: string
         description: password of the user
-      exams:
-        type: object
-        description: exams associated to the user
+
     required:
     - name
     - lastname
-    - username
     - email
     - password
-    - exams
         
   Group:
     title: Group
@@ -755,12 +755,10 @@ definitions:
     properties:
       id:
         type: integer
-<<<<<<< HEAD
+        description: id of the task
       examId:
         type: integer
-=======
-        description: id of the task
->>>>>>> 69c831bd67ab00ccdcfde4a4b4830e3218a85de9
+        description: id of the exam
       text:
         type: string
         description: question
@@ -783,6 +781,7 @@ definitions:
         description: answer for multiple choice
     required:  
       - id
+      - examId
       - text
       - score 
       - isPeerReview
