@@ -4,30 +4,6 @@ const errors = require('../errorMsg.js');
 const examimpl = require('../impl/examImpl');
 
 let router_exam = express.Router();
-let exam_model = require('../../model/exam.js');
-let ExamDb = require('../../mock/mockedExam');
-
-
-/*
-router_exam.get('/', async function (req, res, next) {
-    let userId = req.uid;
-
-    if (apiUtility.validateParamsUndefined(userId)) //checking if the paramiters are defined
-        res.status(400).json(errors.PARAMS_UNDEFINED);
-
-    if (!apiUtility.validateParamsNumber(userId)) //checking if parameters are number, otherwise they are not valid
-        res.status(400).json(errors.PARAMS_WRONG_TYPE);
-    try {
-        let exam = await examimpl.getExam(examId);
-        if (exam === undefined)
-            res.status(404).send(errors.ENTITY_NOT_FOUND);
-        else
-            res.status(200).json(exam);
-    } catch (err) {
-        next(err);
-    }
-});
-*/
 
 router_exam.get('/:id', async function (req, res, next) {
     let examId = parseInt(req.params.id); // parsing the examID from the URL

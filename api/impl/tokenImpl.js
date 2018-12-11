@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const key = fs.readFileSync('./private/jwt_secret.key');
+//const key = fs.readFileSync('./private/jwt_secret.key');
+const key = process.env.PRIVATE_KEY_PROGING2;
 const errors = require('../errorMsg.js');
     
 module.exports = {

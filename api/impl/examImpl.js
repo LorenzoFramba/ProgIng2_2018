@@ -1,5 +1,4 @@
 let ExamDb = require('../../mock/mockedExam');
-let UserDb = require('../../mock/mockedUser');
 
 const Exam = require('../../model/exam');
 

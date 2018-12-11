@@ -1,3 +1,6 @@
+[![Jsonnambuli Logo](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/jsonnambuli.png)](https://github.com/dadebulba/ProgIng2_2018)
+
+
 # ProgIng2
 
 Membri del gruppo:
@@ -14,11 +17,7 @@ Our project will allow users to create tasks, combined in exams and assign it to
 
 ## General idea of the Scheme
 
-C'e la possibilita di configuarare un ambiente di node,  fai vedere un development . json con endpoing. e' possibile modificare questi paramentri aggiungendo un ambiente di node attraverso un config.
-metto il jwt json web token, da settare.
-
-aggiunta di un utente.
-
+![Alt Text](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png)
 
 
 
@@ -29,24 +28,39 @@ In this [Apiary](https://proging2.docs.apiary.io/#)  document you will be able t
 
 ### Prerequisites
 
-You need to see the [Apiary](https://proging2.docs.apiary.io/#)  document to understand the API, but also you need to check out this [chart](https://ProgIng2_2018/Chart.png) so you have a basic idea of how the system was structured and implemented. 
+You need to see the [Apiary](https://proging2.docs.apiary.io/#)  document to understand the API, but also you need to check out this [chart](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png) so you have a basic idea of how the system was structured and implemented. 
+
+First of all, the program **will not** work without the secret key, so ask politely to us and it will be provided! then 
+**create a new folder called "private"** in the project folder, and insert the secret key file received in it.
+
+
+## POSTMAN
+
+To test the program, you also need to import the envirnoment and the collection to test the project. We will also provide that for you.
 
 
 
-### Example
 
-A step by step series of examples that tell you how to work with any aspect of our env 
+## Example
 
-First and foremost, we need to start up the server, so go in the project's folder with the terminal window, and type
+
+A step by step series of examples that tell you how to work with any aspect of our env.
+
+First and foremost, we need to to install the package manager for JavaScript, therefore go in the project's folder with the terminal window, and type:
+
+```
+npm install
+```
+
+then start up the server:
 
 ```
 npm start
 ```
 
-this will be the respond 
+this will be the respond:
 
 ```
-
 > proging2_2018@1.0.0 start /Users/macbookproretina/Desktop/API2/ProgIng2_2018
 > node index.js
 
@@ -54,7 +68,28 @@ App listening on port 3000 on uri http://localhost
 
 ```
 
-**POST /EXAM**
+### GET /Token
+
+Firsty, we need to acquire the correct token, so let's do a **POST** request on the token
+
+```
+http://localhost:3000/v1/Token/
+```
+
+furthermore, in the application/json body, we will need to insert the email and the password.
+
+```
+{
+    "email": "gino@pino.it",
+    "password": "ciccio"
+}
+```
+
+what we will get in the response, is the Bearer token for Authorization! we will use it in the following examples.
+
+
+### POST /Exams
+
 In this case, we will see how to create an Exam. Open Postman, select POST and type 
 
 ```
@@ -64,7 +99,7 @@ http://localhost:3000/v1/Exams/
 select "JSON Application/json" and in the body, create the Exam with this scheme 
 ```
 {
-    "id": F,
+    "id": 0,
     "ownerId": 0,
     "name": "HCI",
     "duration": 130,
@@ -77,13 +112,13 @@ select "JSON Application/json" and in the body, create the Exam with this scheme
 
 you can change any of the parametes.
 
-**HOW TO CHANGE A PASSWORD**
+
+### HOW TO CHANGE A PASSWORD
 
 ```
 http://localhost:3000/v1/Users
 ```
 
-where ID is the UserID you want to get. 
 
 In the body response you will get a Json containing something like this
 
@@ -136,7 +171,6 @@ In the body response you will get a Json containing something like this
 So to change a password you need to do a **PUT** request on the User, and send in the Body
 
 ```
-
 {
     "name": "Gino",
     "lastname": "Pino",
@@ -159,8 +193,8 @@ The project has been connected to [Heroku](https://proging2dev.herokuapp.com) so
 
 ## Built With
 
-* [Heroku](https://proging2dev.herokuapp.com) - The web framework used
-* [Apiary](https://proging2.docs.apiary.io/#) - Api Management
+* [Heroku](https://proging2dev.herokuapp.com) - The web deployment tool used
+* [Apiary](https://proging2.docs.apiary.io/#) - API Management
 
 
 ## Terminology
@@ -172,11 +206,11 @@ Task: Could be either a multiple choice task, true or false or written paragraph
 
 ## Authors
 
-* **Davide Bulbarelli** - *programmer* - [Github](https://github.com/dadebulba/)
-* **Davide Piva** - *programmer* - [Github](https://github.com/Pivoz)
-* **Marco Luzzara** - *programmer* - [Github](https://github.com/marco-luzzara/)
-* **Lorenzo Framba** - *programmer* - [Github](https://github.com/lorenzoframba)
-* **Morgan Malavasi** - *programmer* - [Github](https://github.com/theRaven97)
+* [**Davide Bulbarelli**](https://github.com/dadebulba/) - *programmer* -
+* [**Davide Piva**](https://github.com/Pivoz) - *programmer* -
+* [**Marco Luzzara**](https://github.com/marco-luzzara/) - *programmer* - 
+* [**Lorenzo Framba**](https://github.com/lorenzoframba) - *programmer* - 
+* [**Morgan Malavasi**](https://github.com/theRaven97) - *programmer* -
 
 ## License
 
