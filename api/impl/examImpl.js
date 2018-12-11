@@ -57,11 +57,13 @@ async function addExam(value) {
     }
 }
 //updates un exam, it requires the owner of the exam, the Id of the exam and the value of the exam (body)
-async function updateExam(value) {
+async function updateExam(userId,examId,value) {
     try {
         let exam = createExam(value);   
+        exam.id = examId;
+        exam.ownerId = userId;
         let examDb = new ExamDb();
-
+        
         await examDb.update(exam);
     }
     catch (err) {
@@ -78,11 +80,50 @@ async function deleteExam(userId, examId) {
         throw err;
     }
 }
+
+async function validateOwner(userId,examId) {
+    try {
+        let examDb = new ExamDb();
+        let exam = await examDb.read({id: examId});
+
+        if(exam.ownerId == userId)
+            return true;
+        else
+            return false;
+    }
+    catch (err) {
+        throw err;
+    }
+}
+
+async function getAllExams(userId) {
+    try {
+        let examDb = new ExamDb();
+        return await examDb.getAllExams(userId);
+    }
+    catch (err) {
+        throw err;
+    }
+}
+
+async function getAllExamTasks(userId, examId) {
+    try {
+        let examDb = new ExamDb();
+        return await examDb.getTasks(userId,examId);
+    }
+    catch (err) {
+        throw err;
+    }
+}
+
 //exports the modules
 module.exports = {
     check_body: check_body,
     addExam: addExam,
     getExam: getExam,
     updateExam: updateExam,
-    deleteExam: deleteExam
+    deleteExam: deleteExam,
+    validateOwner : validateOwner,
+    getAllExams : getAllExams,
+    getAllExamTasks : getAllExamTasks
 }

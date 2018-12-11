@@ -85,6 +85,27 @@ let user_data = [
         lastname: 'Rossi',
         email: 'marco@rossi.it',
         password: 'marco',
+        exams: [
+            {
+                examId : 0,
+                startCompiling : '2018-12-05T14:43:00.000Z',
+                assignedTasks : [1,2,3,4,5],
+                prAnswer: [
+                    {
+                        userId: 1,
+                        taskId: 1
+                    },
+                ],
+                points : 25
+            }
+        ]
+    },
+    {
+        id: 4,
+        name: 'Luca',
+        lastname: 'Bianchi',
+        email: 'luca@biachi.it',
+        password: 'luca',
         exams: []
     }
     

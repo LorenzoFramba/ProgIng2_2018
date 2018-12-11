@@ -1,13 +1,14 @@
 let exam_data = [
     {
         'id': 0,
-        'ownerId': 1,
+        'ownerId': 0,
         'name': 'CI',
         'duration': 120,
         'deadline': '2019-10-05T14:48:00.000Z',
         'startDate': '2019-10-04T14:48:00.000Z',
         'groupId': 0,
-        'countTask': 10
+        'countTask': 10,
+        'tasks' : [0,1,2,3]
     },
     {
         'id': 1,
@@ -17,7 +18,8 @@ let exam_data = [
         'deadline': '2019-10-05T14:48:00.000Z',
         'startDate': '2019-10-04T14:48:00.000Z',
         'groupId': 3,
-        'countTask': 10
+        'countTask': 10,
+        'tasks' : []
     },
     {
         'id': 2,
@@ -27,7 +29,8 @@ let exam_data = [
         'deadline': '2019-10-05T14:48:00.000Z',
         'startDate': '2019-10-04T14:48:00.000Z',
         'groupId': 2,
-        'countTask': 12
+        'countTask': 12,
+        'tasks' : []
     },
     {
         'id': 3,
@@ -37,7 +40,8 @@ let exam_data = [
         'deadline': '2019-10-05T14:48:00.000Z',
         'startDate': '2019-10-04T14:48:00.000Z',
         'groupId': 4,
-        'countTask': 6
+        'countTask': 6,
+        'tasks' : []
     },
     {
         'id': 4,
@@ -47,7 +51,8 @@ let exam_data = [
         'deadline': '2019-10-05T14:48:00.000Z',
         'startDate': '2019-10-04T14:48:00.000Z',
         'groupId': 0,
-        'countTask': 6
+        'countTask': 6,
+        'tasks' : []
     }
 ];
 

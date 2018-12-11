@@ -39,5 +39,6 @@ module.exports = {
         catch (err) {
             throw err;
         }
-    }
+    },
+    getExamOwner: getExamOwner
 }
