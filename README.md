@@ -30,16 +30,20 @@ In this [Apiary](https://proging2.docs.apiary.io/#)  document you will be able t
 
 You need to see the [Apiary](https://proging2.docs.apiary.io/#)  document to understand the API, but also you need to check out this [chart](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png) so you have a basic idea of how the system was structured and implemented. 
 
-First of all, the program **will not** work without the secret key, so ask politely to us and it will be provided! then 
-**create a new folder called "private"** in the project folder, and insert the secret key file received in it.
+First of all, the program **will not** work without the secret key, so ask politely to us and it will be provided! Then run the following command in your terminal: 
+```
+SET PRIVATE_KEY_PROGING2='<provided key>'
+```
 
 
 ## POSTMAN
 
-To test the program, you also need to import the envirnoment and the collection to test the project. We will also provide that for you.
+To test the program, you also need to import the envirnoment and the collection to test the project. We will also provide that for you inside postman folder.
 
 
+### Troubleshooting
 
+If something goes wrong try to restart the server and/or get a new token with the POST /Token request (see following examples)
 
 ## Example
 
@@ -68,7 +72,7 @@ App listening on port 3000 on uri http://localhost
 
 ```
 
-### GET /Token
+### POST /Token
 
 Firsty, we need to acquire the correct token, so let's do a **POST** request on the token
 
