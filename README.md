@@ -109,7 +109,7 @@ Task: Could be either a multiple choice task, true or false or written paragraph
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the UNITN License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
 
