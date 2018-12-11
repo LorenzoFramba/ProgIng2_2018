@@ -178,10 +178,6 @@ paths:
             $ref: '#/definitions/User'
         400:
           description: Bad Request
-        
-
-  
-  /Users/{userId}:     
     get:
       security:
         - ApiKeyAuth: []
@@ -247,12 +243,7 @@ paths:
           description: Bad Request
         404:
           description: User not found
-    parameters:
-      - in: path
-        name: userId
-        description: ID of the user
-        required: true
-        type: integer
+    
         
   /Users/Exams: 
     get:
