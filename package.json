@@ -1,7 +1,7 @@
 {
   "name": "proging2_2018",
   "version": "1.0.0",
-  "description": "Ciao a tutti, sono il Bulba",
+  "description": "Software Engineering 2",
   "main": "index.js",
   "scripts": {
     "test": "jest",
