@@ -82,8 +82,9 @@ router_exam.post('/', async function (req, res, next) {
     if (!examimpl.check_body(body))
         res.status(400).json(errors.PARAMS_UNDEFINED);
     try {
+        body.ownerId = userId;
         await examimpl.addExam(body);
-        res.status(204).end();
+        res.status(201).end();
     } catch (err) {
         next(err);
     }

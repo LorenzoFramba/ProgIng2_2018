@@ -31,7 +31,7 @@ describe('POST /Exams', () => {
     beforeAll(() => {
         Object.assign(myHeader,{"Content-Type":"application/json"},header);
     })
-    test("Success -> 204 (OK)", async () => {
+    test("Success -> 201 (OK)", async () => {
         //opzioni da mettere nella richiesta
         let options = {
             method: 'POST',
@@ -41,7 +41,7 @@ describe('POST /Exams', () => {
 
         expect.assertions(1); //mi aspetto 2 expect, return importante se no salta, => indica la callback
         let res = await fetch(examEndpoint, options);
-        expect(res.status).toBe(204);
+        expect(res.status).toBe(201);
     });
 
     test('Failed -> 400 (Bad request) :: wrong body data', () => {
@@ -218,7 +218,7 @@ describe("GET /Exams", () => {
         let examReturned = await result.json();
         expect(result.status).toBe(200);
         
-        expect(examReturned).toEqual(myexam);
+        expect(examReturned).toMatchObject(myexam);
     });
 
     test("Failed -> 401 (Unauthorized) :: Token not valid", async () => {

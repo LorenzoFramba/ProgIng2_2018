@@ -332,6 +332,7 @@ describe("Modify an existing group", () => {
     test('08 - Group valid', () => {
 
         //groupAdded = new Group(15112, "Nome1", [], user_data[0].id);
+        //let groupMod = new Group(4, "Group4", [], 0);
         let groupMod = group_data[0];
         groupMod.name = "MODIFICATO_DA_TEST";
 
@@ -347,7 +348,7 @@ describe("Modify an existing group", () => {
             })
     });
 
-    test('11 - Token not valid', () => {
+    test('09 - Token not valid', () => {
         let options = {
             method: 'PUT',
             body: JSON.stringify(badGroupList[7]),
@@ -462,7 +463,7 @@ describe("Add members by mail", () => {
         )
     });
 
-    test('02 - Try to modify other groups', () => {
+    test('01 - Try to modify other groups', () => {
         let options = {
             method: 'PUT',
             body: JSON.stringify({members: ["mail@mail.com"]}),

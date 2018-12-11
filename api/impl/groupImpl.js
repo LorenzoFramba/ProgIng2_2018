@@ -1,6 +1,6 @@
 let Group = require("../../model/group");
 let GroupDB = require('../../mock/mockedGroup');
-let UserDB = require("../../mock/mockedUser");
+let UserDB = require("../../mock/mockedUser"); 
 
 module.exports = {
 
@@ -36,7 +36,7 @@ module.exports = {
         try {
             let groupDB = new GroupDB();
             let response = await groupDB.read({id: idGroup});
-            if (JSON.stringify(response) !== JSON.stringify({}))
+            if (response !== undefined)
                 return true;
             else
                 return false;
@@ -124,15 +124,15 @@ module.exports = {
         //Controllo dell'array dei membri di newGroup
         for (let member of newGroup.members)
             if (await module.exports.checkMember(member) === false)
-                return null;
+                return false;
 
         try {
             let groupDB = new GroupDB();
-            await groupDB.update( this.createGroup(newGroup.id, newGroup.name, newGroup.members, newGroup.owner));
+            await groupDB.update( module.exports.createGroup(newGroup.id, newGroup.name, newGroup.members, newGroup.owner));
             return true;
         } catch (err){
             throw err;
-        }
+        } 
     },
 
     /* Funzione che prende tutti i dettagli di un determinato gruppo */
@@ -188,7 +188,6 @@ module.exports = {
 
     /* Funzione per aggiungere una lista di utenti (mail) a un gruppo esistente */
     addMembers : async function(idUser, idGroup, mailList){
-
         //Check dei parametri
         if (arguments.length !== 3 || idUser === undefined || idGroup === undefined || mailList === undefined)
             return null;
@@ -216,6 +215,7 @@ module.exports = {
         let group = await groupDB.read({id: idGroup});
 
         if (group !== undefined){
+
             let concat = arrayUser.concat(group.members);
 
             let groupMod = new Group(group.id, group.name, concat, group.owner);
@@ -224,8 +224,9 @@ module.exports = {
             else    
                 return null;
         }
-        else
+        else{
             return null;
+        }
 
     }
 }
