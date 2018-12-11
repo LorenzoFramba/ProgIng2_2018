@@ -1,7 +1,7 @@
 let exam_data = [
     {
         'id': 0,
-        'ownerId': 0,
+        'ownerId': 1,
         'name': 'CI',
         'duration': 120,
         'deadline': '2019-10-05T14:48:00.000Z',

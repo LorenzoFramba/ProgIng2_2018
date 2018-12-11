@@ -247,7 +247,7 @@ describe('PUT /Answers', () => {
             expect(res.status).toBe(404);
 
             let retObj = await res.json();
-            expect(retObj.code).toEqual('M0002');
+            expect(retObj.code).toEqual('A0007');
         });
     });
 });
