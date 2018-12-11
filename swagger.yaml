@@ -755,12 +755,8 @@ definitions:
     properties:
       id:
         type: integer
-<<<<<<< HEAD
       examId:
         type: integer
-=======
-        description: id of the task
->>>>>>> 69c831bd67ab00ccdcfde4a4b4830e3218a85de9
       text:
         type: string
         description: question
