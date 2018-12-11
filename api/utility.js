@@ -1,3 +1,5 @@
+const ExamDb = require('../mock/mockedExam');
+
 function canBeParsedInt(n) {
     return Number(n) === parseInt(n);
 }
@@ -17,5 +19,19 @@ module.exports = {
     },
     castToInt: function(value) {
         return canBeParsedInt(value) ? parseInt(value) : undefined;
+    },
+    getExamOwner: async function (examId) {
+        try {
+            let examDb = new ExamDb();
+            let exam = await examDb.read({ id: examId });
+    
+            if (exam === undefined)
+                return undefined;
+            else
+                return exam.ownerId;
+        }
+        catch (err) {
+            throw err;
+        }
     }
 }

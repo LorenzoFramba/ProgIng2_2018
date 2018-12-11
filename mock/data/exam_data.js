@@ -48,6 +48,16 @@ let exam_data = [
         'startDate': '2019-10-04T14:48:00.000Z',
         'groupId': 0,
         'countTask': 6
+    },
+    {
+        'id': 5,
+        'ownerId': 123,
+        'name': 'CI',
+        'duration': 120,
+        'deadline': '2019-10-05T14:48:00.000Z',
+        'startDate': '2019-10-04T14:48:00.000Z',
+        'groupId': 0,
+        'countTask': 10
     }
 ];
 
