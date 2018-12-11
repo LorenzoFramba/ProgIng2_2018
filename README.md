@@ -31,7 +31,13 @@ In this [Apiary](https://proging2.docs.apiary.io/#)  document you will be able t
 You need to see the [Apiary](https://proging2.docs.apiary.io/#)  document to understand the API, but also you need to check out this [chart](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png) so you have a basic idea of how the system was structured and implemented. 
 
 First of all, the program **will not** work without the secret key, so ask politely to us and it will be provided! then 
-**CREATE A NEW FOLDER CALLED "private"** in the project folder, and insert the secret key file received in it.
+**create a new folder called "private"** in the project folder, and insert the secret key file received in it.
+
+
+## POSTMAN
+
+To test the program, you also need to import the envirnoment and the collection to test the project. We will also provide that for you.
+
 
 
 
@@ -93,7 +99,7 @@ http://localhost:3000/v1/Exams/
 select "JSON Application/json" and in the body, create the Exam with this scheme 
 ```
 {
-    "id": F,
+    "id": 0,
     "ownerId": 0,
     "name": "HCI",
     "duration": 130,
