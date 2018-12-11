@@ -7,6 +7,7 @@ const config = require('config');
 const basePath = config.get("basePath");
 const PORT = process.env.PORT || config.get('port');
 const router_answer = require("./api/def/answer.js");
+const router_pr = require('./api/def/peerReview');
 const router_user = require("./api/def/user.js");
 const router_token = require('./api/def/token.js');
 const router_group = require("./api/def/group");
@@ -37,6 +38,7 @@ app.use(mwAuth.unless({ path: [
     }
 ] }));
 
+app.use(`/${basePath}/PeerReviews`, router_pr);
 app.use(`/${basePath}/Answers`, router_answer);
 app.use(`/${basePath}/Users`, router_user);
 app.use(`/${basePath}/Token`, router_token);

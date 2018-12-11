@@ -1,15 +1,20 @@
 const fetch = require('node-fetch');
 const utils = require('../utility');
 
-let url = utils.createUrl('Answers');
+let url = utils.createUrl('PeerReviews');
 let userData = {
 	email : "gino@pino.it",
 	password : "ciccio"
 }
 let header;
 
-function createAnswerQuery(userId, taskId, examId) {
+function createPeerReviewQuery(userId, reviewerId, taskId, examId) {
     return utils.createQuery(
+        reviewerId === undefined ? undefined : 
+        {
+            name: 'reviewer',
+            value: reviewerId
+        },
         userId === undefined ? undefined : 
         {
             name: 'user',
@@ -32,7 +37,7 @@ beforeAll(async () => {
     header = await utils.getAuthHeader(userData.email, userData.password);
 });
 
-describe('GET /Answers', () => {
+describe('GET /PeerReviews', () => {
     let options;
     beforeAll(() => {
         options = {
@@ -42,10 +47,11 @@ describe('GET /Answers', () => {
     });
 
     test('Success -> 200 (OK)', async () => {
-        let userId = 0;
+        let userId = 1;
         let taskId = 1;
         let examId = 0;
-        let queries = createAnswerQuery(userId, taskId, examId);
+        let reviewerId = 0;
+        let queries = createPeerReviewQuery(userId, reviewerId, taskId, examId);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -58,13 +64,14 @@ describe('GET /Answers', () => {
                 'userId': userId,
                 'examId': examId,
                 'taskId': taskId,
-                'value': 'answer001'
+                'reviewerId': reviewerId,
+                'value': 'reviewerAnswer1001'
             });
         });
     });
 
     test('Failed -> 400 (Bad Request) :: Undefined params', async () => {
-        let queries = createAnswerQuery(1)
+        let queries = createPeerReviewQuery(1)
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -78,7 +85,7 @@ describe('GET /Answers', () => {
     });
 
     test('Failed -> 400 (Bad Request) :: Wrong type params', async () => {
-        let queries = createAnswerQuery("1.23", "test", 3.43)
+        let queries = createPeerReviewQuery("1.23", "test", 3.43, null);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -91,8 +98,8 @@ describe('GET /Answers', () => {
         });
     });
 
-    test('Failed -> 401 (Unauthorized) :: User access on not owned answer', async () => {
-        let queries = createAnswerQuery(1, 0, 0);
+    test('Failed -> 401 (Unauthorized) :: User access on not owned PeerReview', async () => {
+        let queries = createPeerReviewQuery(3, 1, 0, 0);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -105,8 +112,8 @@ describe('GET /Answers', () => {
         });
     });
 
-    test('Failed -> 404 (Not Found) :: answer does not exist', async () => {
-        let queries = createAnswerQuery(0, 100, 0);
+    test('Failed -> 404 (Not Found) :: PeerReview does not exist', async () => {
+        let queries = createPeerReviewQuery(1, 0, 3, 1);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -120,20 +127,20 @@ describe('GET /Answers', () => {
     });
 });
 
-describe('POST /Answers', () => {
+describe('POST /PeerReviews', () => {
     let options;
     beforeAll(() => {
         options = {
             method: 'POST',
             headers: header,
             body: {
-                value: 'answer'
+                value: 'PeerReview'
             }
         };
     });
 
     test('Success -> 204 (No Content)', () => {
-        let queries = createAnswerQuery(undefined, 0, 1);
+        let queries = createPeerReviewQuery(1, undefined, 3, 1);
         let testUrl = url + queries;
 
         expect.assertions(1);
@@ -144,7 +151,7 @@ describe('POST /Answers', () => {
     });
 
     test('Failed -> 400 (Bad Request) :: Undefined params', async () => {
-        let queries = createAnswerQuery(undefined, 2, undefined);
+        let queries = createPeerReviewQuery(undefined, 2, undefined);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -158,7 +165,7 @@ describe('POST /Answers', () => {
     });
 
     test('Failed -> 400 (Bad Request) :: Wrong type params', async () => {
-        let queries = createAnswerQuery(undefined, 'test', 1.23);
+        let queries = createPeerReviewQuery(21, undefined, 'test', 1.23);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -171,8 +178,8 @@ describe('POST /Answers', () => {
         });
     });
 
-    test('Failed -> 400 (Bad Request) :: Duplicated Answer', async () => {
-        let queries = createAnswerQuery(undefined, 1, 0);
+    test('Failed -> 400 (Bad Request) :: Duplicated PeerReview', async () => {
+        let queries = createPeerReviewQuery(1, undefined, 1, 0);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -186,20 +193,20 @@ describe('POST /Answers', () => {
     });
 });
 
-describe('PUT /Answers', () => {
+describe('PUT /PeerReviews', () => {
     let options;
     beforeAll(() => {
         options = {
             method: 'PUT',
             headers: header,
             body: {
-                value: 2
+                value: 'tested'
             }
         };
     });
 
     test('Success -> 204 (No Content)', () => {
-        let queries = createAnswerQuery(undefined, 1, 0);
+        let queries = createPeerReviewQuery(1, undefined, 1, 0);
         let testUrl = url + queries;
 
         expect.assertions(1);
@@ -210,7 +217,7 @@ describe('PUT /Answers', () => {
     });
 
     test('Failed -> 400 (Bad Request) :: Undefined params', async () => {
-        let queries = createAnswerQuery(1);
+        let queries = createPeerReviewQuery(1);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -224,7 +231,7 @@ describe('PUT /Answers', () => {
     });
 
     test('Failed -> 400 (Bad Request) :: Wrong type params', async () => {
-        let queries = createAnswerQuery(undefined, 'test', '1.2345');
+        let queries = createPeerReviewQuery(1, undefined, 'test', '1.2345');
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -237,8 +244,8 @@ describe('PUT /Answers', () => {
         });
     });
 
-    test('Failed -> 404 (Not Found) :: Answer not found', async () => {
-        let queries = createAnswerQuery(undefined, 100, 0);
+    test('Failed -> 404 (Not Found) :: PeerReview not found', async () => {
+        let queries = createPeerReviewQuery(1, undefined, 1, 1);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -252,7 +259,7 @@ describe('PUT /Answers', () => {
     });
 });
 
-describe('DELETE /Answers', () => {
+describe('DELETE /PeerReviews', () => {
     let options;
     beforeAll(() => {
         options = {
@@ -262,7 +269,7 @@ describe('DELETE /Answers', () => {
     });
 
     test('Success -> 204 (No Content)', async () => {
-        let queries = createAnswerQuery(undefined, 2, 0);
+        let queries = createPeerReviewQuery(1, undefined, 1, 0);
         let testUrl = url + queries;
 
         expect.assertions(1);
@@ -273,7 +280,7 @@ describe('DELETE /Answers', () => {
     });
 
     test('Failed -> 400 (Bad Request) :: Undefined params', async () => {
-        let queries = createAnswerQuery(1);
+        let queries = createPeerReviewQuery(1);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -287,7 +294,7 @@ describe('DELETE /Answers', () => {
     });
 
     test('Failed -> 400 (Bad Request) :: Wrong type params', async () => {
-        let queries = createAnswerQuery(undefined, 'test', '1.2345');
+        let queries = createPeerReviewQuery(0, undefined, 'test', '1.2345');
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -300,8 +307,8 @@ describe('DELETE /Answers', () => {
         });
     });
 
-    test('Failed -> 404 (Not Found) :: Answer not found', async () => {
-        let queries = createAnswerQuery(undefined, 105, 0);
+    test('Failed -> 404 (Not Found) :: PeerReview not found', async () => {
+        let queries = createPeerReviewQuery(1, undefined, 1, 1);
         let testUrl = url + queries;
 
         expect.assertions(2);
