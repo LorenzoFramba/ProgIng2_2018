@@ -38,7 +38,7 @@ class MockedUser extends UserPrototype {
                 resolve(undefined);
             else {
                 let examsReturned = userFound.exams;
-                let tmp = examsReturned.find(el => el.id === exam);
+                let tmp = examsReturned.find(el => el.examId === exam);
                 if(tmp === undefined)
                     resolve(undefined);
                 else{
