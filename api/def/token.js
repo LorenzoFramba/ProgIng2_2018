@@ -12,16 +12,16 @@ router.post('/', async function(req, res) {
     let b_pwd = req.body.password;
 
     if (apiUtility.validateParamsUndefined(b_email, b_pwd))
-        res.status(400).json(errors.PARAMS_UNDEFINED);
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
 
     let userDb = new UserDb();
     try {
         let userId = await userDb.authenticate(b_email, b_pwd);
         let token = await tokenImpl.createToken(userId);
-        res.status(200).send(token);
+        return res.status(200).send(token);
     }
     catch (e) {
-        res.status(401).json(errors.INVALID_CREDENTIALS);
+        return res.status(401).json(errors.INVALID_CREDENTIALS);
     }
 });
 

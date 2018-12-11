@@ -5,23 +5,28 @@ const userURL = "http://localhost:3000/v1/Users";
 
 const User = require("../../model/user");
 
-var mail, pass;
+let mail, pass;
 
 beforeAll(async () => {
 
     jest.setTimeout(100000);
 
     //Inserisco un utente di prova
-    mail = "mmmail@test.it";
-    pass = "testtt";
-    let newUser = new User(99999, "nameTest", "lastnameTest", mail, pass, []);
-    let options = {
-        method: "POST",
-        body: JSON.stringify(newUser),
-        headers: { 'Content-Type': 'application/json' }
-    }
+    try {
+        mail = "mmmail@test.it";
+        pass = "testtt";
+        let newUser = new User(99999, "nameTest", "lastnameTest", mail, pass, []);
+        let options = {
+            method: "POST",
+            body: JSON.stringify(newUser),
+            headers: { 'Content-Type': 'application/json' }
+        }
 
-    await fetch(userURL, options);
+        let user = await fetch(userURL, options);
+    }
+    catch(err) {
+        console.log(err);
+    }
 });
 
 describe("Retrieve token", () => {
@@ -31,6 +36,7 @@ describe("Retrieve token", () => {
             body: JSON.stringify({email: "adfasydasj", password: pass}),
             headers: { 'Content-Type': 'application/json' }
         }
+        expect.assertions(1);
 
         return fetch(tokenURL, options).then(
             res => {
@@ -46,6 +52,7 @@ describe("Retrieve token", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
+        expect.assertions(1);
         return fetch(tokenURL, options).then(
             res => {
                 expect(res.status).toBe(401);
@@ -60,6 +67,7 @@ describe("Retrieve token", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
+        expect.assertions(1);
         return fetch(tokenURL, options).then(
             res => {
                 expect(res.status).toBe(400);
@@ -74,6 +82,7 @@ describe("Retrieve token", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
+        expect.assertions(1);
         return fetch(tokenURL, options).then(
             res => {
                 expect(res.status).toBe(400);
@@ -88,11 +97,10 @@ describe("Retrieve token", () => {
             headers: { 'Content-Type': 'application/json' }
         }
 
-        return fetch(tokenURL, options).then(
-            res => {
-                expect(res.status).toBe(400);
-            }
-        )
+        expect.assertions(1);
+        return fetch(tokenURL, options).then(res => {
+            expect(res.status).toBe(400);
+        });
     });
 
     test('05 - Good request', () => {
@@ -100,12 +108,11 @@ describe("Retrieve token", () => {
             method: 'POST',
             body: JSON.stringify({email: mail, password: pass}),
             headers: { 'Content-Type': 'application/json' }
-        }
+        }   
 
-        return fetch(tokenURL, options).then(
-            res => {
-                expect(res.status).toBe(200);
-            }
-        )
+        expect.assertions(1);
+        return fetch(tokenURL, options).then(res => {
+            expect(res.status).toBe(200);
+        });
     });
-})
+});
