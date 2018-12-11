@@ -1,4 +1,5 @@
-[![Jsonnambuli Logo](https://github.com/dadebulba/ProgIng2_2018/blob/release/jsonnambuli.png)](https://github.com/dadebulba/ProgIng2_2018)
+[![Jsonnambuli Logo](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/jsonnambuli.png)](https://github.com/dadebulba/ProgIng2_2018)
+
 
 # ProgIng2
 
@@ -16,11 +17,7 @@ Our project will allow users to create tasks, combined in exams and assign it to
 
 ## General idea of the Scheme
 
-C'e la possibilita di configuarare un ambiente di node,  fai vedere un development . json con endpoing. e' possibile modificare questi paramentri aggiungendo un ambiente di node attraverso un config.
-metto il jwt json web token, da settare.
-
-aggiunta di un utente.
-
+![https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png](https://github.com/dadebulba/ProgIng2_2018)
 
 
 
