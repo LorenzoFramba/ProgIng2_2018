@@ -15,17 +15,12 @@ const userData = {
 	password : "ciccio"
 }
 
-
 //inizializzo i casi di test
 beforeAll(async () => {
 
-    exams.push(new Exam(123, 321, "analisi", 32.3 ,'2019-10-05T14:48:00.000Z' , '2019-10-05T14:48:00.000Z',[], 4345, 43));
+    exams.push(new Exam(123, 321, "analisi", 32.3 ,'2019-10-05T14:48:00.000Z' , '2019-10-05T14:48:00.000Z', 4345, 43,[]));
     
-    token = await utils.getToken(userData.email, userData.password);
-    header = {
-        'Authorization': `Bearer ${token}`
-    };
-
+    header = await utils.getAuthHeader(userData.email, userData.password);
 
     jest.setTimeout(100000); //evito che le richieste vadano in timeout troppo presto
 });
@@ -33,11 +28,12 @@ beforeAll(async () => {
 
 //classe di test par la post user
 describe('POST /Exams', () => {
+    let myHeader = {};
+    beforeAll(() => {
+        Object.assign(myHeader,{"Content-Type":"application/json"},header);
+    })
     test("Success -> 204 (OK)", async () => {
         //opzioni da mettere nella richiesta
-        let myHeader = {};
-        Object.assign(myHeader,{"Content-Type":"application/json"},header);
-
         let options = {
             method: 'POST',
             body: JSON.stringify(exams[0]),
@@ -51,9 +47,6 @@ describe('POST /Exams', () => {
 
     test('Failed -> 400 (Bad request) :: wrong body data', () => {
 
-        let myHeader = {};
-        Object.assign(myHeader,{"Content-Type":"application/json"},header);
-
         let options = {
             method: 'POST',
             body: JSON.stringify(new Exam(213, 
@@ -61,7 +54,55 @@ describe('POST /Exams', () => {
                 "analisi", 
                 32.3 ,
                 '2019-10-05T14:48:00.000Z'  , 
-                '2019-10-05T14:48:00.000Z', undefined, 43)),
+                '2019-10-05T14:48:00.000Z', undefined, 43,[])),
+            headers: myHeader
+        }
+
+        return fetch(examURL, options).then(
+            res => {
+                expect(res.status).toBe(400);
+            }
+        )
+    });
+    test('Failed -> 400 (Bad request) :: wrong body data', () => {
+        
+        let options = {
+            method: 'POST',
+            body: JSON.stringify(new Exam(213, 
+                321, 
+                "analisi",
+                32.3 ,
+                '2019-10-05T14:48:00.000Z'  , 
+                '2019-10-05T14:48:00.000Z' ,
+                43,undefined,[])),
+            headers: myHeader
+        }
+
+        return fetch(examURL, options).then(
+            res => {
+                expect(res.status).toBe(400);
+            }
+        )
+    });
+    test('Failed -> 400 (Bad request) :: wrong body data', () => {
+
+        let options = {
+            method: 'POST',
+            body: JSON.stringify(new Exam(213, 321, "analisi", 32.3 ,'2019-10-05T14:48:00.000Z'  , undefined , 324, 43, [])),
+            headers: myHeader
+        }
+
+        return fetch(examURL, options).then(
+            res => {
+                expect(res.status).toBe(400);
+            }
+        )
+    });
+    test('Failed -> 400 (Bad request) :: wrong body data', () => {
+
+        let options = {
+            method: 'POST',
+            body: JSON.stringify(new Exam(213, 321, "analisi", 32.3 ,undefined , '2019-10-05T14:48:00.000Z' , 345, 43, [])),
             headers: myHeader
         }
 
@@ -74,14 +115,8 @@ describe('POST /Exams', () => {
     test('Failed -> 400 (Bad request) :: wrong body data', () => {
         let options = {
             method: 'POST',
-            body: JSON.stringify(new Exam(213, 
-                321, 
-                "analisi",
-                32.3 ,
-                '2019-10-05T14:48:00.000Z'  , 
-                '2019-10-05T14:48:00.000Z' ,
-                43)),
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+            body: JSON.stringify(new Exam(213, 321, "analisi", undefined ,'2019-10-05T14:48:00.000Z'  , '2019-10-05T14:48:00.000Z' , 543, 43, [])),
+            headers: myHeader
         }
 
         return fetch(examURL, options).then(
@@ -93,8 +128,8 @@ describe('POST /Exams', () => {
     test('Failed -> 400 (Bad request) :: wrong body data', () => {
         let options = {
             method: 'POST',
-            body: JSON.stringify(new Exam(213, 321, "analisi", 32.3 ,'2019-10-05T14:48:00.000Z'  , undefined ,[], 324, 43)),
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+            body: JSON.stringify(new Exam(213, 321, undefined, 32.3 ,'2019-10-05T14:48:00.000Z'  , '2019-10-05T14:48:00.000Z' , 54, 43, [])),
+            headers: myHeader
         }
 
         return fetch(examURL, options).then(
@@ -106,8 +141,8 @@ describe('POST /Exams', () => {
     test('Failed -> 400 (Bad request) :: wrong body data', () => {
         let options = {
             method: 'POST',
-            body: JSON.stringify(new Exam(213, 321, "analisi", 32.3 ,undefined , '2019-10-05T14:48:00.000Z' , 345, 43)),
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+            body: JSON.stringify(new Exam(213, undefined, "analisi", 32.3 ,'2019-10-05T14:48:00.000Z'  , '2019-10-05T14:48:00.000Z' , 54, 43, [])),
+            headers: myHeader
         }
 
         return fetch(examURL, options).then(
@@ -119,47 +154,8 @@ describe('POST /Exams', () => {
     test('Failed -> 400 (Bad request) :: wrong body data', () => {
         let options = {
             method: 'POST',
-            body: JSON.stringify(new Exam(213, 321, "analisi", undefined ,'2019-10-05T14:48:00.000Z'  , '2019-10-05T14:48:00.000Z' , 543, 43)),
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
-        }
-
-        return fetch(examURL, options).then(
-            res => {
-                expect(res.status).toBe(400);
-            }
-        )
-    });
-    test('Failed -> 400 (Bad request) :: wrong body data', () => {
-        let options = {
-            method: 'POST',
-            body: JSON.stringify(new Exam(213, 321, undefined, 32.3 ,'2019-10-05T14:48:00.000Z'  , '2019-10-05T14:48:00.000Z' , 54, 43)),
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
-        }
-
-        return fetch(examURL, options).then(
-            res => {
-                expect(res.status).toBe(400);
-            }
-        )
-    });
-    test('Failed -> 400 (Bad request) :: wrong body data', () => {
-        let options = {
-            method: 'POST',
-            body: JSON.stringify(new Exam(213, undefined, "analisi", 32.3 ,'2019-10-05T14:48:00.000Z'  , '2019-10-05T14:48:00.000Z' , 54, 43)),
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
-        }
-
-        return fetch(examURL, options).then(
-            res => {
-                expect(res.status).toBe(400);
-            }
-        )
-    });
-    test('Failed -> 400 (Bad request) :: wrong body data', () => {
-        let options = {
-            method: 'POST',
-            body: JSON.stringify(new Exam(undefined, 321, "analisi", 32.3 ,'2019-10-05T14:48:00.000Z'  , '2019-10-05T14:48:00.000Z' , 54, 43)),
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+            body: JSON.stringify(new Exam(undefined, 321, "analisi", 32.3 ,'2019-10-05T14:48:00.000Z'  , '2019-10-05T14:48:00.000Z' , 54, 43, [])),
+            headers: myHeader
         }
 
         return fetch(examURL, options).then(
@@ -190,7 +186,8 @@ describe("GET /Exam", () => {
                 'deadline': '2019-10-05T14:48:00.000Z',
                 'startDate': '2019-10-04T14:48:00.000Z',
                 'groupId': 0,
-                'countTask': 10
+                'countTask': 10,
+                'tasks' : []
             }
         
         expect.assertions(2);
@@ -213,34 +210,52 @@ describe("GET /Exam", () => {
     });
 });
 
-/*
+
 //DELETE
+describe("DELETE /Exams", () => {
+    let options;
+    beforeAll(() => {
+        options = {
+            method: 'DELETE',
+            headers: header
+        };
+    });
+    test("Success -> 204 (OK)", async () => {
+        expect.assertions(1);
+        let res = await fetch(examEndpoint + "/1", options);
+        expect(res.status).toBe(204);
+    });
 
-test("should delete the specified exam", () => {
-    //opzioni da mettere nella richiesta
-    let options = {
-        method: 'POST',
-        body: JSON.stringify(exams[0]),
-        headers: { 'Content-Type': 'application/json' }
-    }
+    test("Failed -> 401 (Unauthorized) :: Token not used", async () => {
+        let wrongOpt = {};
+        Object.assign(wrongOpt,options);
+        wrongOpt.headers = null;
+        expect.assertions(2);
+        let res = await fetch(examEndpoint + "/1", wrongOpt);
+        let jsonRes = await res.json();
+        expect(res.status).toBe(401);
+        expect(jsonRes).toEqual(errors.INVALID_TOKEN);
+    });
 
-    expect.assertions(4);
+    test("Failed -> 401 (Unauthorized) :: User not owner", async () => {
+        expect.assertions(2);
+        let res = await fetch(examEndpoint + "/3", options);
+        let jsonRes = await res.json();
+        expect(res.status).toBe(401);
+        expect(jsonRes).toEqual(errors.ACCESS_NOT_GRANTED);
+    });
 
-    return fetch(examURL, options).then(
-        res => res.json().then(examReturned => {
-            expect(res.status).toBe(201);
-           let idDelete = examReturned.id;
-            options = {
-                method: 'DELETE'
-            }
-            return fetch(examURL + idDelete, options).then(
-                res2 => {expect(res2.status).toBe(200);                    
-                })
-        })
+    test("Failed -> 404 (Not found)", async () => {
+        expect.assertions(2);
+        let res = await fetch(examEndpoint + "/123", options);
+        let jsonRes = await res.json();
+        expect(res.status).toBe(404);
+        expect(jsonRes).toEqual(errors.ENTITY_NOT_FOUND);
         
-    )
-});
-*/
+    });
+})
+
+
 /*
 describe('PUT /Users', () => {
     test("Success -> 204 (OK)", async () => {

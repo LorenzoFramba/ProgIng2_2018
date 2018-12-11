@@ -78,11 +78,27 @@ async function deleteExam(userId, examId) {
         throw err;
     }
 }
+
+async function validateOwner(userId,examId) {
+    try {
+        let examDb = new ExamDb();
+        let exam = await examDb.read({id: examId});
+
+        if(exam.ownerId == userId)
+            return true;
+        else
+            return false;
+    }
+    catch (err) {
+        throw err;
+    }
+}
 //exports the modules
 module.exports = {
     check_body: check_body,
     addExam: addExam,
     getExam: getExam,
     updateExam: updateExam,
-    deleteExam: deleteExam
+    deleteExam: deleteExam,
+    validateOwner : validateOwner
 }

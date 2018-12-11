@@ -1,5 +1,5 @@
 class Exam {
-    constructor(id, ownerId, name, duration, deadline, startDate, groupId, countTask) {
+    constructor(id, ownerId, name, duration, deadline, startDate, groupId, countTask, tasks) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -8,6 +8,7 @@ class Exam {
         this.startDate = startDate;
         this.groupId = groupId;
         this.countTask = countTask;
+        this.tasks = tasks;
     }
 }
 
