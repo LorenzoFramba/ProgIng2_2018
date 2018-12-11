@@ -33,12 +33,9 @@ module.exports = {
         if (arguments.length !== 1 || idGroup === undefined || isNaN(idGroup))
             return false;
 
-        console.log("CG: " + idGroup);
-
         try {
             let groupDB = new GroupDB();
             let response = await groupDB.read({id: idGroup});
-            console.log("CGRESP = " + response);
             if (response !== undefined)
                 return true;
             else
