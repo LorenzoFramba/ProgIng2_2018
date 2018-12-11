@@ -49,4 +49,7 @@ app.use(`/${basePath}/Tasks`, router_task);
 // exception handling middleware
 app.use(mwErrorHandler);
 
-app.listen(PORT, () => console.log(`App listening on port ${PORT} on uri ${config.endpoint}`));
+app.listen(PORT, () => {
+    console.log(`App listening on port ${PORT} on uri ${config.endpoint}`)
+    console.log("Secret key: ", process.env.PRIVATE_KEY_PROGING2)
+});
