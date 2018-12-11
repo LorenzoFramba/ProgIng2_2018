@@ -1,3 +1,6 @@
+[![Jsonnambuli Logo](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/jsonnambuli.png)](https://github.com/dadebulba/ProgIng2_2018)
+
+
 # ProgIng2
 
 Membri del gruppo:
@@ -14,11 +17,7 @@ Our project will allow users to create tasks, combined in exams and assign it to
 
 ## General idea of the Scheme
 
-C'e la possibilita di configuarare un ambiente di node,  fai vedere un development . json con endpoing. e' possibile modificare questi paramentri aggiungendo un ambiente di node attraverso un config.
-metto il jwt json web token, da settare.
-
-aggiunta di un utente.
-
+![https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png](https://github.com/dadebulba/ProgIng2_2018)
 
 
 
@@ -77,13 +76,13 @@ select "JSON Application/json" and in the body, create the Exam with this scheme
 
 you can change any of the parametes.
 
+
 **HOW TO CHANGE A PASSWORD**
 
 ```
 http://localhost:3000/v1/Users
 ```
 
-where ID is the UserID you want to get. 
 
 In the body response you will get a Json containing something like this
 
@@ -172,11 +171,11 @@ Task: Could be either a multiple choice task, true or false or written paragraph
 
 ## Authors
 
-* **Davide Bulbarelli** - *programmer* - [Github](https://github.com/dadebulba/)
-* **Davide Piva** - *programmer* - [Github](https://github.com/Pivoz)
-* **Marco Luzzara** - *programmer* - [Github](https://github.com/marco-luzzara/)
-* **Lorenzo Framba** - *programmer* - [Github](https://github.com/lorenzoframba)
-* **Morgan Malavasi** - *programmer* - [Github](https://github.com/theRaven97)
+* [**Davide Bulbarelli**](https://github.com/dadebulba/) - *programmer* -
+* [**Davide Piva**](https://github.com/Pivoz) - *programmer* -
+* [**Marco Luzzara**](https://github.com/marco-luzzara/) - *programmer* - 
+* [**Lorenzo Framba**](https://github.com/lorenzoframba) - *programmer* - 
+* [**Morgan Malavasi**](https://github.com/theRaven97) - *programmer* -
 
 ## License
 
