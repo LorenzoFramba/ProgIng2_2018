@@ -1,6 +1,6 @@
 let Group = require("../../model/group");
 let GroupDB = require('../../mock/mockedGroup');
-let UserDB = require("../../mock/mockedUser");
+let UserDB = require("../../mock/mockedUser"); 
 
 module.exports = {
 
