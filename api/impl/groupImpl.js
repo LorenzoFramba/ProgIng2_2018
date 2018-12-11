@@ -135,7 +135,7 @@ module.exports = {
             return true;
         } catch (err){
             throw err;
-        }
+        } 
     },
 
     /* Funzione che prende tutti i dettagli di un determinato gruppo */
