@@ -1,0 +1,956 @@
+{
+	"info": {
+		"_postman_id": "be4e54f5-e514-4fee-b81c-f770948c82b0",
+		"name": "ProgettoIngegneria2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "{{endpoint}}/Users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"testName2\",\n\t\"lastname\": \"testLastname\",\n\t\"email\": \"test@test.it\",\n\t\"password\": \"test\"\n}"
+						},
+						"url": "{{endpoint}}/Users",
+						"description": "API per registrare un nuovo utente nel sistema"
+					},
+					"response": []
+				},
+				{
+					"name": "{{endpoint}}/Users/Exams/1/Tasks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{endpoint}}/Users/Exams/1/Tasks",
+						"description": "API che ritorna i dettagli dei task associati ad un esame a cui l'utente autenticato è associato"
+					},
+					"response": []
+				},
+				{
+					"name": "{{endpoint}}/Users",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"testName\",\n\t\"lastname\": \"testLastname\",\n\t\"email\": \"testMOD@mail.it\",\n\t\"password\": \"test\",\n\t\"exams\": []\n}"
+						},
+						"url": "{{endpoint}}/Users",
+						"description": "API per modificare un utente già esistente"
+					},
+					"response": []
+				},
+				{
+					"name": "{{endpoint}}/Users/Exams",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{endpoint}}/Users/Exams",
+						"description": "API che ritorna tutti gli esami associati all'utente autenticato"
+					},
+					"response": []
+				},
+				{
+					"name": "{{endpoint}}/Users",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{endpoint}}/Users",
+						"description": "API per eliminare l'utente che invia la richiesta"
+					},
+					"response": []
+				},
+				{
+					"name": "{{endpoint}}/Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{endpoint}}/Users",
+						"description": "Api per ricevere tutte le informazioni dell'utente autenticato"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exam",
+			"item": [
+				{
+					"name": "http://localhost:3000/v1/Exams/14",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 14,\r\n    \"ownerId\": 0,\r\n    \"name\": \"CIMOD_remod\",\r\n    \"duration\": 1152,\r\n    \"deadline\": \"2019-10-05T14:48:00.000Z\",\r\n    \"startDate\": \"2019-10-04T14:48:00.000Z\",\r\n    \"groupId\": 0,\r\n    \"countTask\": 7\r\n}"
+						},
+						"url": "http://localhost:3000/v1/Exams/14",
+						"description": "API per modificare un esame già esistente"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:3000/v1/Exams/0/Tasks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://localhost:3000/v1/Exams/0/Tasks",
+						"description": "API che ritorna gli id dei task associati all'esame indicato"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:3000/v1/Exams/14",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://localhost:3000/v1/Exams/14",
+						"description": "API per eliminare il gruppo specificato"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:3000/v1/Exams",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 10,\r\n    \"ownerId\": 2,\r\n    \"name\": \"CIMOD\",\r\n    \"duration\": 1152,\r\n    \"deadline\": \"2019-10-05T14:48:00.000Z\",\r\n    \"startDate\": \"2019-10-04T14:48:00.000Z\",\r\n    \"groupId\": 0,\r\n    \"countTask\": 7,\r\n    \"tasks\" : []\r\n}"
+						},
+						"url": "http://localhost:3000/v1/Exams",
+						"description": "API per aggiungere un esame al sistema"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:3000/v1/Exams",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://localhost:3000/v1/Exams",
+						"description": "API per ricevere tutti gli esami creati dall'utente autenticato"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:3000/v1/Exams/0",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://localhost:3000/v1/Exams/0",
+						"description": "API che ritorna tutte le informazioni inerenti a un singolo esame"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "GET /Tasks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{endpoint}}/Tasks/0/0"
+					},
+					"response": []
+				},
+				{
+					"name": "POST /Tasks",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n                \"id\": \"0\",\r\n                \"examId\": \"0\",\r\n                \"text\": \"2 + 2\",\r\n                \"options\": [\r\n                    \"4\",\r\n                    \"4\",\r\n                    \"5\"\r\n                ],\r\n                \"score\": \"5\",\r\n                \"isPeerReview\": \"false\",\r\n                \"category\": \"radio\",\r\n                \"correctAnswer\": \"1\"\r\n}"
+						},
+						"url": "{{endpoint}}/Tasks"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /Tasks",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 0,\r\n    \"examId\": 0,\r\n    \"text\": \"2 + 2\",\r\n    \"options\": [\r\n        \"3\",\r\n        \"1\",\r\n        \"5\"\r\n    ],\r\n    \"score\": 5,\r\n    \"isPeerReview\": false,\r\n    \"category\": \"radio\",\r\n    \"correctAnswer\": 1\r\n}"
+						},
+						"url": "{{endpoint}}/Tasks/0/0"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /Tasks",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{endpoint}}/Tasks/0/0"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Group",
+			"item": [
+				{
+					"name": "{{endpoint}}/Groups/1/Users",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"members\": [\"mario@rossi.it\", \"maeo@bianchi.it\"]}"
+						},
+						"url": "http://localhost:3000/v1/Groups/1/Users",
+						"description": "API per aggiungere una lista di utenti ad un gruppo già esistente (indicando la mail)"
+					},
+					"response": []
+				},
+				{
+					"name": "{{endpoint}}/Groups/1",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 1,\n\t\"name\": \"Modificato2\",\n\t\"members\": [],\n\t\"owner\": 0\n}"
+						},
+						"url": "http://localhost:3000/v1/Groups/1",
+						"description": "API per modificare un gruppo già esistente"
+					},
+					"response": []
+				},
+				{
+					"name": "{{endpoint}}/Groups",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Nome1\", \"members\": [], \"owner\": 111111}"
+						},
+						"url": "http://localhost:3000/v1/Groups",
+						"description": "API per aggiungere nel sistema un nuovo gruppo"
+					},
+					"response": []
+				},
+				{
+					"name": "{{endpoint}}/Groups/1",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://localhost:3000/v1/Groups/1",
+						"description": "API che ritorna tutte le informazioni inerenti a un gruppo"
+					},
+					"response": []
+				},
+				{
+					"name": "{{endpoint}}/Groups/1",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://localhost:3000/v1/Groups/7",
+						"description": "API per eliminare un gruppo"
+					},
+					"response": []
+				},
+				{
+					"name": "{{endpoint}}/Groups",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "http://localhost:3000/v1/Groups",
+						"description": "API che ritorna le informazioni (ridotte) di tutti i gruppi di cui l'utente autenticato ne è owner"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Token",
+			"item": [
+				{
+					"name": "{{endpoint}}/Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6f47219c-61e9-4a3e-b08f-f911fa6ba767",
+								"exec": [
+									"postman.setEnvironmentVariable(\"token\", responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"gino@pino.it\",\r\n  \"password\": \"ciccio\"\r\n}"
+						},
+						"url": "http://localhost:3000/v1/Token",
+						"description": "API che ritorna il token di autenticazione in base a mail e password passati"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Answer",
+			"item": [
+				{
+					"name": "DELETE /Answers",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/Answers/?task=0&exam=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"Answers",
+								""
+							],
+							"query": [
+								{
+									"key": "task",
+									"value": "0"
+								},
+								{
+									"key": "exam",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /Answers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/Answers/?task=0&exam=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"Answers",
+								""
+							],
+							"query": [
+								{
+									"key": "task",
+									"value": "0"
+								},
+								{
+									"key": "exam",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /Answers",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"value\": \"answerchanged\" }"
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/Answers/?task=1&exam=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"Answers",
+								""
+							],
+							"query": [
+								{
+									"key": "task",
+									"value": "1"
+								},
+								{
+									"key": "exam",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /Answers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2c79f46e-1936-4508-9fa7-bd7197ef55d5",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/Answers/?user=0&task=1&exam=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"Answers",
+								""
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "0"
+								},
+								{
+									"key": "task",
+									"value": "1"
+								},
+								{
+									"key": "exam",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PeerRewiew",
+			"item": [
+				{
+					"name": "PUT /PeerReviews",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\": \"tested\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/PeerReviews/?user=1&task=1&exam=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"PeerReviews",
+								""
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "1"
+								},
+								{
+									"key": "task",
+									"value": "1"
+								},
+								{
+									"key": "exam",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /PeerReviews",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/PeerReviews/?user=1&task=1&exam=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"PeerReviews",
+								""
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "1"
+								},
+								{
+									"key": "task",
+									"value": "1"
+								},
+								{
+									"key": "exam",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /PeerReviews",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/PeerReviews/?reviewer=0&user=1&task=1&exam=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"PeerReviews",
+								""
+							],
+							"query": [
+								{
+									"key": "reviewer",
+									"value": "0"
+								},
+								{
+									"key": "user",
+									"value": "1"
+								},
+								{
+									"key": "task",
+									"value": "1"
+								},
+								{
+									"key": "exam",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /PeerReviews",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/PeerReviews/?user=1&task=3&exam=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"PeerReviews",
+								""
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "1"
+								},
+								{
+									"key": "task",
+									"value": "3"
+								},
+								{
+									"key": "exam",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
