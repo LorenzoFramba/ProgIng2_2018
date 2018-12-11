@@ -188,7 +188,7 @@ paths:
       - Users
       summary: List all the users info by UserID
       description: |
-        By passing the appropriate ID, the system returns the right user and all its informations.
+        By passing the appropriate token, the system returns the right user and all its informations.
       produces:
       - application/json
       responses:

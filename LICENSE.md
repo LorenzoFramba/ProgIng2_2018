@@ -14,7 +14,7 @@ so let the joyous news be spread, the wicked code witch at last is dead.
 
 ### Disclaimer
 
-The goal of JSONNAMBULI's open source licensing efforts is to provide a starting point to help you make an informed choice on the API project. We hope it helps 
+The goal of JSONNAMBULI's open source licensing efforts is to provide a starting point to help you make an informed choice on the API project. We hope it helps.
 
 ## Copyright
 

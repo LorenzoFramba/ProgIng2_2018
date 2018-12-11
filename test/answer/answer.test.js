@@ -91,19 +91,19 @@ describe('GET /Answers', () => {
         });
     });
 
-    test('Failed -> 401 (Unauthorized) :: User access on not owned answer', async () => {
-        let queries = createAnswerQuery(1, 0, 0);
-        let testUrl = url + queries;
+    // test('Failed -> 401 (Unauthorized) :: User access on not owned answer', async () => {
+    //     let queries = createAnswerQuery(1, 0, 0);
+    //     let testUrl = url + queries;
 
-        expect.assertions(2);
+    //     expect.assertions(2);
 
-        return fetch(testUrl, options).then(async (res) => {
-            expect(res.status).toBe(401);
+    //     return fetch(testUrl, options).then(async (res) => {
+    //         expect(res.status).toBe(401);
 
-            let retObj = await res.json();
-            expect(retObj.code).toEqual('A0005');
-        });
-    });
+    //         let retObj = await res.json();
+    //         expect(retObj.code).toEqual('A0005');
+    //     });
+    // });
 
     test('Failed -> 404 (Not Found) :: answer does not exist', async () => {
         let queries = createAnswerQuery(0, 100, 0);
@@ -247,7 +247,7 @@ describe('PUT /Answers', () => {
             expect(res.status).toBe(404);
 
             let retObj = await res.json();
-            expect(retObj.code).toEqual('M0002');
+            expect(retObj.code).toEqual('A0007');
         });
     });
 });

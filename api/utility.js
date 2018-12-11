@@ -9,7 +9,7 @@ async function getExamOwner(examId) {
         let examDb = new ExamDb();
         let exam = await examDb.read({ id: examId });
 
-        return exam === undefined ? undefined : exam.owner_id;
+        return exam === undefined ? undefined : exam.ownerId;
     }
     catch (err) {
         throw err;
@@ -39,5 +39,6 @@ module.exports = {
         catch (err) {
             throw err;
         }
-    }
+    },
+    getExamOwner: getExamOwner
 }

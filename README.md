@@ -1,3 +1,6 @@
+[![Jsonnambuli Logo](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/jsonnambuli.png)](https://github.com/dadebulba/ProgIng2_2018)
+
+
 # ProgIng2
 
 Membri del gruppo:
@@ -14,11 +17,7 @@ Our project will allow users to create tasks, combined in exams and assign it to
 
 ## General idea of the Scheme
 
-C'e la possibilita di configuarare un ambiente di node,  fai vedere un development . json con endpoing. e' possibile modificare questi paramentri aggiungendo un ambiente di node attraverso un config.
-metto il jwt json web token, da settare.
-
-agginta di un utente.
-
+![Alt Text](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png)
 
 
 
@@ -54,6 +53,7 @@ App listening on port 3000 on uri http://localhost
 
 ```
 
+**POST /EXAM**
 In this case, we will see how to create an Exam. Open Postman, select POST and type 
 
 ```
@@ -75,6 +75,76 @@ select "JSON Application/json" and in the body, create the Exam with this scheme
 ```
 
 you can change any of the parametes.
+
+
+**HOW TO CHANGE A PASSWORD**
+
+```
+http://localhost:3000/v1/Users
+```
+
+
+In the body response you will get a Json containing something like this
+
+```
+{
+    "id": 0,
+    "name": "Gino",
+    "lastname": "Pino",
+    "email": "gino@pino.it",
+    "password": "ciccio",
+    "exams": [
+        {
+            "examId": 0,
+            "startCompiling": "2018-12-05T14:43:00.000Z",
+            "assignedTask": [
+                1,
+                2
+            ],
+            "prAnswer": [
+                {
+                    "userId": 1,
+                    "taskId": 1
+                }
+            ],
+            "points": null
+        },
+        {
+            "examId": 1,
+            "startCompiling": "2018-11-06T14:49:32.000Z",
+            "assignedTask": [
+                0,
+                1
+            ],
+            "prAnswer": [
+                {
+                    "userId": 1,
+                    "taskId": 3
+                },
+                {
+                    "userId": 1,
+                    "taskId": 1
+                }
+            ],
+            "points": null
+        }
+    ]
+}
+
+```
+So to change a password you need to do a **PUT** request on the User, and send in the Body
+
+```
+
+{
+    "name": "Gino",
+    "lastname": "Pino",
+    "email": "gino@pino.it",
+    "password": "NEWPASSWORD"
+}
+```
+
+Within this system you can change the name, lastname, email and password;
 
 ### And coding style tests
 
@@ -101,11 +171,11 @@ Task: Could be either a multiple choice task, true or false or written paragraph
 
 ## Authors
 
-* **Davide Bulbarelli** - *programmer* - [Github](https://github.com/dadebulba/)
-* **Davide Piva** - *programmer* - [Github](https://github.com/Pivoz)
-* **Marco Luzzara** - *programmer* - [Github](https://github.com/marco-luzzara/)
-* **Lorenzo Framba** - *programmer* - [Github](https://github.com/lorenzoframba)
-* **Morgan Malavasi** - *programmer* - [Github](https://github.com/theRaven97)
+* [**Davide Bulbarelli**](https://github.com/dadebulba/) - *programmer* -
+* [**Davide Piva**](https://github.com/Pivoz) - *programmer* -
+* [**Marco Luzzara**](https://github.com/marco-luzzara/) - *programmer* - 
+* [**Lorenzo Framba**](https://github.com/lorenzoframba) - *programmer* - 
+* [**Morgan Malavasi**](https://github.com/theRaven97) - *programmer* -
 
 ## License
 
