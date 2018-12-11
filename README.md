@@ -30,12 +30,13 @@ In this [Apiary](https://proging2.docs.apiary.io/#)  document you will be able t
 
 You need to see the [Apiary](https://proging2.docs.apiary.io/#)  document to understand the API, but also you need to check out this [chart](https://github.com/dadebulba/ProgIng2_2018/blob/release/doc/chart.png) so you have a basic idea of how the system was structured and implemented. 
 
-## Installation
+First of all, the program **will not** work without the secret key, so ask politely to us and it will be provided! then 
+**CREATE A NEW FOLDER CALLED "private"** in the project folder, and insert the secret key file received in it.
 
 
 
+## Example
 
-### Example
 
 A step by step series of examples that tell you how to work with any aspect of our env.
 
@@ -60,7 +61,8 @@ this will be the respond:
 App listening on port 3000 on uri http://localhost
 
 ```
-**GET /Token**
+
+### GET /Token
 
 Firsty, we need to acquire the correct token, so let's do a **POST** request on the token
 
@@ -79,7 +81,9 @@ furthermore, in the application/json body, we will need to insert the email and 
 
 what we will get in the response, is the Bearer token for Authorization! we will use it in the following examples.
 
-**POST /Exams**
+
+### POST /Exams
+
 In this case, we will see how to create an Exam. Open Postman, select POST and type 
 
 ```
@@ -103,7 +107,7 @@ select "JSON Application/json" and in the body, create the Exam with this scheme
 you can change any of the parametes.
 
 
-**HOW TO CHANGE A PASSWORD**
+### HOW TO CHANGE A PASSWORD
 
 ```
 http://localhost:3000/v1/Users
@@ -183,8 +187,8 @@ The project has been connected to [Heroku](https://proging2dev.herokuapp.com) so
 
 ## Built With
 
-* [Heroku](https://proging2dev.herokuapp.com) - The web framework used
-* [Apiary](https://proging2.docs.apiary.io/#) - Api Management
+* [Heroku](https://proging2dev.herokuapp.com) - The web deployment tool used
+* [Apiary](https://proging2.docs.apiary.io/#) - API Management
 
 
 ## Terminology
