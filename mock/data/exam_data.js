@@ -8,7 +8,7 @@ let exam_data = [
         'startDate': '2019-10-04T14:48:00.000Z',
         'groupId': 0,
         'countTask': 10,
-        'tasks' : []
+        'tasks' : [0,1,2,3]
     },
     {
         'id': 1,

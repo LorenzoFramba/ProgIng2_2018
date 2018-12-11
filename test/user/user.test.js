@@ -7,13 +7,13 @@ const utils = require('../utility');
 let users = Array();
 let userEndpoint = utils.createUrl('Users');
 const userData = {
-    email: "gino@pino.it",
-    password: "ciccio"
+    email: 'marco@rossi.it',
+    password: 'marco'
 }
 
 const userToDel = {
-    email : "mario@rossi.it",
-    password : "mario"
+    email: 'luca@biachi.it',
+    password: 'luca'
 }
 
 let header;
@@ -21,7 +21,7 @@ let headerToDel;
 
 //inizializzo i casi di test
 beforeAll(async () => {
-    users.push(new User(null, "Gino", "Pino", "gino@pino.it", "ciccio", []));
+    users.push(new User(null, "Marco", "Rossi",'marco@rossi.it', "marco", []));
  
     header = await utils.getAuthHeader(userData.email, userData.password);
     headerToDel = await utils.getAuthHeader(userToDel.email, userToDel.password);
@@ -31,7 +31,7 @@ beforeAll(async () => {
 
 //classe di test par la post user
 describe('POST /Users', () => {
-    test("Success -> 204 (OK)", async () => {
+    test("Success -> 201 (Created)", async () => {
         //opzioni da mettere nella richiesta
         let options = {
             method: 'POST',
@@ -41,7 +41,7 @@ describe('POST /Users', () => {
 
         expect.assertions(1); //mi aspetto 2 expect, return importante se no salta, => indica la callback
         let res = await fetch(userEndpoint, options);
-        expect(res.status).toBe(204);
+        expect(res.status).toBe(201);
 
     });
     

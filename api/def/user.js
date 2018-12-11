@@ -31,7 +31,7 @@ router.post("/", async function (req, res, next) {
             req.body.password,
             []);
 
-        return res.status(204).end();
+        return res.status(201).end();
     }
     catch (e) {
         next(e);

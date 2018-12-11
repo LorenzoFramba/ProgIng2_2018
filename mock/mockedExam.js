@@ -12,25 +12,29 @@ class MockedExam extends ExamPrototype {
         boundedInjector(MockedExam, Exam, exam_data);
     }
 
-    getAllExams() {
+    getAllExams(userId) {
         return new Promise((resolve,reject) => {
-            if(exam_data === undefined)
+            let exams = exam_data.filter(
+                (el) => {
+                    return el.ownerId === userId
+                });
+            if(exams === undefined)
                 resolve(undefined);
             else
-                resolve(exam_data);
+                resolve(exams);
         });
     }
 
-    getTasks(examId) {
+    getTasks(userId, examId) {
         return new Promise((resolve,reject) => {
-            let examFound = exam_data.find(ex => ex.id === examId);
+            let examFound = exam_data.find(ex => {
+                return ex.id === examId && ex.ownerId === userId
+            });
 
             if(examFound === undefined)
                 resolve(undefined);
-            else if(examFound.exams === undefined)
-                resolve(undefined);
             else
-                resolve(userFound.exams);
+                resolve(examFound.tasks);
         });
     }
 }
