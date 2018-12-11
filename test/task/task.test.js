@@ -66,7 +66,7 @@ describe('GET /Tasks', () => {
             expect(returned.code).toEqual('A0007');
         });
     });
-
+    
     test('404 (not found), no object in mock', async () => {
         let testUrl = url + '/3/6';
         expect.assertions(2);
@@ -77,6 +77,16 @@ describe('GET /Tasks', () => {
             expect(returned.code).toEqual('A0007');
         });
     });
+
+    test('401 (not authorized)', async () => {
+        let testUrl = url + '/0/3';
+        expect.assertions(1);
+
+        return fetch(testUrl, options).then(async (res) => {
+            expect(res.status).toBe(401);
+        });
+    });
+    
 });
 
 // TEST FOR POST 
@@ -176,6 +186,7 @@ describe('PUT /Tasks', () => {
         });
     });
 
+    
     test('400 Bad request -> wrong data Task', async () => {
         let options = {
             method: 'PUT',
@@ -189,6 +200,7 @@ describe('PUT /Tasks', () => {
         });
     });
 
+    
     test('400 error body', async () => {
         let options = {
             method: 'PUT',

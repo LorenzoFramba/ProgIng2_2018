@@ -12,17 +12,27 @@ router.get('/:id/:exam', async function (req, res, next) {
     const task_id = parseInt(req.params.id);
     const exam_id = parseInt(req.params.exam);
     let userId = req.uid;
+
     // check if some parameter is undefined or not valid
     if (apiUtility.validateParamsUndefined(task_id, exam_id))
-        res.status(400).json(errors.PARAMS_UNDEFINED);
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
 
     try {
         // if it is found return the object, else return status code 404 not found
         let check = await taskImplementation.checkParams(task_id, exam_id);
         if (check === undefined)
-            res.status(404).send(errors.ENTITY_NOT_FOUND);
-        else
-            res.status(200).json(check);
+            return res.status(404).send(errors.ENTITY_NOT_FOUND);
+        else {
+            // check if the user can access to his tasks and exams
+            let examOwner = await apiUtility.getExamOwner(exam_id);
+            if (examOwner === undefined)
+                return res.status(401).json(errors.ACCESS_NOT_GRANTED);
+            if (examOwner != userId)
+                return res.status(401).json(errors.INVALID_CREDENTIALS);
+
+            return res.status(200).json(check);
+        }
+
     } catch (err) {
         next(err);
     }
@@ -44,14 +54,13 @@ router.post('/', async function (req, res, next) {
     if (tkBody === undefined)
         return res.status(400).json(errors.PARAMS_UNDEFINED);
     else if (apiUtility.validateParamsUndefined(id, examId, text, options, score, isPeerReview, category, correctAnswer))
-        return res.status(400).send('dentro');
+        return res.status(400).send(errors.PARAMS_UNDEFINED);
     else {
         try {
             await taskImplementation.addTask(tkBody);
             // The server has successfully fulfilled the request and that 
             // there is no additional content to send in the response payload body.
             return res.status(204).end();
-            //TO DO : return also the posted json, try on postman 
         } catch (err) {
             next(err);
         }
@@ -89,9 +98,15 @@ router.put('/:id/:exam', async function (req, res, next) {
             if (check === undefined)
                 return res.status(404).send(errors.ENTITY_NOT_FOUND);
             else {
+                // check if the user can access to his tasks and exams
+                let examOwner = await apiUtility.getExamOwner(exam_id);
+                if (examOwner === undefined)
+                    return res.status(401).json(errors.ACCESS_NOT_GRANTED);
+                if (examOwner != userId)
+                    return res.status(401).json(errors.INVALID_CREDENTIALS);
+
                 await taskImplementation.updateTask(tkBody);
-                return res.status(204).end();
-                // to do: return the json already intert to check if all functions 
+                return res.status(204).end(); 
             }
         } catch (err) {
             next(err);
@@ -114,7 +129,15 @@ router.delete('/:id/:exam', async function (req, res, next) {
         let check = await taskImplementation.checkParams(task_id, exam_id);
         if (check === undefined)
             return res.status(404).send(errors.ENTITY_NOT_FOUND);
-        else {
+        else 
+        {
+            // check if the user can access to his tasks and exams
+            let examOwner = await apiUtility.getExamOwner(exam_id);
+            if (examOwner === undefined)
+                return res.status(401).json(errors.ACCESS_NOT_GRANTED);
+            if (examOwner != userId)
+                return res.status(401).json(errors.INVALID_CREDENTIALS);
+            
             await taskImplementation.deleteTask(task_id, exam_id);
             return res.status(204).end();
         }
@@ -122,9 +145,6 @@ router.delete('/:id/:exam', async function (req, res, next) {
         next(err);
     }
 });
-
-
-
 
 module.exports = router;
 
