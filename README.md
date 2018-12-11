@@ -12,8 +12,12 @@ Membri del gruppo:
 Our project will allow users to create tasks, combined in exams and assign it to group of other users. The main goal is to be able to create a task, which will be either a multiple choice task or a basic paragraph to write. The user will be able to create exams that contain tasks. These exams will have a expire date and a a maximum duration to be taken. The result of the exam will be available to be reviewed by the user or by other users with peer review enabled, which is a system that randobly assign other users (within the exam group) to review someone else's exam.
 
 
-## General idea of the Sceme
+## General idea of the Scheme
 
+C'e la possibilita di configuarare un ambiente di node,  fai vedere un development . json con endpoing. e' possibile modificare questi paramentri aggiungendo un ambiente di node attraverso un config.
+metto il jwt json web token, da settare.
+
+agginta di un utente.
 
 
 
@@ -29,29 +33,48 @@ You need to see the [Apiary](https://proging2.docs.apiary.io/#)  document to und
 
 
 
-### Installing
+### Example
 
-A step by step series of examples that tell you how to get a development env running
+A step by step series of examples that tell you how to work with any aspect of our env 
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
+First and foremost, we need to start up the server, so go in the project's folder with the terminal window, and type
 
 ```
-until finished
+npm start
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+this will be the respond 
 
-## Running the tests
+```
 
-First and foremost, you will need to open a terminal window onto the project's folder, and then execute "  npm start " in order to initialize the server.
-Through postman, by going into the localhost:3000/ address,you then will be able to choose what API to use. For example, To create a Task, simply go to ../Tasks and insert a json format code into the body of the request, containing all the Task info.
+> proging2_2018@1.0.0 start /Users/macbookproretina/Desktop/API2/ProgIng2_2018
+> node index.js
 
+App listening on port 3000 on uri http://localhost
+
+```
+
+In this case, we will see how to create an Exam. Open Postman, select POST and type 
+
+```
+http://localhost:3000/v1/Exams/
+```
+
+select "JSON Application/json" and in the body, create the Exam with this scheme 
+```
+{
+    "id": F,
+    "ownerId": 0,
+    "name": "HCI",
+    "duration": 130,
+    "deadline": "2019-10-05T14:48:00.000Z",
+    "startDate": "2019-10-04T14:48:00.000Z",
+    "groupId": 3,
+    "countTask": 10
+}
+```
+
+you can change any of the parametes.
 
 ### And coding style tests
 
@@ -78,11 +101,11 @@ Task: Could be either a multiple choice task, true or false or written paragraph
 
 ## Authors
 
-* **Davide Bulbarelli** - *Initial work* - [Github](https://github.com/dadebulba/)
-* **Davide Piva** - *Initial work* - [Github](https://github.com/Pivoz)
-* **Marco Luzzara** - *Initial work* - [Github](https://github.com/marco-luzzara/)
-* **Lorenzo Framba** - *Initial work* - [Github](https://github.com/lorenzoframba)
-* **Morgan Malavasi** - *Initial work* - [Github](https://github.com/theRaven97)
+* **Davide Bulbarelli** - *programmer* - [Github](https://github.com/dadebulba/)
+* **Davide Piva** - *programmer* - [Github](https://github.com/Pivoz)
+* **Marco Luzzara** - *programmer* - [Github](https://github.com/marco-luzzara/)
+* **Lorenzo Framba** - *programmer* - [Github](https://github.com/lorenzoframba)
+* **Morgan Malavasi** - *programmer* - [Github](https://github.com/theRaven97)
 
 ## License
 
