@@ -10,7 +10,7 @@ let user_data = [
             {
                 examId: 0,
                 startCompiling: '2018-12-05T14:43:00.000Z',
-                assignedTask: [1, 2],
+                assignedTasks: [1, 2],
                 prAnswer: [
                     {
                         userId: 1,
@@ -22,7 +22,7 @@ let user_data = [
             {
                 examId: 1,
                 startCompiling: '2018-11-06T14:49:32.000Z',
-                assignedTask: [0, 1],
+                assignedTasks: [0, 1],
                 prAnswer: [
                     {
                         userId: 1,
@@ -47,7 +47,7 @@ let user_data = [
             {
                 examId: 0,
                 startCompiling: '2018-12-06T14:43:00.000Z',
-                assignedTask: [0, 1],
+                assignedTasks: [0, 1],
                 prAnswer: [
                     {
                         userId: 0,
@@ -59,7 +59,7 @@ let user_data = [
             {
                 examId: 1,
                 startCompiling: '2018-11-06T14:43:00.000Z',
-                assignedTask: [1, 3],
+                assignedTasks: [1, 3],
                 prAnswer: [
                     {
                         userId: 0,
