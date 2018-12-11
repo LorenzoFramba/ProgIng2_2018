@@ -5,22 +5,15 @@ let AnswerDb = require('../../mock/mockedAnswer');
 
 const Answer = require('../../model/answer');
 
-async function getExamOwner(examId) {
+async function checkAnswerReferTask(userId, examId, taskId) {
     try {
-        let examDb = new ExamDb();
-        let exam = await examDb.read({ id: examId });
+        let userDb = new UserDb();
+        let userFound = await userDb.read({ id: userId });
 
-        return exam === undefined ? undefined : exam.owner_id;
-    }
-    catch (err) {
-        throw err;
-    }
-}
-
-async function checkUserAccessOnExam(userId_answer, userId_caller, examId) {
-    try {
-        return userId_caller === userId_answer || userId_caller === await getExamOwner(examId);
-    }
+        return userFound.exams
+        .find(e => e.examId === examId).assignedTask
+        .includes(taskId);
+    } 
     catch (err) {
         throw err;
     }
@@ -76,9 +69,9 @@ async function deleteAnswer(userId, taskId, examId) {
 }
 
 module.exports = {
-    checkUserAccessOnExam: checkUserAccessOnExam,
     addAnswer: addAnswer,
     getAnswer: getAnswer,
     updateAnswer: updateAnswer,
-    deleteAnswer: deleteAnswer
+    deleteAnswer: deleteAnswer,
+    checkAnswerReferTask: checkAnswerReferTask
 }

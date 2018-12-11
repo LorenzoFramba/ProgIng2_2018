@@ -1,8 +1,9 @@
 class ExamUser {
-    constructor(id,startCompiling,assignedTasks,points){
-        this.id = id;
+    constructor(examId, startCompiling, assignedTasks, prAnswer, points){
+        this.examId = examId;
         this.startCompiling = startCompiling;
         this.assignedTasks = assignedTasks;
+        this.prAnswer = prAnswer;
         this.points = points;
     }
 }

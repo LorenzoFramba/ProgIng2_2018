@@ -40,6 +40,16 @@ let task_data = [
         'correctAnswer': 2
     },
     {
+        'id': 1,
+        'examId': 1,
+        'text': 'what?',
+        'options': null,
+        'score': 20,
+        'isPeerReview': true,
+        'category': 'open',
+        'correctAnswer': null
+    },
+    {
         'id': 2,
         'examId': 1,
         'text': 'what?',
