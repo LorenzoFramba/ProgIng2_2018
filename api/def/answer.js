@@ -45,6 +45,9 @@ router.post('/', async function(req, res, next) {
         return res.status(400).json(errors.PARAMS_WRONG_TYPE);
 
     try {
+        if (!answerImpl.checkAnswerReferTask(userId, q_examid, q_taskid))
+            return res.status(404).json(errors.ENTITY_NOT_FOUND);
+
         await answerImpl.addAnswer(userId, q_taskid, q_examid, b_value);
         return res.status(204).end();
     }

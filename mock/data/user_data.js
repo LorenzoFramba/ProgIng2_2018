@@ -41,7 +41,6 @@ let user_data = [
         id: 1,
         name: 'Mario',
         lastname: 'Rossi',
-        username: 'mrrrss',
         email: 'mario@rossi.it',
         password: 'mario',
         exams: [
@@ -75,7 +74,6 @@ let user_data = [
         id:2,
         name: 'Matteo',
         lastname: 'Bianchi',
-        username: 'mttbnc',
         email: 'matteo@bianchi.it',
         password: 'matteo',
         exams: []
@@ -85,7 +83,6 @@ let user_data = [
         id: 3,
         name: 'Marco',
         lastname: 'Rossi',
-        username: 'mrcrss',
         email: 'marco@rossi.it',
         password: 'marco',
         exams: []

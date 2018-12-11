@@ -743,6 +743,8 @@ definitions:
     properties:
       id:
         type: integer
+      examId:
+        type: integer
       text:
         type: string
       options: 

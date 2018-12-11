@@ -43,7 +43,7 @@ describe('GET /Answers', () => {
 
     test('Success -> 200 (OK)', async () => {
         let userId = 0;
-        let taskId = 0;
+        let taskId = 1;
         let examId = 0;
         let queries = createAnswerQuery(userId, taskId, examId);
         let testUrl = url + queries;
@@ -58,7 +58,7 @@ describe('GET /Answers', () => {
                 'userId': userId,
                 'examId': examId,
                 'taskId': taskId,
-                'value': 1
+                'value': 'answer001'
             });
         });
     });
@@ -133,7 +133,7 @@ describe('POST /Answers', () => {
     });
 
     test('Success -> 204 (No Content)', () => {
-        let queries = createAnswerQuery(undefined, 3, 1);
+        let queries = createAnswerQuery(undefined, 0, 1);
         let testUrl = url + queries;
 
         expect.assertions(1);
@@ -172,7 +172,7 @@ describe('POST /Answers', () => {
     });
 
     test('Failed -> 400 (Bad Request) :: Duplicated Answer', async () => {
-        let queries = createAnswerQuery(undefined, 0, 0);
+        let queries = createAnswerQuery(undefined, 1, 0);
         let testUrl = url + queries;
 
         expect.assertions(2);
@@ -199,7 +199,7 @@ describe('PUT /Answers', () => {
     });
 
     test('Success -> 204 (No Content)', () => {
-        let queries = createAnswerQuery(undefined, 0, 0);
+        let queries = createAnswerQuery(undefined, 1, 0);
         let testUrl = url + queries;
 
         expect.assertions(1);
@@ -262,7 +262,7 @@ describe('DELETE /Answers', () => {
     });
 
     test('Success -> 204 (No Content)', async () => {
-        let queries = createAnswerQuery(undefined, 1, 1);
+        let queries = createAnswerQuery(undefined, 2, 0);
         let testUrl = url + queries;
 
         expect.assertions(1);

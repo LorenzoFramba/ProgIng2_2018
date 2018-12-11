@@ -1,6 +1,4 @@
-const fetch = require("node-fetch");
 let Group = require("../../model/group");
-
 let GroupDB = require('../../mock/mockedGroup');
 let UserDB = require("../../mock/mockedUser");
 
@@ -69,14 +67,6 @@ module.exports = {
             if (await module.exports.checkMember(member) === false)
                 return null;
         }
-        
-
-        //Controllo che i membri e l'owner del gruppo siano veri utenti registrati
-        //if (!((members.length !== 0 && members.every(module.exports.checkMemberWrapper)) && module.exports.checkMemberWrapper(owner) === true))
-        /*if (!module.exports.checkMemberWrapper(owner) || (members.length !== 0 && !members.every(module.exports.checkMemberWrapper))){
-            console.log("NULL");
-            return null;
-        }*/
 
         let id = new Date().getTime();
         let nuovoGruppo = new Group(id, name, members, owner);
@@ -131,6 +121,11 @@ module.exports = {
         else if (newGroup.owner !== idUser || newGroup.id != idGroup || typeof newGroup.name !== "string" || newGroup.members.constructor !== Array)
             return false;
 
+        //Controllo dell'array dei membri di newGroup
+        for (let member of newGroup.members)
+            if (await module.exports.checkMember(member) === false)
+                return null;
+
         try {
             let groupDB = new GroupDB();
             await groupDB.update( this.createGroup(newGroup.id, newGroup.name, newGroup.members, newGroup.owner));
@@ -138,5 +133,99 @@ module.exports = {
         } catch (err){
             throw err;
         }
+    },
+
+    /* Funzione che prende tutti i dettagli di un determinato gruppo */
+    getGroupInfo : async function(userId, groupId){
+
+        //Check dei parametri
+        if (arguments.length !== 2 || userId === undefined || groupId === undefined)
+            return null;
+        else if (isNaN(userId) || await module.exports.checkMember(userId) === false)
+            return null;
+        else if (isNaN(groupId) || await module.exports.checkGroup(groupId) === false)
+            return null;
+
+        try {
+            let groupDB = new GroupDB();
+            let groups = await groupDB.searchByOwner(userId);
+
+            for (var i=0; i<groups.length && groups[i] !== undefined; i++)
+                if (groups[i].id == groupId)
+                    return groups[i];
+
+            return null;
+        } catch (err){
+            throw err;
+        }
+    },
+
+    /* Funzione per eliminare un gruppo */
+    deleteGroup : async function(userId, groupId){
+
+        //Check dei parametri
+        if (arguments.length !== 2 || userId === undefined || groupId === undefined)
+            return false;
+        else if (isNaN(userId) || await module.exports.checkMember(userId) === false)
+            return false;
+        else if (isNaN(groupId) || await module.exports.checkGroup(groupId) === false)
+            return false;
+
+        try {
+            let groupDB = new GroupDB();
+            let groups = await groupDB.searchByOwner(userId);
+
+            for (var i=0; i<groups.length && groups[i] !== undefined; i++)
+                if (groups[i].id == groupId){
+                    await groupDB.delete({id: groups[i].id});
+                    return true;
+                }
+            return false;
+        } catch (err){
+            throw err;
+        }
+    },
+
+    /* Funzione per aggiungere una lista di utenti (mail) a un gruppo esistente */
+    addMembers : async function(idUser, idGroup, mailList){
+
+        //Check dei parametri
+        if (arguments.length !== 3 || idUser === undefined || idGroup === undefined || mailList === undefined)
+            return null;
+        else if (isNaN(idUser) || await module.exports.checkMember(idUser) === false)
+            return null;
+        else if (isNaN(idGroup) || await module.exports.checkGroup(idGroup) === false)
+            return null;
+
+        if (mailList.constructor !== Array || !mailList.every(function (element){
+            return (typeof element === "string");
+        }))
+            return null;
+
+        //Converto le mail negli idUser corrispondenti
+        let arrayUser = new Array();
+        let userDB = new UserDB();
+        for (let mail of mailList){
+            let user = await userDB.getUserByMail(mail);
+            if (user !== null)
+                arrayUser.push(user);
+        }
+
+        //Becco il gruppo indicato dall'utente
+        let groupDB = new GroupDB();
+        let group = await groupDB.read({id: idGroup});
+
+        if (group !== undefined){
+            let concat = arrayUser.concat(group.members);
+
+            let groupMod = new Group(group.id, group.name, concat, group.owner);
+            if(await module.exports.modifyGroup(idUser, idGroup, groupMod))
+                return groupMod;
+            else    
+                return null;
+        }
+        else
+            return null;
+
     }
 }
