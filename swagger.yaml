@@ -600,7 +600,7 @@ paths:
         name: answer
         required: true
         schema:
-            $ref: "#/definitions/Answer"
+            type: string
       responses:
         204:
           description: Answer modified 
@@ -694,7 +694,7 @@ paths:
         200:
           description: PeerReview returned
           schema:
-            type: string
+            $ref: '#/definitions/PeerReview'
         401:
           description: Token not valid
         400:
@@ -906,6 +906,32 @@ definitions:
         description: answer submitted by the user
     required:
       - userId
+      - taskId
+      - examId
+      - value
+      
+  PeerReview:
+    title: Peer Review
+    type: object
+    properties:
+      userId: 
+        type: integer
+        description: user id of the answer
+      reviewerId: 
+        type: integer
+        description: reviewer id of the answer
+      taskId: 
+        type: integer
+        description: task id of the answer
+      examId: 
+        type: integer
+        description: exam id of the answer
+      value:
+        type: string
+        description: answer submitted by the user
+    required:
+      - userId
+      - reviewerId
       - taskId
       - examId
       - value
