@@ -892,12 +892,20 @@ definitions:
     title: Answer
     type: object
     properties:
-      id: 
-        type: object
-        description: id of the answer
+      userId: 
+        type: integer
+        description: user id of the answer
+      taskId: 
+        type: integer
+        description: task id of the answer
+      examId: 
+        type: integer
+        description: exam id of the answer
       value:
         type: string
         description: answer submitted by the user
     required:
-      - id
+      - userId
+      - taskId
+      - examId
       - value
