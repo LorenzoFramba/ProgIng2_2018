@@ -6,6 +6,7 @@ const utils = require('../utility');
 let exams = Array();
 const examEndpoint = utils.createUrl('Exams');
 let header;
+let headerToRead;
 let token;
 let tokenToDel;
 
@@ -14,12 +15,18 @@ const userData = {
 	password : "ciccio"
 }
 
+const userToRead = {
+	email : 'mario@rossi.it',
+	password : "mario"
+}
+
 //inizializzo i casi di test
 beforeAll(async () => {
 
     exams.push(new Exam(123, 321, "analisi", 32.3 ,'2019-10-05T14:48:00.000Z' , '2019-10-05T14:48:00.000Z', 4345, 43,[]));
     
     header = await utils.getAuthHeader(userData.email, userData.password);
+    headerToRead = await utils.getAuthHeader(userToRead.email,userToRead.password);
 
     jest.setTimeout(100000); //evito che le richieste vadano in timeout troppo presto
 });
@@ -31,7 +38,7 @@ describe('POST /Exams', () => {
     beforeAll(() => {
         Object.assign(myHeader,{"Content-Type":"application/json"},header);
     })
-    test("Success -> 204 (OK)", async () => {
+    test("Success -> 201 (OK)", async () => {
         //opzioni da mettere nella richiesta
         let options = {
             method: 'POST',
@@ -41,7 +48,7 @@ describe('POST /Exams', () => {
 
         expect.assertions(1); //mi aspetto 2 expect, return importante se no salta, => indica la callback
         let res = await fetch(examEndpoint, options);
-        expect(res.status).toBe(204);
+        expect(res.status).toBe(201);
     });
 
     test('Failed -> 400 (Bad request) :: wrong body data', () => {
@@ -172,44 +179,22 @@ describe("GET /Exams", () => {
     beforeAll(() => {
         options = {
             method: 'GET',
-            headers: header
+            headers: headerToRead
         };
     });
 
     test("Success -> 200 (OK)", async () => {
         let myexam = [
             {
-                "id": 0,
-                "ownerId": 0,
-                "name": "CI",
-                "duration": 120,
-                "deadline": "2019-10-05T14:48:00.000Z",
-                "startDate": "2019-10-04T14:48:00.000Z",
-                "groupId": 0,
-                "countTask": 10,
-                "tasks": [0,1,2,3]
-            },
-            {
-                "id": 1,
-                "ownerId": 0,
-                "name": "CI",
-                "duration": 130,
-                "deadline": "2019-10-05T14:48:00.000Z",
-                "startDate": "2019-10-04T14:48:00.000Z",
-                "groupId": 3,
-                "countTask": 10,
-                "tasks": []
-            },
-            {
-                "id": 2,
-                "ownerId": 0,
-                "name": "CI",
-                "duration": 120,
-                "deadline": "2019-10-05T14:48:00.000Z",
-                "startDate": "2019-10-04T14:48:00.000Z",
-                "groupId": 2,
-                "countTask": 12,
-                "tasks": []
+                'id': 3,
+                'ownerId': 1,
+                'name': 'CI',
+                'duration': 80,
+                'deadline': '2019-10-05T14:48:00.000Z',
+                'startDate': '2019-10-04T14:48:00.000Z',
+                'groupId': 4,
+                'countTask': 6,
+                'tasks' : []
             }
         ]
         
@@ -218,7 +203,7 @@ describe("GET /Exams", () => {
         let examReturned = await result.json();
         expect(result.status).toBe(200);
         
-        expect(examReturned).toEqual(myexam);
+        expect(examReturned).toMatchObject(myexam);
     });
 
     test("Failed -> 401 (Unauthorized) :: Token not valid", async () => {

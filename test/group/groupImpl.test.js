@@ -102,15 +102,7 @@ describe("Insert new group", () => {
         let owner = user_data[0].id
         insertGroup(name, members, owner).then(data => expect(data).not.toBeNull());
     });
-
-    test('Correct group 2', () => {
-        let name = "Matteo"
-        let members = [user_data[2].id, user_data[3].id]
-        let owner = user_data[0].id
-        insertGroup(name, members, owner).then(data => expect(data).not.toBeNull());
-    });
 })
-
 
 //--------------- TEST checkMember(idMember) ----------------------------------
 describe("Check members", () => {
@@ -165,7 +157,7 @@ describe("Retrieve all groups", () => {
     });
 
     test('idUser is not a real user', () => {
-        retrieveAllGroups(1232111).then(data => expect(data).toBeNull());
+        retrieveAllGroups(1232111).then(data => expect(data).not.toBeNull());
     });
 
     test('idUser is a negative number', () => {
@@ -200,7 +192,7 @@ describe("Check groups", () => {
     });
 
     test('group is an array', () => {
-        let group = [];
+        let group = new Array();
         checkGroup(group).then(data => expect(data).toBeFalsy());
     });
 
@@ -210,7 +202,7 @@ describe("Check groups", () => {
     });
 
     test('group is a real group', () => {
-        let group = group_data[0];
+        let group = group_data[0].id;
         checkGroup(group).then(data => expect(data).toBeTruthy());
     });
 })
@@ -550,16 +542,16 @@ describe("Add members by mail to an existing group", () => {
     });
 
     test('idUser is not idGroup group owner', () => {
-        let idUser = group_data[2].owner;
-        let idGroup = group_data[0].id;
-        let maillist = [user_data[0].email];
+        let idUser = 3; //3
+        let idGroup = 1; //1
+        let maillist = [user_data[0].email]; //gino@pino.it (1)
         addMembers(idUser, idGroup, maillist).then(data => expect(data).toBeNull());
     });
 
     test('Correct way', () => {
-        let idUser = group_data[0].owner;
-        let idGroup = group_data[0].id;
-        let maillist = [user_data[1].email];
+        let idUser = 0; //0
+        let idGroup = 4; //1
+        let maillist = [user_data[1].email]; //mario@rossi.it (1)
         addMembers(idUser, idGroup, maillist).then(data => expect(data).not.toBeNull());
     });
 })

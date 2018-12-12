@@ -1,5 +1,6 @@
 let express = require('express');
 let router = express.Router();
+const apiUtility = require('../utility.js');
 
 const groupLogic = require("../impl/groupImpl");
 
@@ -38,7 +39,7 @@ router.get("/", async function(req, res, next){
 /* API per modificare un gruppo esistente */
 router.put("/:id", async function(req, res, next){
     let userId = req.uid;
-    let groupId = req.params.id;
+    let groupId = apiUtility.castToInt(req.params.id);
     let newGroup = req.body;
 
     if (newGroup === undefined)
