@@ -672,13 +672,29 @@ paths:
       - PeerReview
       summary: get an existing PeerReview
       description: get an existing PeerReview
+      parameters:
+        - name: exam
+          in: query
+          description: Exam Id
+          type: integer
+          required: true
+        - name: task
+          in: query
+          description: Task Id
+          type: integer
+          required: true
+        - name: user
+          in: query
+          description: User Id
+          type: integer
+          required: true   
       produces:
       - application/json
       responses:
         200:
           description: PeerReview returned
           schema:
-            $ref: "#/definitions/Answer"
+            type: string
         401:
           description: Token not valid
         400:
@@ -696,10 +712,10 @@ paths:
       - application/json
       parameters:
       - in: body
-        name: answer
+        name: value
         required: true
         schema:
-            $ref: "#/definitions/Answer"
+            type: string
       responses:
         204:
           description: PeerReview modified 
@@ -718,7 +734,7 @@ paths:
       description: create the PeerReview 
       parameters:
         - in: body
-          name: PeerReview
+          name: value
           required: true
           schema:
             type: string
@@ -738,6 +754,12 @@ paths:
         - PeerReview
       summary: delete a PeerReview
       description: delete the PeerReview
+      parameters:
+      - in: body
+        name: PeerReviewID
+        required: true
+        schema:
+            type: string
       responses:
         204: 
           description: the PeerReview has been correctly deleted
@@ -746,22 +768,7 @@ paths:
         400:
           description: Bad Request
           
-    parameters:
-    - name: exam
-      in: query
-      description: Exam Id
-      type: integer
-      required: true
-    - name: task
-      in: query
-      description: Task Id
-      type: integer
-      required: true
-    - name: user
-      in: query
-      description: User Id
-      type: integer
-      required: true   
+
   
       
 definitions:
