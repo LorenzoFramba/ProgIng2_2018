@@ -270,7 +270,7 @@ describe("GET /Exam/:examId", () => {
     });
 });
 
-
+//GET
 describe("GET /Exams/:examId/Tasks", () => {
     let options;
     beforeAll(() => {
@@ -360,7 +360,7 @@ describe("DELETE /Exams", () => {
 
 
 
-//classe di test par la post user
+//classe di test per la post user
 describe('PUT /Exams/:examId', () => {
     let myHeader = {};
     beforeAll(() => {
