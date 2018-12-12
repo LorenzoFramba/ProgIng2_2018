@@ -6,6 +6,10 @@ class TaskPrototype extends AbstractPrototype {
         super();
         utils.abstractCheck(TaskPrototype, new.target);
     }
+
+    getTasksByExamId(examId) {
+        throw new InternalError(modelErrors.MISSING_OVERRIDE);
+    }
 }
 
 module.exports = TaskPrototype;

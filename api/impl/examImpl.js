@@ -1,5 +1,7 @@
 let ExamDb = require('../../mock/mockedExam');
 let UserDb = require('../../mock/mockedUser');
+let GroupDb = require('../../mock/mockedGroup');
+let TaskDb = require('../../mock/mockedTask');
 
 const Exam = require('../../model/exam');
 
@@ -116,6 +118,48 @@ async function getAllExamTasks(userId, examId) {
     }
 }
 
+function getSubset(set, n) {
+    let subset = []
+
+    for (let i = 0; i < n; ++i) {
+        if (i < set.length) 
+            subset.push(set[i]);
+        else 
+            break;
+    }
+
+    return subset;
+}
+
+async function setUserTasks(examId, groupId) {
+    try {
+        let groupDb = new GroupDb();
+        let taskDb = new TaskDb();
+        let examDb = new ExamDb();
+        let userDb = new UserDb();
+
+        let promTasks = taskDb.getTasksByExamId(examId);
+        let promExams = examDb.read({ id: examId });
+        let uids = await groupDb.getUsers(groupId);
+        let users = await Promise.all(uids.map(uid => userDb.read({ id: uid })));
+        let tasks = await promTasks;
+        let exam = await promExams;
+        
+        tasks = tasks.map(t => t.id);
+        counter = exam.countTask;
+        
+        users.forEach(u => {
+            let examEntry = u.exams.find(e => e.examId == examId);
+            
+            if (examEntry !== undefined)
+                examEntry.assignedTasks = getSubset(tasks, counter);
+        });
+    }
+    catch (err) {
+        throw err;
+    }
+}
+
 //exports the modules
 module.exports = {
     check_body: check_body,
@@ -125,5 +169,6 @@ module.exports = {
     deleteExam: deleteExam,
     validateOwner : validateOwner,
     getAllExams : getAllExams,
-    getAllExamTasks : getAllExamTasks
+    getAllExamTasks : getAllExamTasks,
+    setUserTasks: setUserTasks
 }

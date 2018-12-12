@@ -11,6 +11,13 @@ class MockedTask extends TaskPrototype {
         let boundedInjector = genericMockFunctions.bind(this);
         boundedInjector(MockedTask, Task, task_data);
     }
+
+    getTasksByExamId(examId) {
+        return new Promise((resolve, reject) => {
+            let filterTask = task_data.filter(t => t.examId === examId);
+            resolve(filterTask);
+        });
+    }
 }
 
 module.exports = MockedTask;

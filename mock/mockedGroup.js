@@ -2,6 +2,7 @@ let GroupPrototype = require('../model/abstract/groupPrototype.js');
 let group_data = require('./data/group_data');
 const Group = require('../model/group');
 const genericMockFunctions = require('./mockedEntity');
+const  User = require('../model/user');
 
 class MockedGroup extends GroupPrototype {
     constructor() {
@@ -27,6 +28,16 @@ class MockedGroup extends GroupPrototype {
 
             let entity = Object.assign(Object.create(Group), groupList);
             resolve(entity);
+        });
+    }
+
+    getUsers(groupId) {
+        return new Promise((resolve, reject) => {
+            var groupList = [];
+            let users = group_data
+                .find(g => g.id === groupId).members;
+
+            resolve(users);
         });
     }
 }

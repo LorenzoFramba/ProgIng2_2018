@@ -133,7 +133,7 @@ In the body response you will get a Json containing something like this
         {
             "examId": 0,
             "startCompiling": "2018-12-05T14:43:00.000Z",
-            "assignedTask": [
+            "assignedTasks": [
                 1,
                 2
             ],
@@ -148,7 +148,7 @@ In the body response you will get a Json containing something like this
         {
             "examId": 1,
             "startCompiling": "2018-11-06T14:49:32.000Z",
-            "assignedTask": [
+            "assignedTasks": [
                 0,
                 1
             ],

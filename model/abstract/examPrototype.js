@@ -8,6 +8,14 @@ class ExamPrototype extends AbstractPrototype {
         super();
         utils.abstractCheck(ExamPrototype, new.target);
     }
+
+    getAllExams(userId) {
+        throw new InternalError(modelErrors.MISSING_OVERRIDE);
+    }
+
+    getTasks(userId, examId) {
+        throw new InternalError(modelErrors.MISSING_OVERRIDE);
+    }
 }
 
 module.exports = ExamPrototype;

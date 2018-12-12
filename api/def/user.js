@@ -6,7 +6,6 @@ const apiUtility = require('../utility.js');
 const errors = require('../errorMsg.js');
 
 router.post("/", async function (req, res, next) {
-
     if (req.body === undefined) {
         return res.status(400).json(errors.PARAMS_UNDEFINED);
     }
@@ -34,7 +33,7 @@ router.post("/", async function (req, res, next) {
         return res.status(201).end();
     }
     catch (e) {
-        next(e);
+        return next(e);
     }
 })
 
@@ -61,7 +60,7 @@ router.get("/", async function (req, res, next) {
 
     }
     catch (e) {
-        next(e);
+        return next(e);
     }
 })
 
@@ -100,7 +99,7 @@ router.put("/", async function (req, res, next) {
         return res.status(204).end();
     }
     catch (e) {
-        next(e);
+        return next(e);
     }
 
 })
@@ -121,7 +120,7 @@ router.delete("/", async function (req, res, next) {
         return res.status(204).end();
     }
     catch (e) {
-        next(e);
+        return next(e);
     }
 
 })
@@ -146,9 +145,9 @@ router.get("/Exams", async function (req, res, next) {
             return res.status(200).json(exams);
     }
     catch (e) {
-        next(e);
+        return next(e);
     }
-})
+});
 
 router.get("/Exams/:examId/Tasks", async function (req, res, next) {
     let userId = req.uid;
@@ -169,8 +168,8 @@ router.get("/Exams/:examId/Tasks", async function (req, res, next) {
             return res.status(200).json(tasks);
     }
     catch (e) {
-        next(e);
+        return next(e);
     }
-})
+});
 
 module.exports = router;

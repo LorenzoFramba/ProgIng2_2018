@@ -3,13 +3,13 @@ const apiUtility = require('../utility.js');
 const errors = require('../errorMsg.js');
 const examimpl = require('../impl/examImpl');
 
-let router_exam = express.Router();
+let router = express.Router();
 let exam_model = require('../../model/exam.js');
 let ExamDb = require('../../mock/mockedExam');
 
 
 /*
-router_exam.get('/', async function (req, res, next) {
+router.get('/', async function (req, res, next) {
     let userId = req.uid;
 
     if (apiUtility.validateParamsUndefined(userId)) //checking if the paramiters are defined
@@ -29,7 +29,7 @@ router_exam.get('/', async function (req, res, next) {
 });
 */
 
-router_exam.get('/:id', async function (req, res, next) {
+router.get('/:id', async function (req, res, next) {
     let examId = parseInt(req.params.id); // parsing the examID from the URL
     let userId = req.uid;
 
@@ -57,7 +57,7 @@ router_exam.get('/:id', async function (req, res, next) {
     }
 });
 
-router_exam.get('/', async function (req, res, next) {
+router.get('/', async function (req, res, next) {
     let userId = req.uid;
 
     if (apiUtility.validateParamsUndefined(userId)) //checking if the paramiters are defined
@@ -75,7 +75,7 @@ router_exam.get('/', async function (req, res, next) {
         next(err);
     }
 });
-router_exam.get('/:examId/Tasks', async function (req, res, next) {
+router.get('/:examId/Tasks', async function (req, res, next) {
     let examId = apiUtility.castToInt(req.params.examId); // parsing the examID from the URL
     let userId = req.uid;
 
@@ -96,7 +96,7 @@ router_exam.get('/:examId/Tasks', async function (req, res, next) {
 });
 
 
-router_exam.post('/', async function (req, res, next) {
+router.post('/', async function (req, res, next) {
 
     let body = req.body;
     let userId = req.uid;
@@ -113,7 +113,7 @@ router_exam.post('/', async function (req, res, next) {
     }
 });
 //TODO: verificare owner
-router_exam.put('/:id', async function (req, res, next) {
+router.put('/:id', async function (req, res, next) {
     let examId = apiUtility.castToInt(req.params.id);
 
     let userId = req.uid;
@@ -149,7 +149,7 @@ router_exam.put('/:id', async function (req, res, next) {
 });
 
 //TODO: modificare check owner
-router_exam.delete('/:examId', async function (req, res, next) {
+router.delete('/:examId', async function (req, res, next) {
     let examId = parseInt(req.params.examId);
 
     let userId = req.uid;
@@ -177,5 +177,27 @@ router_exam.delete('/:examId', async function (req, res, next) {
     }
 });
 
+router.post('/:examId/Groups/:groupId', async (req, res, next) => {
+    if (apiUtility.validateParamsUndefined(req.params.examId, req.params.groupId))
+        return res.status(400).json(errors.PARAMS_UNDEFINED);
 
-module.exports = router_exam;
+    let p_examid = apiUtility.castToInt(req.params.examId);
+    let p_groupid = apiUtility.castToInt(req.params.groupId);
+    let userId = req.uid;
+
+    if (!apiUtility.validateParamsNumber(p_examid, p_groupid))
+        return res.status(400).json(errors.PARAMS_WRONG_TYPE);
+
+    try {
+        if ((await apiUtility.getExamOwner(p_examid)) !== userId)
+            return res.status(401).json(errors.ACCESS_NOT_GRANTED);
+
+        await examimpl.setUserTasks(p_examid, p_groupid);
+        res.status(204).end();
+    } 
+    catch (err) {
+        return next(err);
+    }
+})
+
+module.exports = router;

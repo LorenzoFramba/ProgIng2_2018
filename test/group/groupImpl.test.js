@@ -557,8 +557,8 @@ describe("Add members by mail to an existing group", () => {
     });
 
     test('Correct way', () => {
-        let idUser = group_data[0].owner;
-        let idGroup = group_data[0].id;
+        let idUser = 0;
+        let idGroup = 1;
         let maillist = [user_data[1].email];
         addMembers(idUser, idGroup, maillist).then(data => expect(data).not.toBeNull());
     });
