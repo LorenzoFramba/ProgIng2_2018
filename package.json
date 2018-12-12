@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": " SET  PRIVATE_KEY_PROGING2='BD883715546AA8D6D7DE3383290F01A1F0BC026F0CC7865589879F721F327B69555EE5076CF0000D81CE5E5B5C6EAE73A7182DE334B6299CAC27115A68A66B78' && node index.js",
+    "start": "node index.js",
     "build": "NODE_ENV=development"
   },
   "jest": {
