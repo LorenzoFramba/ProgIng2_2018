@@ -27,6 +27,9 @@ tags:
   description: Everything about answer
 - name: Groups
   description: Everything about groups
+- name: PeerReview
+  description: Everything aboud peerReviews
+
   
 securityDefinitions:
    ApiKeyAuth:
@@ -640,7 +643,7 @@ paths:
         204: 
           description: the answer has been correctly deleted
         401: 
-          description: apikey not valid
+          description: Token not valid
         400:
           description: Bad Request
           
@@ -660,6 +663,106 @@ paths:
       description: User Id
       type: integer
       required: true   
+  
+  /PeerReview:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - PeerReview
+      summary: get an existing PeerReview
+      description: get an existing PeerReview
+      produces:
+      - application/json
+      responses:
+        200:
+          description: PeerReview returned
+          schema:
+            $ref: "#/definitions/Answer"
+        401:
+          description: Token not valid
+        400:
+          description: Bad Request
+        404:
+          description : PeerReview not found
+    put:
+      security:
+        - ApiKeyAuth: []
+      tags:
+      - PeerReview
+      summary: modify an existing PeerReview
+      description: Modify an existing PeerReview
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: answer
+        required: true
+        schema:
+            $ref: "#/definitions/Answer"
+      responses:
+        204:
+          description: PeerReview modified 
+        401:
+          description: Token not valid   
+        400:
+          description: Bad Request
+        404:
+          description: PeerReview not found
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - PeerReview
+      summary: create  a PeerReview
+      description: create the PeerReview 
+      parameters:
+        - in: body
+          name: PeerReview
+          required: true
+          schema:
+            type: string
+      responses:
+        204: 
+          description: the PeerReview has been correctly received
+        401: 
+          description: Token not valid
+        400:
+          description: Bad Request
+        404: 
+          description: PeerReview not found
+    delete:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - PeerReview
+      summary: delete a PeerReview
+      description: delete the PeerReview
+      responses:
+        204: 
+          description: the PeerReview has been correctly deleted
+        401: 
+          description: Token not valid
+        400:
+          description: Bad Request
+          
+    parameters:
+    - name: exam
+      in: query
+      description: Exam Id
+      type: integer
+      required: true
+    - name: task
+      in: query
+      description: Task Id
+      type: integer
+      required: true
+    - name: user
+      in: query
+      description: User Id
+      type: integer
+      required: true   
+  
       
 definitions:
   User:
