@@ -15,13 +15,6 @@ beforeAll(async () => {
     header = await utils.getAuthHeader(userData.email, userData.password);
 });
 
-// test for test the test
-describe('test stupido', () => {
-    test("1=1", () => {
-        expect(1).toBe(1);
-    })
-})
-
 
 // TEST FOR GET
 describe('GET /Tasks', () => {

@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
-
-const tokenURL = "http://localhost:3000/v1/Token";
-const userURL = "http://localhost:3000/v1/Users";
+const utils = require("../utility");
+const tokenURL = utils.createUrl("Token");
+const userURL = utils.createUrl("Users");
 
 const User = require("../../model/user");
 
@@ -30,6 +30,7 @@ beforeAll(async () => {
 });
 
 describe("Retrieve token", () => {
+
     test('00 - Mail not valid', () => {
         let options = {
             method: 'POST',
@@ -38,6 +39,7 @@ describe("Retrieve token", () => {
         }
         expect.assertions(1);
 
+        expect.assertions(1);
         return fetch(tokenURL, options).then(
             res => {
                 expect(res.status).toBe(401);
